@@ -1,0 +1,288 @@
+<!doctype html>
+<!-- Arquivo HTML: cadastrados.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Pets - PetConecta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cadastrados.css">
+  <link rel="stylesheet" href="css/buttons-global.css" />
+</head>
+<body>
+   <div class="container">
+      <header id="cabeca">
+        <h1 id="logo">🐾 PetConecta</h1>
+
+        <nav id="nav-menu">
+          <button id="btn-mobile">Menu
+            <span id="hamburguer"></span>
+          </button>
+          <!-- Este menu de links será atualizado dinamicamente pelo Firebase Auth -->
+          <ul id="menu">
+            <li><a href="index.html">Página Inicial</a></li>
+            <li><a href="animais_encontra.html">Encontrados</a></li>
+            <li><a href="adocao.html">Adoção</a></li>
+            <li><a href="dicas.html">Dicas</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </nav>
+      </header>
+     
+       <section class="user-info">
+          <h2>Meus Pets Cadastrados</h2>
+       </section>
+     
+       <main class="pet-list">
+         <!-- Barra de Filtros -->
+         <div class="filtros" style="margin: 20px 0; display: flex; flex-wrap: wrap; gap: 10px;">
+           <input type="text" id="filtro-id" placeholder="Buscar por ID" style="flex: 1; padding: 8px;">
+           <input type="text" id="filtro-nome" placeholder="Buscar por nome" style="flex: 1; padding: 8px;">
+           <input type="text" id="filtro-localizacao" placeholder="Buscar por localização" style="flex: 1; padding: 8px;">
+           <select id="filtro-especie" style="flex: 1; padding: 8px;">
+             <option value="">Todas as espécies</option>
+             <option value="cachorro">Cachorro</option>
+             <option value="gato">Gato</option>
+           </select>
+         </div>
+
+         <div class="container-cards">
+           <!-- Cards serão carregados dinamicamente -->
+         </div>
+       </main>
+     
+    <footer>
+      <div style="max-width: 1000px; margin: auto;">
+        <h3 style="margin-bottom: 10px;">🐶 PetConecta</h3>
+        <p style="margin-bottom: 20px;">Conectando pets incríveis a lares amorosos 💕</p>
+
+        <div style="margin-bottom: 20px;">
+          <a href="https://www.instagram.com/seuusuario" target="_blank" style="margin: 0 15px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="32" height="32">
+          </a>
+          <a href="https://www.facebook.com/seuusuario" target="_blank" style="margin: 0 15px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="32" height="32">
+          </a>
+        </div>
+
+        <nav style="margin-bottom: 15px;">
+          <a href="index.html" style="color: white; margin: 0 10px; text-decoration: none;">Página Inicial</a> |
+          <a href="adocao.html" style="color: white; margin: 0 10px; text-decoration: none;">Adoção</a> |
+          <a href="dicas.html" style="color: white; margin: 0 10px; text-decoration: none;">Cuidados</a> |
+          <a href="contato.html" style="color: white; margin: 0 10px; text-decoration: none;">Contato</a>
+        </nav>
+
+        <p style="font-size: 14px;">© 2026 PetConecta. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+     
+     <!-- Script de animação do Navbar Mobile -->
+     <script>
+       const btnMobile = document.querySelector('#btn-mobile');
+       function toggleMenu(){
+           const nav = document.querySelector('#nav-menu');
+           nav.classList.toggle('active');
+       }
+       if (btnMobile) {
+         btnMobile.addEventListener('click', toggleMenu);
+       }
+     </script>
+
+     <!-- Script Modular Firebase -->
+     <script type="module">
+       // 🚀 ATUALIZADO: Importamos getApps e getApp para evitar erros de inicialização dupla
+       import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+       import { getFirestore, collection, query, where, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+       import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+       // Configuração do Firebase
+       const firebaseConfig = {
+         apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
+         authDomain: "petconecta-db068.firebaseapp.com",
+         projectId: "petconecta-db068",
+         storageBucket: "petconecta-db068.firebasestorage.app",
+         messagingSenderId: "1030110038715",
+         appId: "1:1030110038715:web:151deca61831138159b79e"
+       };
+
+       // 🚀 CORREÇÃO: Inicialização blindada
+       const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+       const db = getFirestore(app);
+       const auth = getAuth(app);
+
+       let meusPets = []; // Armazena a lista de pets em memória para filtragem rápida local
+
+       // 🔐 Verificação de autenticação e carregamento de dados em tempo real
+       onAuthStateChanged(auth, (user) => {
+         const menu = document.getElementById("menu");
+         if (!menu) return;
+
+         const linksBase = `
+           <li><a href="index.html">Página Inicial</a></li>
+           <li><a href="animais_encontra.html">Encontrados</a></li>
+           <li><a href="adocao.html">Adoção</a></li>
+           <li><a href="dicas.html">Dicas</a></li>
+           <li><a href="contato.html">Contato</a></li>
+         `;
+
+         if (user) {
+           const nomeExibicao = user.displayName || user.email.split('@')[0];
+           
+           // Injeta o menu dinâmico com o "Meus Pets" marcado como ativo
+           menu.innerHTML = `
+             ${linksBase}
+             <li><a href="cadastrados.html" style="font-weight: bold; color: #ff914d;">Meus Pets</a></li>
+             <li><span style="color: #ff914d; font-weight: bold; margin-left: 10px;">Olá, ${nomeExibicao}!</span></li>
+             <li><a href="#" id="btn-logout" style="color: #ff3333; font-weight: bold; text-decoration: none;">Sair</a></li>
+           `;
+
+           const btnLogout = document.getElementById("btn-logout");
+           if (btnLogout) {
+             btnLogout.addEventListener("click", (e) => {
+               e.preventDefault();
+               signOut(auth).then(() => {
+                 localStorage.removeItem("usuarioLogado");
+                 window.location.reload();
+               });
+             });
+           }
+
+           // 🔍 Executa a Query Filtrada por Usuário Criador diretamente no Firestore
+           const consultaMeusPets = query(
+             collection(db, "pets"),
+             where("usuarioCriador", "==", user.email)
+           );
+
+           onSnapshot(consultaMeusPets, (snapshot) => {
+             meusPets = snapshot.docs.map(doc => ({
+               id: doc.id,
+               ...doc.data()
+             }));
+             filtrarERenderizarPets();
+           });
+
+         } else {
+           // Se não estiver logado, bloqueia a página e redireciona ao login
+           localStorage.setItem("destinoAposLogin", "cadastrados.html");
+           alert("Você precisa estar logado para visualizar seus pets cadastrados.");
+           window.location.href = "criar-conta.html";
+         }
+       });
+
+       // Lógica de filtragem reativa local (não consome novas cotas do Firestore ao digitar!)
+       function filtrarERenderizarPets() {
+         const searchId = document.getElementById("filtro-id").value.trim().toLowerCase();
+         const searchNome = document.getElementById("filtro-nome").value.trim().toLowerCase();
+         const searchLocal = document.getElementById("filtro-localizacao").value.trim().toLowerCase();
+         const searchEspecie = document.getElementById("filtro-especie").value;
+
+         const petsFiltrados = meusPets.filter(pet => {
+           const matchId = !searchId || pet.id.toLowerCase().includes(searchId);
+           const matchNome = !searchNome || pet.nome.toLowerCase().includes(searchNome);
+           const matchLocal = !searchLocal || (pet.localiza || pet.localizacao || "").toLowerCase().includes(searchLocal);
+           const matchEspecie = !searchEspecie || pet.tipo === searchEspecie;
+           return matchId && matchNome && matchLocal && matchEspecie;
+         });
+
+         const container = document.querySelector(".container-cards");
+         if (!container) return;
+         container.innerHTML = "";
+
+         if (petsFiltrados.length === 0) {
+           container.innerHTML = "<p style='text-align:center; width:100%;'>Nenhum pet encontrado.</p>";
+           return;
+         }
+
+         petsFiltrados.forEach(pet => {
+           const card = document.createElement("div");
+           card.className = "pet-card";
+
+           // Estilos herdados do cadastrados.css de forma limpa (sem overrides inline de tamanho)
+           card.innerHTML = `
+             <img src="${pet.imagem || 'https://via.placeholder.com/150'}" alt="Foto de ${pet.nome}">
+             <h3 style="margin: 10px 0 5px 0;">${pet.nome}</h3>
+             <p style="font-size:13px; margin: 3px 0;"><strong>ID:</strong> ${pet.id}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Tipo:</strong> ${pet.tipo}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Sexo:</strong> ${pet.sexo}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Porte:</strong> ${pet.porte}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Local:</strong> ${pet.localiza || pet.localizacao}</p>
+             
+             <!-- 🚀 ADICIONADO: Painel de visualização de avistamentos em tempo real -->
+             <div class="avistamentos-container" style="margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 10px;">
+               <h4 style="font-size: 13px; color: #ff6600; margin: 0 0 8px 0; font-family: 'Fredoka One', sans-serif;">🚨 Alertas de Avistamentos</h4>
+               <div class="avistamentos-lista-${pet.id}" style="font-size: 11px; color: #555; max-height: 120px; overflow-y: auto;">
+                 Carregando avistamentos...
+               </div>
+             </div>
+
+             <div style="display:flex; justify-content:space-between; margin-top:12px;">
+               <button class="btn-editar" style="padding: 6px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">✏️ Editar</button>
+               <button class="btn-excluir" style="padding: 6px 12px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Excluir</button>
+             </div>
+           `;
+
+           // Atribui funcionalidade de edição
+           card.querySelector(".btn-editar").addEventListener("click", () => {
+             window.location.href = `editar.html?id=${pet.id}`;
+           });
+
+           // Atribui funcionalidade de exclusão direta e reativa
+           card.querySelector(".btn-excluir").addEventListener("click", async () => {
+             if (confirm(`Deseja realmente excluir permanentemente o cadastro de ${pet.nome}?`)) {
+               try {
+                 await deleteDoc(doc(db, "pets", pet.id));
+                 alert("Pet excluído com sucesso!");
+               } catch (error) {
+                 console.error("Erro ao excluir pet: ", error);
+                 alert("Erro ao excluir o pet. Tente novamente.");
+               }
+             }
+           });
+
+           container.appendChild(card);
+
+           // 🚀 ADICIONADO: Escutador ativo na subcoleção de avistamentos deste pet específico
+           const boxAvistamentos = card.querySelector(`.avistamentos-lista-${pet.id}`);
+           const queryAvistamentos = collection(db, "pets", pet.id, "avistamentos");
+
+           onSnapshot(queryAvistamentos, (avistamentosSnapshot) => {
+             if (avistamentosSnapshot.empty) {
+               boxAvistamentos.innerHTML = "<p style='margin: 0; color: #999; font-style: italic;'>Nenhum avistamento reportado.</p>";
+               return;
+             }
+
+             boxAvistamentos.innerHTML = ""; // Limpa o carregando
+             avistamentosSnapshot.forEach((aDoc) => {
+               const avistamento = aDoc.data();
+               const dataRef = avistamento.dataRegistro ? new Date(avistamento.dataRegistro.seconds * 1000).toLocaleDateString("pt-BR") : "Não informada";
+               
+               const itemReport = document.createElement("div");
+               itemReport.style.backgroundColor = "#fff9f4";
+               itemReport.style.border = "1px solid #ffd9b4";
+               itemReport.style.borderRadius = "6px";
+               itemReport.style.padding = "8px";
+               itemReport.style.marginBottom = "6px";
+               itemReport.style.textAlign = "left";
+
+               itemReport.innerHTML = `
+                 <p style="margin: 0 0 3px 0;">📍 <strong>Onde:</strong> ${avistamento.localAvistado}</p>
+                 <p style="margin: 0 0 3px 0;">🔍 <strong>Detalhes:</strong> ${avistamento.descricao}</p>
+                 <p style="margin: 0;">📞 <strong>Contato:</strong> ${avistamento.contatoReportador} <small style="float:right; color:#888;">${dataRef}</small></p>
+               `;
+               boxAvistamentos.appendChild(itemReport);
+             });
+           }, (err) => {
+             console.error(`Erro ao carregar avistamentos do pet ${pet.id}:`, err);
+             boxAvistamentos.innerHTML = "<p style='margin: 0; color: #ff3333;'>Erro ao carregar.</p>";
+           });
+         });
+       }
+
+       // Associa os ouvintes de digitação para filtrar em tempo real
+       ['filtro-id', 'filtro-nome', 'filtro-localizacao', 'filtro-especie'].forEach(id => {
+         const el = document.getElementById(id);
+         if (el) el.addEventListener("input", filtrarERenderizarPets);
+       });
+     </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+/* Arquivo de estilos: dicas_cuidados.css
+   Define a apresentação visual da página correspondente e mantém padronização de layout. */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Corpo */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+ 
+}
+
+/* Cabeçalho */
+header {
+ 
+  background-color: #ff751a;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+header h1 {
+  font-family: 'Fredoka One', sans-serif;
+  color: white;
+  font-size: 2rem;
+}
+
+/* Menu hamburguer */
+.hamburger {
+  cursor: pointer;
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  border-radius: 2px;
+}
+
+/* Navegação */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  font-family: 'Fredoka One', sans-serif;
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+main {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+section {
+  background-color: #fff8e1;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.month-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.calendar-section input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.calendar-section button {
+  padding: 0.6rem 1.2rem;
+  background-color: #ffa500;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+main{
+  margin-left: 10%;
+  width: 80%;
+}
+

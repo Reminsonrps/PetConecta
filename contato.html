@@ -1,0 +1,208 @@
+<!doctype html>
+<!-- Arquivo HTML: contato.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PetConecta - Contato e Parcerias</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/contato.css" />
+    <link rel="stylesheet" href="css/buttons-global.css" />
+  </head>
+  <body>
+    <header id="cabeca">
+      <h1 id="logo">🐾 PetConecta</h1>
+
+      <nav id="nav-menu">
+        <button id="btn-mobile" aria-label="Abrir Menu" aria-expanded="false" aria-controls="menu">
+          Menu
+          <span id="hamburguer"></span>
+        </button>
+        <ul id="menu">
+          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li><a href="adocao.html">Adoção</a></li>
+          <li><a href="dicas.html">Dicas</a></li>
+          <li><a href="cadastrados.html">Pets Cadastrados</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="contact-section">
+        <h1>Fale Conosco</h1>
+        <form class="contact-form" id="contactForm">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome" required />
+
+          <label for="email">E-mail:</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="mensagem">Mensagem:</label>
+          <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+
+          <button type="submit">Enviar</button>
+          <p id="mensagemStatus" style="font-weight: bold; margin-top: 10px; text-align: center;"></p>
+        </form>
+      </section>
+
+      <section class="partners-section">
+        <h2>🤝 Parcerias</h2>
+
+        <section>
+          <div class="parceiros">
+            <div id="pelegrinos"></div>
+          </div>
+        </section>
+        <p>
+          Se você representa uma ONG, clínica veterinária, pet shop ou deseja
+          apoiar nossa causa, entre em contato!
+        </p>
+
+        <ul>
+          <li>
+            Email:
+            <a href="mailto:parcerias@petconecta.com.br"
+              >parcerias@petconecta.com.br</a
+            >
+          </li>
+          <li>Telefone: <a href="tel:+5571999999999">(71) 99999-9999</a></li>
+          <li>
+            Instagram:
+            <a href="https://instagram.com/PetConecta" target="_blank"
+              >@petConecta</a
+            >
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <div style="max-width: 1000px; margin: auto">
+        <h3 style="margin-bottom: 10px">🐶 PetConecta</h3>
+        <p style="margin-bottom: 20px">
+          Conectando pets incríveis a lares amorosos 💕
+        </p>
+
+        <div style="margin-bottom: 20px">
+          <a
+            href="https://www.instagram.com/seuusuario"
+            target="_blank"
+            style="margin: 0 15px"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+              alt="Instagram"
+              width="32"
+              height="32"
+            />
+          </a>
+          <a
+            href="https://www.facebook.com/seuusuario"
+            target="_blank"
+            style="margin: 0 15px"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
+              alt="Facebook"
+              width="32"
+              height="32"
+            />
+          </a>
+        </div>
+
+        <nav style="margin-bottom: 15px">
+          <a
+            href="index.html"
+            style="color: white; margin: 0 10px; text-decoration: none"
+            >Página Inicial</a
+          >
+          |
+          <a
+            href="adocao.html"
+            style="color: white; margin: 0 10px; text-decoration: none"
+            >Adoção</a
+          >
+          |
+          <a
+            href="dicas.html"
+            style="color: white; margin: 0 10px; text-decoration: none"
+            >Cuidados</a
+          >
+          |
+          <a
+            href="contato.html"
+            style="color: white; margin: 0 10px; text-decoration: none"
+            >Contato</a
+          >
+        </nav>
+
+        <p style="font-size: 14px">
+          © 2026 PetConecta. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Script de Parcerias e Mobile Navbar -->
+    <script>
+      const btnMobile = document.querySelector("#btn-mobile");
+      function toggleMenu() {
+        const nav = document.querySelector("#nav-menu");
+        nav.classList.toggle("active");
+      }
+      btnMobile.addEventListener("click", toggleMenu);
+
+      // Adicionando imagem das ongs parceiras dinamicamente
+      const galeria = document.querySelector(".parceiros");
+      if (galeria) {
+        const criaImagem = document.createElement("img");
+        criaImagem.src = "assets/img/pelegrinos.jpg";
+        criaImagem.alt = "Imagem de peregrinos";
+        criaImagem.style.width = "150px";
+        criaImagem.style.borderRadius = "10px";
+        criaImagem.classList.add("pelegrinos-vet");
+        galeria.appendChild(criaImagem);
+
+        const criaImg = document.createElement("img");
+        criaImg.src = "assets/img/AnjosDajuda.jpg";
+        criaImg.alt = "Imagem de Anjos D'ajuda";
+        criaImg.style.width = "150px";
+        criaImg.style.borderRadius = "10px";
+        criaImg.style.border = "1px solid";
+        criaImg.classList.add("anjosDajuda");
+        galeria.appendChild(criaImg);
+
+        // Eventos de clique para redirecionamento
+        criaImg.addEventListener("click", () => {
+          window.location.href = "https://www.anjosdajuda.org/nossos-pets";
+        });
+
+        criaImagem.addEventListener("click", () => {
+          window.location.href = "https://www.instagram.com/peregrinosvet/";
+        });
+      }
+    </script>
+
+    <!-- Script Modular do Firebase (Menu Dinâmico + Envio de Formulário ao Firestore) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+      // Configuração do Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
+        authDomain: "petconecta-db068.firebaseapp.com",
+        projectId: "petconecta-db068",
+        storageBucket: "petconecta-db068.firebasestorage.app",
+        messagingSenderId: "1030110038715",
+        appId: "1:1030110038715:web:151deca61831138159b79e"
+      };
+
+      // Inicialização
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore

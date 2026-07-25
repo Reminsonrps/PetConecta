@@ -1,0 +1,5 @@
+node_modules
+*.log
+*.xlsx
+*.xls
+src/routers/serviceAccountKey.json
