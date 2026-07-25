@@ -254,3 +254,260 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<!-- Arquivo HTML: criar-conta.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta - PetFinder</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    body {
+      flex: 1;
+      background-image: url('assets/img/dia do pet.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    form {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #ff914d;
+      color: white;
+      padding: 30px 0;
+      font-family: 'Segoe UI', sans-serif;
+      margin-top: auto;
+    }
+
+    form h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    /* Estilo para o novo botão do Google */
+    #btn-google {
+      width: 100%;
+      padding: 12px;
+      background-color: #db4437;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    #btn-google:hover {
+      background-color: #c23321;
+    }
+  </style>
+  <link rel="stylesheet" href="css/buttons-global.css" />
+</head>
+<body>
+  <div>
+    <form id="form-cadastro">
+      <h2>Criar Conta</h2>
+      <!-- Alterado de Usuário para E-mail para ser compatível com Firebase tradicional -->
+      <label for="usuario">E-mail:</label>
+      <input type="email" id="usuario" placeholder="seuemail@exemplo.com" required>
+      
+      <label for="senha">Senha:</label>
+      <input type="password" id="senha" required>
+      
+      <button type="submit" id="btn-submit">Cadastrar</button>
+
+      <p style="text-align: center; margin-top: 10px;">
+        <a href="#" id="toggle-mode" style="color: #4CAF50; text-decoration: none; font-weight: bold;">Já tem conta? Fazer Login</a>
+      </p>
+
+      <!-- NOVO: Botão de Login com Google -->
+      <button type="button" id="btn-google">
+        <svg style="width:18px; height:18px;" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M12.24 10.285V13.4h6.887C18.2 15.614 15.645 18 12.24 18c-3.86 0-7-3.14-7-7s3.14-7 7-7c1.71 0 3.27.61 4.5 1.625l2.437-2.437C17.312 1.696 14.933 1 12.24 1c-6.077 0-11 4.923-11 11s4.923 11 11 11c5.82 0 10.745-4.14 10.745-11 0-.69-.075-1.357-.21-1.715H12.24z"/>
+        </svg>
+        Entrar com o Google
+      </button>
+    </form>
+  </div>
+
+  <footer style="background-color: #ff914d; color: white; padding: 30px 0; font-family: 'Segoe UI', sans-serif;">
+    <div style="max-width: 1000px; margin: auto; text-align: center;">
+      <h3 style="margin-bottom: 10px;">🐶 PetFinder</h3>
+      <p style="margin-bottom: 20px;">Conectando pets incríveis a lares amorosos 💕</p>
+      
+      <div style="margin-bottom: 20px;">
+        <a href="https://www.instagram.com/seuusuario" target="_blank" style="margin: 0 15px;">
+          <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" width="32" height="32">
+        </a>
+        <a href="https://www.facebook.com/seuusuario" target="_blank" style="margin: 0 15px;">
+          <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" width="32" height="32">
+        </a>
+      </div>
+
+      <nav style="margin-bottom: 15px;">
+        <a href="index.html" style="color: white; margin: 0 10px; text-decoration: none;">Página Inicial</a> |
+        <a href="adocao.html" style="color: white; margin: 0 10px; text-decoration: none;">Adoção</a> |
+        <a href="dicas.html" style="color: white; margin: 0 10px; text-decoration: none;">Cuidados</a> |
+        <a href="contato.html" style="color: white; margin: 0 10px; text-decoration: none;">Contato</a>
+      </nav>
+
+      <p style="font-size: 14px;">© 2025 PetFinder. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- Firebase Script Modificado -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+    // Configuração do seu projeto Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
+      authDomain: "petconecta-db068.firebaseapp.com",
+      projectId: "petconecta-db068",
+      storageBucket: "petconecta-db068.firebasestorage.app",
+      messagingSenderId: "1030110038715",
+      appId: "1:1030110038715:web:151deca61831138159b79e"
+    };
+
+    // Inicialização do Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    // Função de tratamento de redirecionamento após autenticado com sucesso
+    function redirecionarUsuario() {
+      const destino = localStorage.getItem("destinoAposLogin") || "publicar.html";
+      localStorage.removeItem("destinoAposLogin");
+      window.location.href = destino;
+    }
+
+    let isLoginMode = false;
+    const toggleModeBtn = document.getElementById("toggle-mode");
+    const formTitle = document.querySelector("#form-cadastro h2");
+    const btnSubmit = document.getElementById("btn-submit");
+
+    if (toggleModeBtn) {
+      toggleModeBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        isLoginMode = !isLoginMode;
+        if (isLoginMode) {
+          formTitle.textContent = "Entrar";
+          btnSubmit.textContent = "Entrar";
+          toggleModeBtn.textContent = "Não tem conta? Cadastre-se";
+        } else {
+          formTitle.textContent = "Criar Conta";
+          btnSubmit.textContent = "Cadastrar";
+          toggleModeBtn.textContent = "Já tem conta? Fazer Login";
+        }
+      });
+    }
+
+    // --- REGISTRO TRADICIONAL (E-mail e Senha) ---
+    const form = document.getElementById("form-cadastro");
+    if (form) {
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("usuario")?.value.trim();
+        const senha = document.getElementById("senha")?.value.trim();
+
+        if (!email || !senha) {
+          alert("Preencha todos os campos obrigatórios.");
+          return;
+        }
+
+        try {
+          if (isLoginMode) {
+            await signInWithEmailAndPassword(auth, email, senha);
+            alert("Login realizado com sucesso!");
+          } else {
+            await createUserWithEmailAndPassword(auth, email, senha);
+            alert("Conta criada com sucesso!");
+          }
+          localStorage.setItem("usuarioLogado", JSON.stringify({ usuario: email }));
+          redirecionarUsuario();
+        } catch (error) {
+          console.error("Erro na autenticação:", error);
+          if (error.code === 'auth/email-already-in-use') {
+            alert("Este e-mail já está em uso. Tente fazer login.");
+          } else if (error.code === 'auth/invalid-credential') {
+            alert("E-mail ou senha inválidos.");
+          } else {
+            alert("Erro: " + error.message);
+          }
+        }
+      });
+    }
+
+    // --- REGISTRO / LOGIN COM GOOGLE ---
+    const btnGoogle = document.getElementById("btn-google");
+    if (btnGoogle) {
+      btnGoogle.addEventListener("click", async function () {
+        try {
+          // Abre o pop-up nativo de autenticação do Google
+          const resultado = await signInWithPopup(auth, provider);
+          
+          // O usuário está conectado e você pode pegar suas informações (nome, e-mail, foto, etc.)
+          const usuario = resultado.user;
+          alert(`Bem-vindo ao PetFinder, ${usuario.displayName}!`);
+          localStorage.setItem("usuarioLogado", JSON.stringify({ usuario: usuario.email }));
+          redirecionarUsuario();
+        } catch (error) {
+          console.error("Erro no login com Google:", error);
+          alert("Erro ao fazer login com o Google: " + error.message);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
