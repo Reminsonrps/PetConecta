@@ -1,0 +1,280 @@
+/* Arquivo de estilos: editar-pet.css
+   Define a apresentação visual da página correspondente e mantém padronização de layout. */
+
+:root {
+  --primaria: #ff6600;
+  --cinza-suave: #f9f9f9;
+  --borda-fina: 1px solid #ccc;
+  --sombra-card: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+body, ul {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-color: var(--cinza-suave);
+}
+
+header, main, section {
+  margin: 0;
+  padding: 0;
+}
+
+/* Cabeçalho */
+header {
+  background-color: var(--primaria);
+  padding: 20px;
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Conteúdo principal */
+main {
+  padding: 20px;
+}
+
+/* Container do formulário */
+.formulario, .form-container {
+  max-width: 600px;
+  margin: 20px auto 40px auto;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: var(--sombra-card);
+}
+
+/* Título do formulário */
+.formulario h2, .form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: var(--primaria);
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #444;
+}
+
+/* Campos de entrada padronizados (Fontes corrigidas para legibilidade de 0.95rem!) */
+form input[type="text"],
+form input[type="date"],
+form input[type="file"],
+form input[type="email"],
+form textarea,
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: var(--borda-fina);
+  border-radius: 6px;
+  font-size: 0.95rem; /* Otimizado de 0.60rem para perfeita leitura */
+  box-sizing: border-box;
+  background-color: #fff;
+  color: #333;
+}
+
+form input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--primaria);
+  outline: none;
+  box-shadow: 0 0 5px rgba(255, 102, 0, 0.2);
+}
+
+/* Textarea */
+form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Mapa interativo Leaflet */
+#map {
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Botões */
+form button[type="submit"],
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primaria);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+form button[type="submit"]:hover,
+button:hover {
+  background-color: #e65c00;
+  transform: scale(1.02);
+}
+
+/* Botões lado a lado */
+.botoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Rodapé */
+footer {
+  background-color: var(--primaria);
+  color: white;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+footer h3 {
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+footer p {
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+footer nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+footer nav a:hover {
+  color: #ffe0cc;
+  transform: scale(1.05);
+}
+
+footer div a img {
+  transition: transform 0.3s ease;
+}
+
+footer div a img:hover {
+  transform: scale(1.1);
+}
+
+/* Responsividade de Mídia */
+@media (max-width: 900px) {
+  .formulario, .form-container {
+    padding: 25px;
+    margin: 20px;
+  }
+
+  form input[type="text"],
+  form input[type="date"],
+  form input[type="file"],
+  form textarea,
+  input,
+  select,
+  textarea {
+    font-size: 0.9rem;
+  }
+
+  .formulario h2, .form-container h2 {
+    font-size: 1.6rem;
+  }
+
+  label {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .formulario, .form-container {
+    padding: 20px;
+  }
+
+  form textarea {
+    font-size: 0.9rem;
+  }
+
+  form button[type="submit"],
+  button {
+    font-size: 0.95rem;
+  }
+
+  header {
+    font-size: 1.5rem;
+  }
+
+  .formulario h2, .form-container h2 {
+    font-size: 1.5rem;
+  }
+
+  label {
+    font-size: 0.85rem;
+  }
+
+  footer h3 {
+    font-size: 1.5rem;
+  }
+
+  footer nav a {
+    font-size: 0.8rem;
+  }
+
+  footer p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .formulario, .form-container {
+    padding: 15px;
+    margin: 10px;
+  }
+
+  form button[type="submit"],
+  button {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+
+  .formulario h2, .form-container h2 {
+    font-size: 1.3rem;
+  }
+
+  label {
+    font-size: 0.8rem;
+  }
+}
+
+form > div {
+  margin-bottom: 10px;
+}
