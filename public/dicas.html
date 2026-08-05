@@ -1,0 +1,998 @@
+<!doctype html>
+
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dicas para Cuidar do Seu Pet | PetConecta</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/dicas.css" />
+    <style>
+      /* ===== HERO ===== */
+      .page-hero {
+        background: linear-gradient(135deg, #ff751a 0%, #ff8c42 100%);
+        color: white;
+        text-align: center;
+        padding: 3.5rem 1rem 2.5rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: url("https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=1400&q=60")
+          center/cover no-repeat;
+        opacity: 0.15;
+      }
+      .page-hero h1 {
+        font-family: "Fredoka One", cursive;
+        font-size: 2.8rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+      }
+      .page-hero p {
+        font-size: 1.1rem;
+        opacity: 0.95;
+        max-width: 560px;
+        margin: 0 auto 1.5rem;
+        position: relative;
+      }
+      .hero-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        justify-content: center;
+        position: relative;
+      }
+      .hero-tags a {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 50px;
+        padding: 6px 16px;
+        font-size: 0.9rem;
+        text-decoration: none;
+        transition: background 0.2s;
+      }
+      .hero-tags a:hover {
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      /* ===== LAYOUT ===== */
+      .content-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 2.5rem 1rem;
+      }
+
+      /* ===== SECTION TITLE ===== */
+      .sec-title {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.9rem;
+        color: #ff751a;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.25rem;
+        scroll-margin-top: 90px;
+      }
+      .sec-title::after {
+        content: "";
+        flex: 1;
+        height: 2px;
+        background: linear-gradient(90deg, #ff751a 0%, transparent 100%);
+        margin-left: 0.75rem;
+      }
+      .sec-sub {
+        color: #777;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+      }
+
+      /* ===== CARD GRID ===== */
+      .dicas-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      /* ===== CARD ===== */
+      .dica-card {
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(255, 117, 26, 0.1);
+        overflow: hidden;
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+      }
+      .dica-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 117, 26, 0.18);
+      }
+      .dica-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+      .dica-card-body {
+        padding: 1.25rem 1.5rem 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .dica-card-body h3 {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.2rem;
+        color: #ff751a;
+        margin: 0 0 0.6rem;
+      }
+      .dica-card-body p {
+        font-size: 0.93rem;
+        color: #555;
+        line-height: 1.65;
+        margin: 0;
+      }
+
+      /* ===== FULL-WIDTH CARD (imagem lateral) ===== */
+      .dica-wide {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        background: white;
+        border-radius: 18px;
+        box-shadow: 0 4px 20px rgba(255, 117, 26, 0.1);
+        overflow: hidden;
+        margin-bottom: 3rem;
+        transition: box-shadow 0.3s;
+      }
+      .dica-wide:hover {
+        box-shadow: 0 8px 28px rgba(255, 117, 26, 0.18);
+      }
+      .dica-wide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .dica-wide-body {
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .dica-wide-body h3 {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.4rem;
+        color: #ff751a;
+        margin: 0 0 0.75rem;
+      }
+      .dica-wide-body ul {
+        padding-left: 1.2rem;
+        margin: 0;
+        color: #555;
+        font-size: 0.94rem;
+      }
+      .dica-wide-body ul li {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+      }
+
+      /* ===== PET DESAPARECIDO ===== */
+      .busca-pet {
+        background: linear-gradient(135deg, #fff3e8 0%, #fff9f4 100%);
+        border: 1px solid #ffd6bc;
+        border-radius: 18px;
+        padding: 1.5rem;
+        margin-bottom: 3rem;
+      }
+      .busca-pet h3 {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.35rem;
+        color: #c95d12;
+        margin: 0 0 0.5rem;
+      }
+      .busca-pet p {
+        color: #555;
+        font-size: 0.95rem;
+        margin: 0 0 1rem;
+        line-height: 1.6;
+      }
+      .busca-pet-grid {
+        display: grid;
+        grid-template-columns: 300px 1fr;
+        gap: 1.2rem;
+        align-items: stretch;
+      }
+      .busca-pet-grid img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 14px;
+        min-height: 220px;
+      }
+      .busca-pet-list {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #ffe1cf;
+        padding: 1rem 1.1rem;
+      }
+      .busca-pet-list ul {
+        margin: 0;
+        padding-left: 1.1rem;
+      }
+      .busca-pet-list li {
+        color: #4d4d4d;
+        margin-bottom: 0.55rem;
+        line-height: 1.55;
+        font-size: 0.93rem;
+      }
+      .busca-pet-list li:last-child {
+        margin-bottom: 0;
+      }
+
+      /* ===== ALIMENTOS TOXICOS ===== */
+      .toxicos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 3rem;
+      }
+      .toxico-item {
+        background: #fff3f0;
+        border: 1.5px solid #ffcbb8;
+        border-radius: 14px;
+        padding: 1rem 0.75rem;
+        text-align: center;
+        font-size: 0.88rem;
+        font-weight: 700;
+        color: #c0392b;
+      }
+      .toxico-item span {
+        display: block;
+        font-size: 2rem;
+        margin-bottom: 0.4rem;
+      }
+
+      /* ===== VACINAS TABLE ===== */
+      .vacinas-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        margin-bottom: 3rem;
+        font-size: 0.93rem;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+      }
+      .vacinas-table th {
+        background: linear-gradient(135deg, #ff751a, #ff8c42);
+        color: white;
+        padding: 12px 16px;
+        text-align: left;
+        font-family: "Fredoka One", cursive;
+        font-size: 1rem;
+      }
+      .vacinas-table td {
+        padding: 11px 16px;
+        border-bottom: 1px solid #f0e8e0;
+        vertical-align: top;
+        color: #444;
+      }
+      .vacinas-table tr:last-child td {
+        border-bottom: none;
+      }
+      .vacinas-table tr:nth-child(even) td {
+        background: #fff8f3;
+      }
+
+      /* ===== EMERGENCIA ===== */
+      .emergencia-section {
+        background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+        border-radius: 18px;
+        padding: 2.5rem 2rem;
+        color: white;
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      .emergencia-section h2 {
+        font-family: "Fredoka One", cursive;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+      .emergencia-section p {
+        opacity: 0.95;
+        font-size: 1rem;
+        max-width: 560px;
+        margin: 0 auto 1.5rem;
+      }
+      .sinais-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .sinal-item {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        padding: 0.75rem 0.5rem;
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+      .btn-emergencia {
+        display: inline-block;
+        background: white;
+        color: #c0392b;
+        border: none;
+        padding: 14px 32px;
+        font-size: 1rem;
+        font-weight: 700;
+        font-family: "Fredoka One", cursive;
+        cursor: pointer;
+        border-radius: 50px;
+        text-decoration: none;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .btn-emergencia:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        color: #c0392b;
+      }
+
+      /* ===== FOOTER ===== */
+      footer {
+        background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+        color: #ccc;
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+      footer h3 {
+        color: white;
+        font-family: "Fredoka One", cursive;
+        margin-bottom: 0.5rem;
+      }
+      footer p {
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+      }
+      .footer-icons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      .footer-icons a img {
+        width: 28px;
+        height: 28px;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+      }
+      .footer-icons a:hover img {
+        opacity: 1;
+      }
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .footer-links a {
+        color: #aaa;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.2s;
+      }
+      .footer-links a:hover {
+        color: #ff8c42;
+      }
+      .footer-copy {
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .dica-wide {
+          grid-template-columns: 1fr;
+        }
+        .dica-wide img {
+          height: 220px;
+        }
+        .busca-pet-grid {
+          grid-template-columns: 1fr;
+        }
+        .page-hero h1 {
+          font-size: 2rem;
+        }
+        .dicas-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="css/buttons-global.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <header id="cabeca">
+      <h1 id="logo">🐾 PetConecta</h1>
+      <nav id="nav-menu">
+        <button
+          id="btn-mobile"
+          aria-label="Abrir Menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          Menu <span id="hamburguer"></span>
+        </button>
+        <ul id="menu">
+          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a
+              href="https://www.anjosdajuda.org/adote"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Adoção</a
+            >
+          </li>
+          <li><a href="dicas.html">Cuidados</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="conteudo">
+      <!-- HERO -->
+      <section class="page-hero">
+        <h1>🐾 Dicas para Cuidar do Seu Pet</h1>
+        <p>
+          Tudo o que você precisa saber para garantir saúde, felicidade e
+          segurança ao seu companheiro.
+        </p>
+        <div class="hero-tags">
+          <a href="#saude">🩺 Saúde</a>
+          <a href="#alimentacao">🍽️ Alimentação</a>
+          <a href="#viagens">✈️ Viagens</a>
+          <a href="#comportamento">🧘‍♂️ Comportamento</a>
+          <a href="#cuidados">🐾 Cuidados Especiais</a>
+          <a href="#pet-desaparecido">🔎 Pet Desaparecido</a>
+          <a href="#emergencia">🚨 Emergências</a>
+        </div>
+      </section>
+
+      <div class="content-wrap">
+        <!-- SAÚDE -->
+        <h2 class="sec-title" id="saude">🩺 Saúde</h2>
+        <p class="sec-sub">
+          Prevenção é o melhor remédio. Mantenha seu pet saudável com cuidados
+          básicos essenciais.
+        </p>
+
+        <div class="dicas-grid">
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&q=70"
+              alt="Veterinária vacinando cão"
+            />
+            <div class="dica-card-body">
+              <h3>💉 Vacinação</h3>
+              <p>
+                Mantenha o calendário de vacinas em dia. A V10 (cães) e a V4
+                (gatos) são obrigatórias. A antirrábica deve ser reforçada
+                anualmente e é exigida por lei.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img src="assets/img/saude-pet.png" alt="Consulta veterinária" />
+            <div class="dica-card-body">
+              <h3>🏥 Consultas Regulares</h3>
+              <p>
+                Leve ao veterinário ao menos uma vez por ano — ou a cada 6 meses
+                para pets idosos. Exames de sangue anuais detectam problemas
+                precocemente.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&q=70"
+              alt="Cachorro saudável"
+            />
+            <div class="dica-card-body">
+              <h3>🧫 Vermifugação e Antipulgas</h3>
+              <p>
+                Vermifugue a cada 3 a 6 meses. Use antipulgas e carrapatos
+                mensalmente — esses parasitas transmitem doenças graves como
+                Leishmaniose e Erliquiose.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?w=600&q=70"
+              alt="Castração pet"
+            />
+            <div class="dica-card-body">
+              <h3>✂️ Castração</h3>
+              <p>
+                Além de controlar a população de animais, a castração reduz
+                riscos de câncer, infecções e comportamentos agressivos.
+                Converse com seu vet sobre a idade ideal.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABELA DE VACINAS -->
+        <h3
+          style="
+            font-family: &quot;Fredoka One&quot;, cursive;
+            color: #555;
+            margin-bottom: 0.5rem;
+          "
+        >
+          📅 Calendário de Vacinas — Cães (referência geral)
+        </h3>
+        <table class="vacinas-table">
+          <thead>
+            <tr>
+              <th>Vacina</th>
+              <th>Início</th>
+              <th>Esquema básico</th>
+              <th>Reforço</th>
+              <th>O que Protege</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>V10 / V8</strong></td>
+              <td>6 a 8 semanas</td>
+              <td>2 a 3 doses com intervalo de 3 a 4 semanas</td>
+              <td>Anual</td>
+              <td>Cinomose, Parvovirose, Hepatite, Leptospirose</td>
+            </tr>
+            <tr>
+              <td><strong>Antirrábica</strong></td>
+              <td>3 meses</td>
+              <td>1 dose inicial</td>
+              <td>Anual (lei)</td>
+              <td>Raiva</td>
+            </tr>
+            <tr>
+              <td><strong>Gripe Canina</strong></td>
+              <td>6 semanas</td>
+              <td>1 ou 2 doses iniciais (conforme fabricante)</td>
+              <td>Anual</td>
+              <td>Tosse dos Canis</td>
+            </tr>
+            <tr>
+              <td><strong>Giárdia</strong></td>
+              <td>8 semanas</td>
+              <td>2 doses com intervalo de 2 a 4 semanas</td>
+              <td>Anual (quando indicada)</td>
+              <td>Reduz risco e gravidade de giardíase</td>
+            </tr>
+            <tr>
+              <td><strong>Leptospirose (complementar)</strong></td>
+              <td>Conforme protocolo após V10/V8</td>
+              <td>Aplicação estratégica em pets de maior exposição</td>
+              <td>Semestral ou anual (conforme risco)</td>
+              <td>Amplia cobertura contra leptospirose em áreas de risco</td>
+            </tr>
+            <tr>
+              <td><strong>Leishmaniose</strong></td>
+              <td>A partir de 4 meses</td>
+              <td>
+                Após avaliação veterinária e teste indicado pelo protocolo
+              </td>
+              <td>Anual</td>
+              <td>Leishmaniose visceral (uso conforme risco da região)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- ALIMENTAÇÃO -->
+        <h2 class="sec-title" id="alimentacao">🍽️ Alimentação</h2>
+        <p class="sec-sub">
+          Uma dieta balanceada é a base de uma vida longa e saudável para o seu
+          pet.
+        </p>
+
+        <div class="dica-wide">
+          <img
+            src="https://images.unsplash.com/photo-1601758174114-e711c0cbaa69?w=700&q=70"
+            alt="alimentação saudável"
+          />
+          <div class="dica-wide-body">
+            <h3>🥣 O que dar ao seu pet?</h3>
+            <ul>
+              <li>
+                Escolha ração <strong>Premium ou Super Premium</strong> adequada
+                à idade e porte
+              </li>
+              <li>Água fresca e limpa disponível <strong>sempre</strong></li>
+              <li>
+                Respeite a <strong>quantidade diária</strong> indicada na
+                embalagem
+              </li>
+              <li>
+                Divida em 2 a 3 refeições por dia para evitar dilatação gástrica
+              </li>
+              <li>
+                Petiscos devem representar no máximo <strong>10%</strong> da
+                dieta
+              </li>
+              <li>
+                Dieta BARF (carne crua) deve ser supervisionada por nutrição
+                veterinária
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <h3
+          style="
+            font-family: &quot;Fredoka One&quot;, cursive;
+            color: #c0392b;
+            margin-bottom: 0.75rem;
+          "
+        >
+          🚫 Alimentos Tóxicos — Nunca Ofereça!
+        </h3>
+        <div class="toxicos-grid">
+          <div class="toxico-item"><span>🍫</span>Chocolate</div>
+          <div class="toxico-item"><span>🧅</span>Cebola e Alho</div>
+          <div class="toxico-item"><span>🥇</span>Uva e Passa</div>
+          <div class="toxico-item"><span>☕</span>Cafeína</div>
+          <div class="toxico-item"><span>🥑</span>Abacate</div>
+          <div class="toxico-item"><span>🍺</span>Álcool</div>
+          <div class="toxico-item"><span>🧀</span>Xilitol</div>
+          <div class="toxico-item"><span>🥩</span>Ossos Cozidos</div>
+        </div>
+
+        <!-- VIAGENS -->
+        <h2 class="sec-title" id="viagens">✈️ Viagens com Pets</h2>
+        <p class="sec-sub">
+          Planejar bem garante segurança e conforto para você e seu companheiro.
+        </p>
+
+        <div class="dicas-grid">
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=70"
+              alt="Cachorro no carro"
+            />
+            <div class="dica-card-body">
+              <h3>🚗 Carro</h3>
+              <p>
+                Use caixas de transporte fixadas ou cintos de segurança
+                homologados. Nunca deixe o pet com a cabeça para fora da janela
+                — debris e vento podem causar infecções.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=70"
+              alt="Avião viagem pet"
+            />
+            <div class="dica-card-body">
+              <h3>✈️ Aéreo</h3>
+              <p>
+                Consulte as regras da companhia com antecedência. Exija atestado
+                de saúde do veterinário. Pets na cabine só se o peso (pet +
+                caixa) for inferior a 10kg.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1508672019048-805c876b67e2?w=600&q=70"
+              alt="Hotel pet friendly"
+            />
+            <div class="dica-card-body">
+              <h3>🏨 Hospedagem</h3>
+              <p>
+                Pesquise hospedagens pet-friendly antes de sair. Leve cama,
+                brinquedos e ração favorita para o pet se sentir em casa em
+                ambiente novo.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1559190394-df5a28aab5c5?w=600&q=70"
+              alt="Documentos do pet"
+            />
+            <div class="dica-card-body">
+              <h3>📄 Documentos</h3>
+              <p>
+                Carnet de vacinas, atestado de saúde (máx. 10 dias) e microchip
+                são exigidos em viagens interestaduais e internacionais. Tenha
+                cópia digital no celular.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- COMPORTAMENTO -->
+        <h2 class="sec-title" id="comportamento">
+          🧘‍♂️ Bem-estar e Comportamento
+        </h2>
+        <p class="sec-sub">
+          Pets estimulados mentalmente e fisicamente são mais saudáveis e
+          equilibrados.
+        </p>
+
+        <div class="dica-wide">
+          <img src="assets/img/exercicio-pet.png" alt="Cachorro brincando" />
+          <div class="dica-wide-body">
+            <h3>🎾 Rotina de Exercícios</h3>
+            <ul>
+              <li>
+                Cães de porte médio/grande: <strong>30 a 60 min</strong> de
+                caminhada por dia
+              </li>
+              <li>
+                Raças enérgicas (Border, Husky): 2+ passeios e jogos ativos
+                diários
+              </li>
+              <li>
+                Gatos: sessões de 15 min com brinquedos interativos 2x ao dia
+              </li>
+              <li>
+                Variedade combate o tédio — alterne rotas e estímulos novos
+              </li>
+              <li>
+                Brinquedos de farejar e quebra-cabeças cognitivos esgotam a
+                mente
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="dicas-grid" style="margin-top: 1.5rem">
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=600&q=70"
+              alt="Cães socializando"
+            />
+            <div class="dica-card-body">
+              <h3>👥 Socialização</h3>
+              <p>
+                Exponha filhotes (3–14 semanas) a pessoas, sons, ambientes e
+                outros animais. A janela de socialização precoce define o
+                temperamento adulto.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1601758124510-52d02ddb7cbd?w=600&q=70"
+              alt="Pet dormindo confortável"
+            />
+            <div class="dica-card-body">
+              <h3>🛌 Ambiente Seguro</h3>
+              <p>
+                Cama macia em local tranquilo, longe de correntes de ar. Gatos
+                precisam de espaços verticais (prateleiras, arranhadores).
+                Esconda fios e produtos de limpeza.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=600&q=70"
+              alt="Estresse animal"
+            />
+            <div class="dica-card-body">
+              <h3>🚨 Sinais de Estresse</h3>
+              <p>
+                Latidos excessivos, destruição de objetos, lamber patas em
+                excesso e agressividade indicam ansiedade. Consulte um médico
+                veterinário comportamentalista.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CUIDADOS ESPECIAIS -->
+        <h2 class="sec-title" id="cuidados">🐾 Cuidados Especiais</h2>
+        <p class="sec-sub">
+          Filhotes, idosos e pets com necessidades especiais merecem atenção
+          redobrada.
+        </p>
+
+        <div class="dicas-grid">
+          <div class="dica-card">
+            <img
+              src="https://plus.unsplash.com/premium_photo-1694819488591-a43907d1c5cc?q=80&w=1428&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Filhote de cachorro"
+            />
+            <div class="dica-card-body">
+              <h3>🐶 Filhotes</h3>
+              <p>
+                Inicie vacinas a partir de 45 dias. Amamente até o desmame
+                natural (8 semanas). Apresente coleira, guia e caixa de
+                transporte aos poucos. Paciência é fundamental.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1581888227599-779811939961?w=600&q=70"
+              alt="Pet idoso"
+            />
+            <div class="dica-card-body">
+              <h3>🧓 Pets Idosos</h3>
+              <p>
+                A partir dos 7 anos, aumente as consultas para 2x ao ano. Ração
+                sênior, suplementação de Ômega-3 e camas ortopédicas reduzem
+                desconfortos articulares.
+              </p>
+            </div>
+          </div>
+          <div class="dica-card">
+            <img
+              src="https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=600&q=70"
+              alt="Higiene do pet"
+            />
+            <div class="dica-card-body">
+              <h3>🛁 Higiene e Grooming</h3>
+              <p>
+                Escove os dentes 2–3x/semana (pasta veterinária). Corte as unhas
+                mensalmente. Banho a cada 15–30 dias conforme pelagem. Limpe
+                orelhas semanalmente.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PET DESAPARECIDO -->
+        <h2 class="sec-title" id="pet-desaparecido">🔎 Pet Desaparecido</h2>
+        <p class="sec-sub">
+          Passo a passo para agir rápido e aumentar as chances de reencontrar
+          seu companheiro.
+        </p>
+
+        <div class="busca-pet">
+          <h3>Como organizar a busca nas primeiras 24 horas</h3>
+          <p>
+            As primeiras horas fazem muita diferença. Mantenha a calma,
+            concentre as informações e mobilize sua rede com dados claros.
+          </p>
+          <div class="busca-pet-grid">
+            <img
+              src="assets/img/gato-perdido.jpg"
+              alt="Cartaz de pet desaparecido em poste"
+            />
+            <div class="busca-pet-list">
+              <ul>
+                <li>
+                  Procure primeiro num raio de até 1 km, chamando o pet pelo
+                  nome em tom calmo e conhecido.
+                </li>
+                <li>
+                  Avise vizinhos, porteiros, comércios, ONGs e clínicas
+                  veterinárias da região com foto recente.
+                </li>
+                <li>
+                  Publique cartaz digital com foto nítida, local, horário,
+                  telefone e características marcantes (cor da coleira,
+                  cicatriz, porte).
+                </li>
+                <li>
+                  Deixe água, roupa com seu cheiro e petisco próximo ao último
+                  local visto para ajudar na orientação do animal.
+                </li>
+                <li>
+                  Verifique câmeras de segurança, grupos de bairro e páginas de
+                  animais encontrados durante o dia todo.
+                </li>
+                <li>
+                  Se tiver microchip, atualize imediatamente seus contatos no
+                  cadastro e informe o desaparecimento.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- EMERGÊNCIA -->
+        <section class="emergencia-section" id="emergencia">
+          <h2>🚨 Emergências</h2>
+          <p>
+            Reconheça os sinais de alerta e saiba quando agir imediatamente.
+          </p>
+          <div class="sinais-grid">
+            <div class="sinal-item">🥤 Dificuldade de respirar</div>
+            <div class="sinal-item">🤮 Convulsões</div>
+            <div class="sinal-item">🤯 Ingestão de tóxicos</div>
+            <div class="sinal-item">🦨 Vômito / Diarreia intensa</div>
+            <div class="sinal-item">🩸 Sangramentos</div>
+            <div class="sinal-item">🧠 Desorientação</div>
+          </div>
+          <a
+            href="https://www.google.com/search?q=emergencia+veterinaria+perto+de+mim"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-emergencia"
+            >📍 Ver Veterinários 24h perto de mim</a
+          >
+        </section>
+      </div>
+      <!-- /content-wrap -->
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <h3>🐶 PetConecta</h3>
+        <p>Conectando pets incríveis a lares amorosos 💕</p>
+        <div class="social-links">
+          <a
+            href="https://www.instagram.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <img src="assets/img/icon-instagram.svg" alt="Instagram" />
+          </a>
+          <a
+            href="https://www.facebook.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+          >
+            <img src="assets/img/icon-facebook.svg" alt="Facebook" />
+          </a>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html">Início</a>
+          <a href="adotar.html">Adoção</a>
+          <a href="animais_encontra.html">Encontrados</a>
+          <a href="adestramento.html">Adestramento</a>
+          <a href="dicas.html">Dicas</a>
+          <a href="contato.html">Contato</a>
+        </nav>
+        <p class="copyright">
+          © 2026 PetConecta. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      const btnMobile = document.querySelector("#btn-mobile");
+      const navMenu = document.querySelector("#nav-menu");
+      const menuLinks = document.querySelectorAll("#menu a");
+
+      function toggleMenu() {
+        navMenu.classList.toggle("active");
+        const isOpen = navMenu.classList.contains("active");
+        btnMobile.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      if (btnMobile) {
+        btnMobile.addEventListener("click", toggleMenu);
+      }
+
+      menuLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navMenu.classList.remove("active");
+          btnMobile?.setAttribute("aria-expanded", "false");
+        });
+      });
+    </script>
+  </body>
+</html>

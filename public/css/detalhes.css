@@ -1,0 +1,364 @@
+/* Arquivo de estilos: detalhes.css
+   Define a apresentação visual da página correspondente e mantém padronização de layout. */
+
+body,
+ul {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #f7f9fc;
+  font-family: "Poppins", sans-serif;
+}
+
+header,
+main,
+section {
+  margin: 0;
+  padding: 0;
+}
+
+#cabeca {
+  box-sizing: border-box;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #ff751a;
+  color: white;
+}
+
+#menu {
+  display: flex;
+  gap: 15px;
+}
+
+#menu li {
+  list-style: none;
+}
+
+#menu li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#menu li a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+#btn-mobile {
+  display: none;
+}
+
+/* --- DETALHES DO PET (CONECTADO AO FIRESTORE) --- */
+.detalhes-container {
+  max-width: 500px;
+  margin: 40px auto; /* Reduzido de 150px para não ficar muito longe do topo */
+  background-color: #fff;
+  padding: 0px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden; /* Garante que a imagem não ultrapasse as bordas arredondadas */
+}
+
+/* 🚀 ADICIONADO: Ajuste proporcional de imagem do pet (impede distorção) */
+.pet-image-wrapper img {
+  width: 100%;
+  height: auto; /* 🚀 Faz a altura se ajustar dinamicamente para mostrar a imagem 100% inteira */
+  max-height: 450px; /* 🚀 Evita que fotos verticais gigantescas empurrem o restante da página muito para baixo */
+  display: block;
+  border-bottom: 3px solid #ff751a;
+}
+
+/* 🚀 ADICIONADO: Corpo de conteúdo do pet */
+.pet-detail-body {
+  padding: 25px;
+}
+
+/* 🚀 ADICIONADO: Badge visual de Status do Pet */
+.pet-status {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 12px;
+  font-family: "Fredoka One", sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pet-detail-body h2 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  color: #333;
+  font-family: "Fredoka One", sans-serif;
+}
+
+.pet-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+/* 🚀 ADICIONADO: Grid moderno de 2 colunas para dados do pet */
+.pet-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  background-color: #fcfcfc;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.pet-info-grid strong {
+  color: #333;
+}
+
+.pet-contact,
+.pet-whatsapp {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.pet-actions {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.voltar-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+}
+
+.voltar-btn:hover {
+  background-color: #e55a5a;
+}
+
+/* --- SEÇÃO DE AVISTAMENTO --- */
+#secao-avistamentos {
+  border: 1px solid #ffe0cc;
+}
+
+/* 🚀 ADICIONADO: Botão do formulário de avistamento */
+#btn-avistamento {
+  background-color: #ff751a;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#btn-avistamento:hover {
+  background-color: #e65c00;
+}
+
+/* --- FOOTER --- */
+footer {
+  background-color: #ff751a;
+  color: white;
+  padding: 2rem 1rem;
+  font-family: "Segoe UI", sans-serif;
+  text-align: center;
+  margin-top: 60px;
+}
+
+footer h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+footer p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+footer nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+footer nav a:hover {
+  color: #ffe0cc;
+}
+
+footer div a img {
+  transition: transform 0.3s ease;
+}
+
+footer div a img:hover {
+  transform: scale(1.1);
+}
+
+/* --- RESPONSIVIDADE (MOBILE NAVBAR & FOOTER) --- */
+@media (min-width: 375px) and (max-width: 932px) {
+  #btn-mobile {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    gap: 0.7rem;
+  }
+  #hamburguer {
+    display: block;
+    border-top: 2px solid white;
+    width: 20px;
+  }
+  #nav-menu.active #hamburguer {
+    border-top-color: transparent;
+  }
+  #nav-menu.active #hamburguer::after {
+    transform: rotate(135deg);
+    top: -7px;
+  }
+  #nav-menu.active #hamburguer::before {
+    transform: rotate(-135deg);
+  }
+  #hamburguer::after,
+  #hamburguer::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px;
+    transition: 0.3s;
+    position: relative;
+  }
+  #menu {
+    display: block;
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background-color: #ff6600;
+    z-index: 999;
+    overflow: auto;
+    left: 0;
+    height: 0;
+    transition: 0.6s;
+  }
+  #menu a {
+    padding: 1rem;
+    margin: 0 1rem;
+    border-bottom: 2px solid rgb(228, 214, 214);
+  }
+  #nav-menu.active #menu {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+  }
+}
+
+@media (max-width: 896px) {
+  #btn-mobile {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    gap: 0.7rem;
+  }
+  #hamburguer {
+    display: block;
+    border-top: 2px solid white;
+    width: 20px;
+  }
+  #nav-menu.active #hamburguer {
+    border-top-color: transparent;
+  }
+  #nav-menu.active #hamburguer::after {
+    transform: rotate(135deg);
+    top: -7px;
+  }
+  #nav-menu.active #hamburguer::before {
+    transform: rotate(-135deg);
+  }
+  #hamburguer::after,
+  #hamburguer::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px;
+    transition: 0.3s;
+    position: relative;
+  }
+  #menu {
+    display: block;
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background-color: #ff6600;
+    z-index: 999;
+    overflow: auto;
+    left: 0;
+    height: 0;
+    transition: 0.6s;
+  }
+  #menu a {
+    padding: 1rem;
+    margin: 0 1rem;
+    border-bottom: 2px solid rgb(228, 214, 214);
+  }
+  #nav-menu.active #menu {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+  }
+}
+
+@media (max-width: 600px) {
+  footer nav {
+    flex-direction: row;
+    gap: 0.3rem;
+  }
+  footer nav a {
+    font-size: 0.7rem;
+    font-weight: bolder;
+  }
+  .pet-info-grid {
+    grid-template-columns: 1fr; /* Em telas muito pequenas, o grid vira 1 coluna */
+  }
+}

@@ -1,0 +1,25 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /pets/{petId} {
+      allow read: if true;
+      allow create: if request.auth != null
+        && request.auth.token.email != null
+        && request.resource.data.usuarioCriador == request.auth.token.email;
+      allow update, delete: if request.auth != null
+        && resource.data.usuarioCriador == request.auth.token.email;
+
+      match /avistamentos/{avistamentoId} {
+        allow read: if true;
+        allow create: if request.resource.data.petId is string
+          && request.resource.data.petNome is string
+          && request.resource.data.localAvistado is string
+          && request.resource.data.descricao is string
+          && request.resource.data.contatoReportador is string
+          && request.resource.data.petOwnerEmail is string;
+        allow update, delete: if request.auth != null
+          && resource.data.petOwnerEmail == request.auth.token.email;
+      }
+    }
+  }
+}

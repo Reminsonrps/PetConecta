@@ -1,0 +1,354 @@
+/* Arquivo de estilos: publicar.css
+   Define a apresentação visual da página correspondente e mantém padronização de layout. */
+
+* {
+  box-sizing: border-box;
+}
+body,
+ul {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+header,
+main,
+section {
+  margin: 0;
+  padding: 0;
+}
+
+#cabeca {
+  box-sizing: border-box;
+  height: 70px;
+  display: flex;
+  justify-content: space-between; /*justifica e coloca espaçamento entre os itens*/
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #ff751a;
+  color: white;
+  position: relative;
+  z-index: 3000;
+}
+
+#nav-menu {
+  position: relative;
+  z-index: 3001;
+}
+
+/* Mantem os controles do mapa abaixo do menu mobile */
+#map .leaflet-control,
+#map .leaflet-pane,
+#map .leaflet-top,
+#map .leaflet-bottom {
+  z-index: 500;
+}
+
+#menu {
+  display: flex;
+  gap: 15px;
+}
+
+#menu li {
+  list-style: none;
+}
+
+#menu li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+#menu li a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+#btn-mobile {
+  display: none;
+}
+
+@media (min-width: 375px) and (max-width: 932px) {
+  #btn-mobile {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: none; /*sem cor de fundo*/
+    border: none;
+    cursor: pointer;
+    color: white;
+    gap: 0.7rem;
+  }
+  #hamburguer {
+    display: block;
+    border-top: 2px solid white;
+    width: 20px;
+  }
+  /*Quando menu estiver ativo,vai alterar o menu  */
+  #nav-menu.active #hamburguer {
+    border-top-color: transparent; /*Deixa primeiro bloco do menu oculto*/
+  }
+  #nav-menu.active #hamburguer::after {
+    transform: rotate(135deg);
+    top: -7px;
+  }
+  #nav-menu.active #hamburguer::before {
+    transform: rotate(-135deg);
+  }
+
+  /*criando um novo traço abaixo do primeiro*/
+  #hamburguer::after,
+  #hamburguer::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px; /*Dando um espaçamento entre os traços*/
+    transition: 0.3s;
+    position: relative; /*relativo em relação a linha acima*/
+  }
+
+  #menu {
+    display: block;
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background-color: #ff6600;
+    z-index: 3100;
+    overflow: auto;
+    left: 0;
+    height: 0;
+    transition: 0.6s;
+  }
+  #menu a {
+    padding: 1rem;
+    margin: 0 1rem;
+    border-bottom: 2px solid rgb(228, 214, 214);
+  }
+  #nav-menu.active #menu {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+  }
+}
+
+@media (max-width: 896px) {
+  #btn-mobile {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: none; /*sem cor de fundo*/
+    border: none;
+    cursor: pointer;
+    color: white;
+    gap: 0.7rem;
+  }
+  #hamburguer {
+    display: block;
+    border-top: 2px solid white;
+    width: 20px;
+  }
+  /*Quando menu estiver ativo,vai alterar o menu  */
+  #nav-menu.active #hamburguer {
+    border-top-color: transparent; /*Deixa primeiro bloco do menu oculto*/
+  }
+  #nav-menu.active #hamburguer::after {
+    transform: rotate(135deg);
+    top: -7px;
+  }
+  #nav-menu.active #hamburguer::before {
+    transform: rotate(-135deg);
+  }
+
+  /*criando um novo traço abaixo do primeiro*/
+  #hamburguer::after,
+  #hamburguer::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px; /*Dando um espaçamento entre os traços*/
+    transition: 0.3s;
+    position: relative; /*relativo em relação a linha acima*/
+  }
+
+  #menu {
+    display: block;
+    position: absolute;
+    top: 70px;
+    width: 100%;
+    background-color: #ff6600;
+    z-index: 3100;
+    overflow: auto;
+    left: 0;
+    height: 0;
+    transition: 0.6s;
+  }
+  #menu a {
+    padding: 1rem;
+    margin: 0 1rem;
+    border-bottom: 2px solid rgb(228, 214, 214);
+  }
+  #nav-menu.active #menu {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 70px);
+  }
+}
+
+/* Conteúdo */
+.cadastro-container {
+  max-width: 800px;
+  margin: 3rem auto;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+}
+
+h2 {
+  font-family: "Fredoka One", sans-serif;
+  text-align: center;
+  color: #4caf50;
+  margin-bottom: 1rem;
+}
+
+.dicas {
+  background-color: #eaffd0;
+  padding: 1rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.dicas h3 {
+  margin-top: 0;
+  color: #2e7d32;
+}
+
+.form-container {
+  background-color: white;
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #ff6600;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.botoes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e65c00;
+}
+
+@media screen and (max-width: 600px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  textarea,
+  button {
+    grid-column: span 1;
+  }
+}
+.erro {
+  color: red;
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block;
+}
+footer {
+  background-color: #ff751a;
+  color: white;
+  padding: 2rem 1rem;
+  font-family: "Segoe UI", sans-serif;
+  text-align: center;
+}
+
+footer h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+footer p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+footer nav {
+  display: flex;
+
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+footer nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+footer nav a:hover {
+  color: #ffe0cc;
+}
+
+footer div a img {
+  transition: transform 0.3s ease;
+}
+
+footer div a img:hover {
+  transform: scale(1.1);
+}
+
+@media (min-width: 375px), (max-width: 600px) {
+  footer nav {
+    flex-direction: row;
+    gap: 0.3rem;
+  }
+
+  footer nav a {
+    font-size: 0.7rem;
+    font-weight: bolder;
+  }
+}

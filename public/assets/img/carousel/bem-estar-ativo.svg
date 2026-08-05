@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" role="img" aria-labelledby="title desc">
+  <title id="title">Bem estar ativo</title>
+  <desc id="desc">Imagem sobre exercicios e comportamento</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7a3ff2"/>
+      <stop offset="100%" stop-color="#b18cff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="700" fill="url(#bg)"/>
+  <path d="M120 540 q160 -170 320 0 t320 0" fill="none" stroke="#ffffff" stroke-opacity="0.28" stroke-width="26"/>
+  <circle cx="320" cy="330" r="90" fill="#ffffff" opacity="0.92"/>
+  <circle cx="300" cy="315" r="12" fill="#7a3ff2"/>
+  <circle cx="350" cy="315" r="12" fill="#7a3ff2"/>
+  <path d="M280 365 q40 35 80 0" fill="none" stroke="#7a3ff2" stroke-width="10" stroke-linecap="round"/>
+  <rect x="210" y="460" width="220" height="28" rx="14" fill="#e7dbff"/>
+  <text x="720" y="280" font-family="Arial, sans-serif" font-size="72" font-weight="700" fill="#ffffff">Bem-estar</text>
+  <text x="720" y="360" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#ffffff">Rotina ativa</text>
+  <text x="720" y="430" font-family="Arial, sans-serif" font-size="34" fill="#f3ecff">Exercicio, socializacao e estimulacao</text>
+</svg>

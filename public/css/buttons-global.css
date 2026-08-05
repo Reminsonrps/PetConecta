@@ -1,0 +1,572 @@
+/* Arquivo de estilos: buttons-global.css
+   Define a apresentação visual da página correspondente e mantém padronização de layout. */
+
+/* Botões globais padronizados para todo o projeto */
+:root {
+  --btn-bg: linear-gradient(135deg, #ff7a1a 0%, #f15e22 100%);
+  --btn-bg-hover: linear-gradient(135deg, #f06c0f 0%, #dd4f1b 100%);
+  --btn-text: #ffffff;
+  --btn-radius: 10px;
+  --btn-shadow: 0 6px 14px rgba(241, 94, 34, 0.22);
+  --btn-shadow-hover: 0 10px 18px rgba(241, 94, 34, 0.28);
+}
+
+:where(
+  button,
+  .btn,
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  a.btn,
+  .btn-emergencia,
+  .btn-geo,
+  #btnFiltrar,
+  #btnLimpar,
+  #btnFiltrarDesaparecido,
+  #btnLimparDesaparecido,
+  #action-btn
+) {
+  appearance: none;
+  border: 0;
+  border-radius: var(--btn-radius);
+  padding: 10px 18px;
+  min-height: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--btn-text);
+  background: var(--btn-bg);
+  box-shadow: var(--btn-shadow);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+:where(
+  button,
+  .btn,
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  a.btn,
+  .btn-emergencia,
+  .btn-geo,
+  #btnFiltrar,
+  #btnLimpar,
+  #btnFiltrarDesaparecido,
+  #btnLimparDesaparecido,
+  #action-btn
+):hover {
+  background: var(--btn-bg-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--btn-shadow-hover);
+}
+
+:where(
+  button,
+  .btn,
+  input[type="submit"],
+  input[type="button"],
+  input[type="reset"],
+  a.btn,
+  .btn-emergencia,
+  .btn-geo,
+  #btnFiltrar,
+  #btnLimpar,
+  #btnFiltrarDesaparecido,
+  #btnLimparDesaparecido,
+  #action-btn
+):focus-visible {
+  outline: 3px solid rgba(255, 160, 87, 0.45);
+  outline-offset: 2px;
+}
+
+:where(button:disabled, .btn:disabled, input[type="submit"]:disabled) {
+  cursor: not-allowed;
+  opacity: 0.62;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Cabeçalho e navegação compartilhados para todas as páginas */
+#cabeca {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  background-color: rgba(255, 117, 26, 0.95);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(255, 117, 26, 0.15);
+  transition: all 0.3s ease;
+}
+
+#logo {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+/* Botão de menu mobile mantém estilo leve para não conflitar com o header */
+#btn-mobile {
+  display: none;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  box-shadow: none;
+  border: none;
+  border-radius: 8px;
+  min-height: 40px;
+  color: #fff;
+  cursor: pointer;
+  width: auto;
+}
+
+#btn-mobile:hover {
+  transform: none;
+  filter: brightness(1.06);
+  box-shadow: none;
+}
+
+#nav-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#hamburguer {
+  display: block;
+  width: 20px;
+  border-top: 2px solid #fff;
+}
+
+#hamburguer::before,
+#hamburguer::after {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin-top: 5px;
+  background: currentColor;
+  position: relative;
+  transition: 0.3s;
+}
+
+#nav-menu.active #hamburguer {
+  border-top-color: transparent;
+}
+
+#nav-menu.active #hamburguer::before {
+  transform: rotate(-135deg);
+}
+
+#nav-menu.active #hamburguer::after {
+  transform: rotate(135deg);
+  top: -7px;
+}
+
+#menu {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  z-index: 1100;
+}
+
+#menu li {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+#menu a {
+  display: block;
+  padding: 10px 16px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+}
+
+#menu a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 932px) {
+  #btn-mobile {
+    display: flex;
+  }
+
+  #nav-menu {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  #menu {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: stretch;
+    background-color: #ff6600;
+    transition: 0.6s ease;
+    z-index: 999;
+    gap: 0;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #nav-menu.active #menu {
+    height: calc(100vh - 80px);
+  }
+
+  #menu li {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  #menu a {
+    width: 100%;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 932px) {
+  :where(
+    button,
+    .btn,
+    input[type="submit"],
+    input[type="button"],
+    input[type="reset"],
+    a.btn,
+    .btn-emergencia,
+    .btn-geo,
+    #btnFiltrar,
+    #btnLimpar,
+    #btnFiltrarDesaparecido,
+    #btnLimparDesaparecido,
+    #action-btn
+  ) {
+    width: 100%;
+    padding: 12px 16px;
+  }
+}
+
+/* Padrao unico do menu mobile para todas as paginas (referencia: index.html) */
+@media (max-width: 932px) {
+  #cabeca {
+    height: 80px !important;
+    padding: 0 20px !important;
+  }
+
+  #nav-menu {
+    position: relative !important;
+    width: auto !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+  }
+
+  #btn-mobile {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.7rem !important;
+    width: auto !important;
+    min-height: 40px !important;
+    padding: 0.5rem 1rem !important;
+  }
+
+  #menu {
+    position: fixed !important;
+    top: 80px !important;
+    left: 0 !important;
+    right: auto !important;
+    width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    display: none !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: hidden !important;
+    background-color: #ff6600 !important;
+    z-index: 999 !important;
+    transition: opacity 0.2s ease !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    gap: 0 !important;
+  }
+
+  #nav-menu.active #menu {
+    display: flex !important;
+    min-height: calc(100dvh - 80px) !important;
+    overflow-y: auto !important;
+  }
+
+  #menu li {
+    width: 100% !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25) !important;
+  }
+
+  #menu li:last-child {
+    border-bottom: 0 !important;
+  }
+
+  #menu a {
+    width: 100% !important;
+    padding: 1rem !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border-bottom: 0 !important;
+  }
+}
+
+/* Rodapé global padronizado para todo o projeto */
+footer,
+.site-footer {
+  background: linear-gradient(135deg, #ff7a1a 0%, #ff914d 100%);
+  color: #fffaf5;
+  padding: 2.2rem 1.25rem;
+  margin-top: 2rem;
+  font-family: "Segoe UI", sans-serif;
+  border-top: 3px solid rgba(255, 255, 255, 0.16);
+}
+
+footer .footer-content,
+.site-footer .footer-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+footer h3,
+.site-footer h3 {
+  margin: 0 0 0.7rem;
+  font-size: 1.25rem;
+}
+
+footer p,
+.site-footer p {
+  margin: 0 0 1rem;
+  line-height: 1.5;
+}
+
+footer .social-links,
+.site-footer .social-links,
+footer .footer-icons,
+.site-footer .footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin: 0 0 1rem;
+}
+
+footer .social-links a,
+.site-footer .social-links a,
+footer .footer-icons a,
+.site-footer .footer-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+footer .social-links a:hover,
+.site-footer .social-links a:hover,
+footer .footer-icons a:hover,
+.site-footer .footer-icons a:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+footer .social-links img,
+.site-footer .social-links img,
+footer .footer-icons img,
+.site-footer .footer-icons img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+footer .footer-nav,
+.site-footer .footer-nav,
+footer .footer-links,
+.site-footer .footer-links {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+footer .footer-nav a,
+.site-footer .footer-nav a,
+footer .footer-links a,
+.site-footer .footer-links a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+footer .footer-nav a:hover,
+.site-footer .footer-nav a:hover,
+footer .footer-links a:hover,
+.site-footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
+footer .copyright,
+.site-footer .copyright,
+footer .footer-copy,
+.site-footer .footer-copy {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  margin-top: 0.4rem;
+}
+
+@media (max-width: 768px) {
+  #btn-mobile {
+    display: flex;
+  }
+
+  #menu {
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    right: 0;
+    left: auto;
+    width: min(320px, calc(100vw - 1rem));
+    height: 0;
+    overflow: hidden;
+    flex-direction: column;
+    background-color: #ff6600;
+    transition: 0.6s;
+    z-index: 999;
+    padding: 0;
+    gap: 0;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+  }
+
+  #menu li {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  }
+
+  #menu a {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  #nav-menu.active #menu {
+    height: calc(100vh - 80px);
+  }
+
+  footer .footer-nav,
+  .site-footer .footer-nav,
+  footer .footer-links,
+  .site-footer .footer-links {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* Animacao global leve para todas as paginas (sem afetar layout) */
+@keyframes global-page-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes global-main-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+body {
+  animation: global-page-fade 0.5s ease-out both;
+}
+
+main {
+  animation: global-main-rise 0.65s ease-out both;
+}
+
+/* Transicao suave do menu mobile em todo o site */
+@media (max-width: 932px) {
+  #menu {
+    display: flex !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-8px);
+    max-height: 0 !important;
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease,
+      max-height 0.45s ease,
+      visibility 0.35s step-end !important;
+  }
+
+  #nav-menu.active #menu {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    max-height: calc(100dvh - 80px) !important;
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease,
+      max-height 0.45s ease,
+      visibility 0s step-start !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  main {
+    animation: none !important;
+  }
+
+  #menu,
+  #nav-menu.active #menu {
+    transition: none !important;
+    transform: none !important;
+  }
+}

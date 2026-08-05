@@ -1,0 +1,192 @@
+<!doctype html><html><head><meta charset='utf-8'><style>body{font-family:Segoe UI,Arial,sans-serif;line-height:1.45;padding:24px;color:#111} h1,h2,h3{color:#1d3557} pre{background:#f6f8fa;padding:12px;border-radius:6px;overflow:auto} code{font-family:Consolas,monospace} table{border-collapse:collapse;width:100%} th,td{border:1px solid #ddd;padding:8px;text-align:left} blockquote{border-left:4px solid #ddd;padding-left:12px;color:#444}</style></head><body><h1 id="modelagem-do-site-petconecta">Modelagem do Site - PetConecta</h1>
+<h2 id="contexto-e-objetivo">1. Contexto e Objetivo</h2>
+<p>Este documento apresenta a modelagem do sistema PetConecta a partir da analise do codigo ja implementado (engenharia reversa), com foco em apoiar entrega academica.</p>
+<p>Objetivo do sistema:</p>
+<ul>
+<li>apoiar tutores na divulgacao de pets desaparecidos;</li>
+<li>permitir que a comunidade registre avistamentos;</li>
+<li>oferecer conteudo informativo de apoio sobre cuidados e saude animal.</li>
+</ul>
+<h2 id="escopo-funcional">2. Escopo Funcional</h2>
+<h3 id="atores">2.1 Atores</h3>
+<ul>
+<li>Visitante: visualiza pets, mapa e conteudo informativo.</li>
+<li>Usuario autenticado (tutor): cadastra pet, edita, exclui e marca como encontrado.</li>
+<li>Colaborador da comunidade: registra avistamento em pet publicado.</li>
+</ul>
+<h3 id="requisitos-funcionais-principais">2.2 Requisitos funcionais principais</h3>
+<ul>
+<li>RF01: autenticar usuario para cadastro e gestao de pets.</li>
+<li>RF02: cadastrar pet com dados, localizacao e imagem.</li>
+<li>RF03: listar pets em cards e no mapa.</li>
+<li>RF04: exibir detalhes do pet por identificador.</li>
+<li>RF05: registrar avistamento vinculado ao pet.</li>
+<li>RF06: permitir ao tutor editar/excluir seu proprio pet.</li>
+<li>RF07: permitir ao tutor atualizar status para encontrado.</li>
+<li>RF08: exibir area Meus Pets e avistamentos relacionados.</li>
+</ul>
+<h3 id="requisitos-nao-funcionais-principais">2.3 Requisitos nao funcionais principais</h3>
+<ul>
+<li>RNF01: responsividade para dispositivos moveis.</li>
+<li>RNF02: persistencia em nuvem com Firebase/Firestore.</li>
+<li>RNF03: controle de acesso por regras de seguranca no Firestore.</li>
+<li>RNF04: disponibilidade web via Firebase Hosting.</li>
+</ul>
+<h2 id="modelagem-de-casos-de-uso">3. Modelagem de Casos de Uso</h2>
+<pre class="mermaid">flowchart LR
+    V[Visitante] --> UC1[Visualizar pets e mapa]
+    V --> UC2[Ver detalhes do pet]
+    V --> UC3[Registrar avistamento]
+    V --> UC4[Consumir conteudo informativo]
+
+    U[Usuario autenticado] --> UC5[Cadastrar pet]
+    U --> UC6[Editar pet proprio]
+    U --> UC7[Excluir pet proprio]
+    U --> UC8[Marcar pet como encontrado]
+    U --> UC9[Consultar Meus Pets]
+
+    UC2 --> UC3
+</pre>
+<h2 id="arquitetura-logica">4. Arquitetura Logica</h2>
+<pre class="mermaid">flowchart TB
+    subgraph Cliente[Frontend Web]
+        H1[index.html]
+        H2[publicar.html]
+        H3[detalhes.html]
+        H4[cadastrados.html]
+        H5[informativos e dicas]
+        JS[Scripts JS modulares]
+        MAP[Leaflet + OpenStreetMap]
+    end
+
+    subgraph Firebase[Plataforma Firebase]
+        AUTH[Firebase Authentication]
+        FS[Cloud Firestore]
+        ST[Firebase Storage]
+        HOST[Firebase Hosting]
+    end
+
+    Cliente --> AUTH
+    Cliente --> FS
+    Cliente --> ST
+    Cliente --> HOST
+    JS --> MAP
+</pre>
+<h2 id="mapa-de-navegacao-sitemap">5. Mapa de Navegacao (Sitemap)</h2>
+<pre class="mermaid">flowchart TD
+    INI[index.html] --> PUB[publicar.html]
+    INI --> DET[detalhes.html]
+    INI --> CAD[cadastrados.html]
+    INI --> ENC[animais_encontra.html]
+    INI --> DIC[dicas.html]
+    INI --> INF[informativos.html]
+    INI --> CON[contato.html]
+
+    DET --> AV[Envio de avistamento]
+    CAD --> EDI[editar.html]
+</pre>
+<h2 id="modelo-conceitual-de-dados">6. Modelo Conceitual de Dados</h2>
+<pre class="mermaid">erDiagram
+    PET ||--o{ AVISTAMENTO : possui
+    USUARIO ||--o{ PET : cadastra
+
+    USUARIO {
+        string uid
+        string email
+        string nomeExibicao
+    }
+
+    PET {
+        string id
+        string nome
+        string tipo
+        string raca
+        string sexo
+        string porte
+        string idade
+        string data
+        string localizacao
+        float lat
+        float lng
+        string contato
+        string whatsapp
+        string descricao
+        string imagem
+        string status
+        string usuarioCriador
+    }
+
+    AVISTAMENTO {
+        string id
+        string petId
+        string petNome
+        string petOwnerEmail
+        string localAvistado
+        string descricao
+        string contatoReportador
+        string reportadoPor
+        string dataRegistro
+    }
+</pre>
+<h2 id="modelo-logico-firestore">7. Modelo Logico (Firestore)</h2>
+<p>Colecao principal:</p>
+<ul>
+<li>pets/</li>
+</ul>
+<p>Subcolecao:</p>
+<ul>
+<li>pets//avistamentos/</li>
+</ul>
+<p>Observacoes de regra e seguranca (extraidas de firestore.rules):</p>
+<ul>
+<li>leitura de pets e avistamentos: publica;</li>
+<li>criacao de pet: exige usuario autenticado e campo usuarioCriador igual ao email autenticado;</li>
+<li>update/delete de pet: permitido apenas ao criador;</li>
+<li>criacao de avistamento: publica com validacao de campos obrigatorios;</li>
+<li>update/delete de avistamento: permitido ao tutor dono do pet.</li>
+</ul>
+<h2 id="fluxos-principais-sequencia">8. Fluxos Principais (Sequencia)</h2>
+<h3 id="cadastro-de-pet">8.1 Cadastro de pet</h3>
+<pre class="mermaid">sequenceDiagram
+    participant U as Usuario autenticado
+    participant P as publicar.html
+    participant S as Firebase Storage
+    participant F as Firestore
+
+    U->>P: Preenche formulario e seleciona local no mapa
+    P->>S: Upload da imagem
+    S-->>P: URL da imagem
+    P->>F: addDoc em pets
+    F-->>P: Confirmacao de cadastro
+    P-->>U: Mensagem de sucesso e redirecionamento
+</pre>
+<h3 id="registro-de-avistamento">8.2 Registro de avistamento</h3>
+<pre class="mermaid">sequenceDiagram
+    participant V as Visitante
+    participant D as detalhes.html
+    participant F as Firestore
+
+    V->>D: Abre detalhes do pet
+    V->>D: Envia formulario de avistamento
+    D->>F: addDoc em pets/{petId}/avistamentos
+    F-->>D: Confirmacao
+    D-->>V: Mensagem de sucesso
+</pre>
+<h2 id="regras-de-negocio">9. Regras de Negocio</h2>
+<ul>
+<li>RN01: somente usuario autenticado pode cadastrar pet.</li>
+<li>RN02: somente criador do pet pode editar, excluir e marcar encontrado.</li>
+<li>RN03: avistamento e sempre vinculado a um pet existente.</li>
+<li>RN04: status padrao do pet no cadastro e desaparecido.</li>
+<li>RN05: localizacao do pet utiliza coordenadas geograficas para mapa e filtros.</li>
+</ul>
+<h2 id="limites-e-evolucao-recomendada">10. Limites e Evolucao Recomendada</h2>
+<ul>
+<li>implementar filtro real de proximidade por distancia geografica (ex.: raio em km com Haversine);</li>
+<li>consolidar padrao de nomes de campos (tipo/raca/localiza/localizacao);</li>
+<li>incluir trilha de auditoria com data de criacao e atualizacao em todos os documentos;</li>
+<li>criar indicadores analiticos para taxa de reencontro por periodo.</li>
+</ul>
+<h2 id="conclusao">11. Conclusao</h2>
+<p>A modelagem acima representa o sistema PetConecta de forma aderente ao estado atual da implementacao e pode ser usada como base de entrega academica em disciplinas de Analise e Projeto de Sistemas, Engenharia de Software ou Banco de Dados.</p>
+</body></html>

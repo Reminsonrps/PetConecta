@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Informativos PetConecta</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/buttons-global.css" />
+    <style>
+      :root {
+        --brand: #ff751a;
+        --brand-2: #ff8c42;
+        --bg: #fff8f2;
+        --text: #2f2f2f;
+        --card: #ffffff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body,
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Nunito", sans-serif;
+        background: linear-gradient(
+          180deg,
+          #fff4ea 0%,
+          var(--bg) 40%,
+          #fff 100%
+        );
+        color: var(--text);
+      }
+
+      #cabeca {
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: var(--brand);
+        color: white;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+
+      #logo {
+        font-family: "Fredoka One", cursive;
+        font-size: 1.6rem;
+        margin: 0;
+      }
+
+      #menu {
+        display: flex;
+        gap: 15px;
+      }
+
+      #menu li {
+        list-style: none;
+      }
+
+      #menu li a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 8px 12px;
+        font-weight: bold;
+      }
+
+      #btn-mobile {
+        display: none;
+      }
+
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--brand) 0%,
+          var(--brand-2) 100%
+        );
+        color: white;
+        text-align: center;
+        padding: 2.8rem 1rem 2.2rem;
+      }
+
+      .hero h1 {
+        font-family: "Fredoka One", cursive;
+        margin: 0 0 0.5rem;
+        font-size: 2.1rem;
+      }
+
+      .hero p {
+        margin: 0 auto;
+        max-width: 700px;
+        font-size: 1rem;
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.5rem;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.2rem;
+      }
+
+      .info-card {
+        background: var(--card);
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(255, 117, 26, 0.12);
+        overflow: hidden;
+        border: 1px solid #ffe2cc;
+        scroll-margin-top: 95px;
+      }
+
+      .info-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .info-body {
+        padding: 1rem 1.1rem 1.2rem;
+      }
+
+      .info-body h2 {
+        font-family: "Fredoka One", cursive;
+        color: var(--brand);
+        font-size: 1.2rem;
+        margin: 0 0 0.55rem;
+      }
+
+      .info-body p {
+        margin: 0 0 0.6rem;
+        line-height: 1.6;
+      }
+
+      .info-body ul {
+        margin: 0;
+        padding-left: 1.2rem;
+      }
+
+      .info-body li {
+        margin-bottom: 0.35rem;
+      }
+
+      .fonte {
+        margin-top: 0.8rem;
+        font-size: 0.85rem;
+      }
+
+      .fonte a {
+        color: #b65216;
+        font-weight: 700;
+      }
+
+      .top-link {
+        display: inline-block;
+        margin-top: 0.8rem;
+        color: #b65216;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
+      .site-footer {
+        background-color: #ff751a;
+        color: white;
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+
+      .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .social-links img {
+        width: 30px;
+        height: 30px;
+      }
+
+      @media (max-width: 896px) {
+        #btn-mobile {
+          display: flex;
+          padding: 0.5rem 1rem;
+          font-size: 1rem;
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: white;
+          gap: 0.7rem;
+        }
+
+        #hamburguer {
+          display: block;
+          border-top: 2px solid white;
+          width: 20px;
+        }
+
+        #hamburguer::after,
+        #hamburguer::before {
+          content: "";
+          width: 20px;
+          display: block;
+          height: 2px;
+          background: currentColor;
+          margin-top: 5px;
+          transition: 0.3s;
+          position: relative;
+        }
+
+        #nav-menu.active #hamburguer {
+          border-top-color: transparent;
+        }
+
+        #nav-menu.active #hamburguer::after {
+          transform: rotate(135deg);
+          top: -7px;
+        }
+
+        #nav-menu.active #hamburguer::before {
+          transform: rotate(-135deg);
+        }
+
+        #menu {
+          display: block;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          width: 100%;
+          background-color: #ff6600;
+          overflow: auto;
+          height: 0;
+          transition: 0.6s;
+          z-index: 2000;
+        }
+
+        #menu a {
+          padding: 1rem;
+          margin: 0 1rem;
+          border-bottom: 2px solid rgb(228, 214, 214);
+        }
+
+        #nav-menu.active #menu {
+          display: flex;
+          flex-direction: column;
+          height: calc(100vh - 70px);
+        }
+
+        .hero h1 {
+          font-size: 1.7rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="topo"></div>
+    <header id="cabeca">
+      <h1 id="logo">🐾 PetConecta</h1>
+      <nav id="nav-menu">
+        <button
+          id="btn-mobile"
+          aria-label="Abrir Menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          Menu <span id="hamburguer"></span>
+        </button>
+        <ul id="menu">
+          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li><a href="dicas.html">Cuidados</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h1>Informativos de Saúde Animal</h1>
+      <p>
+        Conteúdo educativo sobre prevenção, zoonoses, vacinação e cuidados no
+        dia a dia. As imagens usadas nesta página são locais do projeto.
+      </p>
+    </section>
+
+    <main class="container">
+      <div class="grid">
+        <article class="info-card" id="saude">
+          <img src="assets/img/saude-pet.png" alt="Saude geral de pets" />
+          <div class="info-body">
+            <h2>🩺 Saúde Preventiva</h2>
+            <p>
+              A prevenção reduz custos e sofrimento: consultas periódicas,
+              controle de parasitas e observação diária de comportamento e
+              apetite fazem diferença.
+            </p>
+            <ul>
+              <li>Check-up anual para adultos e semestral para idosos.</li>
+              <li>Controle de pulgas, carrapatos e vermes.</li>
+              <li>Atenção a mudanças de humor, sede e peso.</li>
+            </ul>
+            <a class="top-link" href="#topo">Voltar ao topo ↑</a>
+          </div>
+        </article>
+
+        <article class="info-card" id="zoonoses">
+          <img
+            src="assets/img/leishmaniose_campanha.png"
+            alt="Campanha sobre zoonoses"
+          />
+          <div class="info-body">
+            <h2>🦟 Zoonoses</h2>
+            <p>
+              Zoonoses sao doenças transmitidas entre animais e humanos.
+              Informacao e prevenção protegem toda a família.
+            </p>
+            <ul>
+              <li>
+                Leishmaniose: repelentes, ambiente limpo e orientação
+                veterinária.
+              </li>
+              <li>Raiva: vacinação antirrábica em dia.</li>
+              <li>Leptospirose: evitar contato com agua contaminada.</li>
+            </ul>
+            <a class="top-link" href="#topo">Voltar ao topo ↑</a>
+          </div>
+        </article>
+
+        <article class="info-card" id="vacinacao">
+          <img
+            src="assets/img/vacinacao_importancia.png"
+            alt="Importancia da vacinacao"
+          />
+          <div class="info-body">
+            <h2>💉 Vacinação</h2>
+            <p>
+              O protocolo vacinal deve ser definido por veterinário, respeitando
+              espécie, idade e histórico do pet.
+            </p>
+            <ul>
+              <li>Filhotes: esquema inicial com reforços.</li>
+              <li>Adultos: reforço anual conforme orientação.</li>
+              <li>Mantenha carteira de vacinação atualizada.</li>
+            </ul>
+            <a class="top-link" href="#topo">Voltar ao topo ↑</a>
+          </div>
+        </article>
+
+        <article class="info-card" id="alimentacao">
+          <img
+            src="assets/img/alimentacao.png"
+            alt="Alimentacao adequada para pets"
+          />
+          <div class="info-body">
+            <h2>🍽️ Alimentação Segura</h2>
+            <p>
+              Dieta equilibrada depende de porte, idade e condição clínica.
+              Evite improvisações sem acompanhamento profissional.
+            </p>
+            <ul>
+              <li>Escolha ração de qualidade e porção correta.</li>
+              <li>Água fresca sempre disponível.</li>
+              <li>Nunca ofereça chocolate, uva, cebola ou xilitol.</li>
+            </ul>
+            <a class="top-link" href="#topo">Voltar ao topo ↑</a>
+          </div>
+        </article>
+
+        <article class="info-card" id="comportamento">
+          <img
+            src="assets/img/exercicio-pet.png"
+            alt="Exercicios e comportamento animal"
+          />
+          <div class="info-body">
+            <h2>🧘 Comportamento e Bem-estar</h2>
+            <p>
+              Enriquecimento ambiental e rotina de atividade física reduzem
+              estresse e melhoram a qualidade de vida.
+            </p>
+            <ul>
+              <li>Rotina com brincadeiras e estímulos cognitivos.</li>
+              <li>Socialização gradual e segura.</li>
+              <li>Procure profissional em casos de ansiedade intensa.</li>
+            </ul>
+            <a class="top-link" href="#topo">Voltar ao topo ↑</a>
+          </div>
+        </article>
+
+        <article class="info-card" id="viagens">
+          <img
+            src="assets/img/viagem.png"
+            alt="Orientacoes para viagem com pets"
+          />
+          <div class="info-body">
+            <h2>✈️ Viagens com Segurança</h2>
+            <p>
+              Planejamento evita riscos: transporte adequado, hidratação e
+              documentação atualizada.
+            </p>
+            <ul>
+              <li>Caixa de transporte ou cinto homologado.</li>
+              <li>Pausas para água e conforto.</li>
+              <li>Atestado de saúde quando exigido.</li>
+            </ul>
+            <a class="top-link" href="#topo">Voltar ao topo ↑</a>
+          </div>
+        </article>
+
+        <article class="info-card" id="emergencia">
+          <img
+            src="assets/img/visceral.jpg"
+            alt="Alerta de emergencia veterinaria"
+          />
+          <div class="info-body">
+            <h2>🚨 Emergências</h2>
+            <p>
+              Dificuldade para respirar, convulsões, sangramentos e ingestão de
+              tóxicos exigem atendimento imediato.
+            </p>
+            <ul>
+              <li>Mantenha contato de clínica 24h salvo no celular.</li>
+              <li>Não medique por conta própria.</li>
+              <li>Leve histórico e vacinas no atendimento.</li>
+            </ul>
+            <p class="fonte">
+              Referência geral:
+              <a
+                href="https://www.cfmv.gov.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >CFMV</a
+              >
+            </p>
+            <a class="top-link" href="#topo">Voltar ao topo ↑</a>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <h3>🐶 PetConecta</h3>
+      <p>Conectando pets incríveis a lares amorosos 💕</p>
+      <div class="social-links">
+        <a
+          href="https://www.instagram.com/seuusuario"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+        >
+          <img src="assets/img/icon-instagram.svg" alt="Instagram" />
+        </a>
+        <a
+          href="https://www.facebook.com/seuusuario"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Facebook"
+        >
+          <img src="assets/img/icon-facebook.svg" alt="Facebook" />
+        </a>
+      </div>
+      <p>© 2026 PetConecta. Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+      const btnMobile = document.querySelector("#btn-mobile");
+      const navMenu = document.querySelector("#nav-menu");
+      const menuLinks = document.querySelectorAll("#menu a");
+
+      if (btnMobile) {
+        btnMobile.addEventListener("click", () => {
+          navMenu.classList.toggle("active");
+          btnMobile.setAttribute(
+            "aria-expanded",
+            String(navMenu.classList.contains("active")),
+          );
+        });
+      }
+
+      menuLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navMenu.classList.remove("active");
+          btnMobile?.setAttribute("aria-expanded", "false");
+        });
+      });
+    </script>
+  </body>
+</html>
