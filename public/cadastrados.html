@@ -1,0 +1,352 @@
+<!doctype html>
+<!-- Arquivo HTML: cadastrados.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Pets - PetConecta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/cadastrados.css">
+  <link rel="stylesheet" href="css/buttons-global.css" />
+</head>
+<body>
+   <div class="container">
+      <header id="cabeca">
+        <h1 id="logo">🐾 PetConecta</h1>
+
+        <nav id="nav-menu">
+          <button
+            id="btn-mobile"
+            aria-label="Abrir Menu"
+            aria-expanded="false"
+            aria-controls="menu"
+          >
+            Menu
+            <span id="hamburguer"></span>
+          </button>
+          <!-- Este menu de links será atualizado dinamicamente pelo Firebase Auth -->
+          <ul id="menu">
+            <li><a href="index.html">Página Inicial</a></li>
+            <li><a href="animais_encontra.html">Encontrados</a></li>
+            <li>
+              <a
+                href="https://www.anjosdajuda.org/adote"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Adoção</a
+              >
+            </li>
+            <li><a href="dicas.html">Cuidados</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </nav>
+      </header>
+     
+       <section class="user-info">
+          <h2>Meus Pets Cadastrados</h2>
+       </section>
+     
+       <main class="pet-list">
+         <!-- Barra de Filtros -->
+         <div class="filtros">
+           <input type="text" id="filtro-id" placeholder="Buscar por ID">
+           <input type="text" id="filtro-nome" placeholder="Buscar por nome">
+           <input type="text" id="filtro-localizacao" placeholder="Buscar por localização">
+           <select id="filtro-especie" title="Filtrar por espécie" aria-label="Filtrar por espécie">
+             <option value="">Todas as espécies</option>
+             <option value="cachorro">Cachorro</option>
+             <option value="gato">Gato</option>
+           </select>
+         </div>
+
+         <div class="container-cards">
+           <!-- Cards serão carregados dinamicamente -->
+         </div>
+       </main>
+     
+    <footer class="site-footer">
+      <div class="footer-content">
+        <h3>🐶 PetConecta</h3>
+        <p>Conectando pets incríveis a lares amorosos 💕</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/seuusuario" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <img src="assets/img/icon-instagram.svg" alt="Instagram">
+          </a>
+          <a href="https://www.facebook.com/seuusuario" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <img src="assets/img/icon-facebook.svg" alt="Facebook">
+          </a>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html">Página Inicial</a>
+          <a href="adocao.html">Adoção</a>
+          <a href="dicas.html">Cuidados</a>
+          <a href="contato.html">Contato</a>
+        </nav>
+        <p class="copyright">© 2026 PetConecta. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+     
+     <!-- Script de animação do Navbar Mobile -->
+     <script>
+       const btnMobile = document.querySelector('#btn-mobile');
+       const navMenu = document.querySelector('#nav-menu');
+       const menuLinks = document.querySelectorAll('#menu a');
+
+       function toggleMenu(){
+         navMenu.classList.toggle('active');
+         const isOpen = navMenu.classList.contains('active');
+         btnMobile?.setAttribute('aria-expanded', String(isOpen));
+       }
+
+       if (btnMobile) {
+         btnMobile.addEventListener('click', toggleMenu);
+       }
+
+       menuLinks.forEach((link) => {
+         link.addEventListener('click', () => {
+           navMenu.classList.remove('active');
+           btnMobile?.setAttribute('aria-expanded', 'false');
+         });
+       });
+     </script>
+
+     <!-- Script Modular Firebase -->
+     <script type="module">
+       // 🚀 ATUALIZADO: Importamos getApps e getApp para evitar erros de inicialização dupla
+       import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+       import { getFirestore, collection, query, where, getDocs, limit, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+       import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+       // Configuração do Firebase
+       const firebaseConfig = {
+         apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
+         authDomain: "petconecta-db068.firebaseapp.com",
+         projectId: "petconecta-db068",
+         storageBucket: "petconecta-db068.firebasestorage.app",
+         messagingSenderId: "1030110038715",
+         appId: "1:1030110038715:web:151deca61831138159b79e"
+       };
+
+       // 🚀 CORREÇÃO: Inicialização blindada
+       const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+       const db = getFirestore(app);
+       const auth = getAuth(app);
+
+       let meusPets = []; // Armazena a lista de pets em memória para filtragem rápida local
+       let usuarioAtual = null; // Guarda o usuário ativo para recarregar os dados sem manter listeners contínuos
+       const cacheAvistamentos = new Map(); // Evita reabrir a mesma subcoleção várias vezes na mesma sessão
+
+       // 🔐 Verificação de autenticação e carregamento de dados em tempo real
+       onAuthStateChanged(auth, (user) => {
+         const menu = document.getElementById("menu");
+         if (!menu) return;
+
+         const linksBase = `
+           <li><a href="index.html">Página Inicial</a></li>
+           <li><a href="animais_encontra.html">Encontrados</a></li>
+           <li><a href="https://www.anjosdajuda.org/adote" target="_blank" rel="noopener noreferrer">Adoção</a></li>
+           <li><a href="dicas.html">Cuidados</a></li>
+           <li><a href="contato.html">Contato</a></li>
+         `;
+
+         if (user) {
+           usuarioAtual = user;
+           const nomeExibicao = user.displayName || user.email.split('@')[0];
+           
+           // Injeta o menu dinâmico com o "Meus Pets" marcado como ativo
+           menu.innerHTML = `
+             ${linksBase}
+             <li><a href="cadastrados.html" style="font-weight: bold; color: #ff914d;">Meus Pets</a></li>
+             <li><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.55);color:#fff;font-weight:700;border-radius:20px;padding:5px 14px;font-size:0.9rem;">👤 ${nomeExibicao}</span></li>
+             <li><a href="#" id="btn-logout" style="color: #ff3333; font-weight: bold; text-decoration: none;">Sair</a></li>
+           `;
+
+           const btnLogout = document.getElementById("btn-logout");
+           if (btnLogout) {
+             btnLogout.addEventListener("click", (e) => {
+               e.preventDefault();
+               signOut(auth).then(() => {
+                 localStorage.removeItem("usuarioLogado");
+                 window.location.reload();
+               });
+             });
+           }
+
+           // � Carrega os pets uma única vez por sessão, com limite, em vez de manter um listener vivo.
+           carregarMeusPets(user.email);
+
+         } else {
+           // Se não estiver logado, bloqueia a página e redireciona ao login
+           localStorage.setItem("destinoAposLogin", "cadastrados.html");
+           alert("Você precisa estar logado para visualizar seus pets cadastrados.");
+           window.location.href = "criar-conta.html";
+         }
+       });
+
+       async function carregarMeusPets(emailUsuario) {
+         try {
+           const consultaMeusPets = query(
+             collection(db, "pets"),
+             where("usuarioCriador", "==", emailUsuario),
+             limit(20)
+           );
+
+           const snapshot = await getDocs(consultaMeusPets);
+           meusPets = snapshot.docs.map((doc) => ({
+             id: doc.id,
+             ...doc.data(),
+           }));
+           filtrarERenderizarPets();
+         } catch (error) {
+           console.error("Erro ao carregar pets do usuário:", error);
+           const container = document.querySelector(".container-cards");
+           if (container) {
+             container.innerHTML = "<p style='text-align:center; width:100%;'>Não foi possível carregar seus pets no momento.</p>";
+           }
+         }
+       }
+
+       async function carregarAvistamentosPet(petId, boxAvistamentos) {
+         // ⚡ Carrega avistamentos sob demanda apenas quando o usuário pedir, reduzindo leituras desnecessárias.
+         if (cacheAvistamentos.has(petId)) {
+           renderizarAvistamentos(cacheAvistamentos.get(petId), boxAvistamentos);
+           return;
+         }
+
+         try {
+           boxAvistamentos.innerHTML = "<p style='margin: 0; color: #999;'>Carregando avistamentos...</p>";
+           const consultaAvistamentos = query(
+             collection(db, "pets", petId, "avistamentos"),
+             limit(5)
+           );
+           const snapshot = await getDocs(consultaAvistamentos);
+           const avistamentos = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+           cacheAvistamentos.set(petId, avistamentos);
+           renderizarAvistamentos(avistamentos, boxAvistamentos);
+         } catch (error) {
+           console.error(`Erro ao carregar avistamentos do pet ${petId}:`, error);
+           boxAvistamentos.innerHTML = "<p style='margin: 0; color: #ff3333;'>Erro ao carregar.</p>";
+         }
+       }
+
+       function renderizarAvistamentos(avistamentos, boxAvistamentos) {
+         if (!avistamentos.length) {
+           boxAvistamentos.innerHTML = "<p class='avistamentos-vazio'>Nenhum avistamento reportado.</p>";
+           return;
+         }
+
+         boxAvistamentos.innerHTML = "";
+         avistamentos.forEach((avistamento) => {
+           const dataRef = avistamento.dataRegistro?.seconds
+             ? new Date(avistamento.dataRegistro.seconds * 1000).toLocaleDateString("pt-BR")
+             : "Não informada";
+
+           const itemReport = document.createElement("div");
+           itemReport.className = "avistamento-item";
+
+           itemReport.innerHTML = `
+             <p>📍 <strong>Onde:</strong> ${avistamento.localAvistado}</p>
+             <p>🔍 <strong>Detalhes:</strong> ${avistamento.descricao}</p>
+             <p>
+               📞 <strong>Contato:</strong> ${avistamento.contatoReportador}
+               <small class="avistamento-data">${dataRef}</small>
+             </p>
+           `;
+           boxAvistamentos.appendChild(itemReport);
+         });
+       }
+
+       // Lógica de filtragem reativa local (não consome novas cotas do Firestore ao digitar!)
+       function filtrarERenderizarPets() {
+         const searchId = document.getElementById("filtro-id").value.trim().toLowerCase();
+         const searchNome = document.getElementById("filtro-nome").value.trim().toLowerCase();
+         const searchLocal = document.getElementById("filtro-localizacao").value.trim().toLowerCase();
+         const searchEspecie = document.getElementById("filtro-especie").value;
+
+         const petsFiltrados = meusPets.filter(pet => {
+           const matchId = !searchId || pet.id.toLowerCase().includes(searchId);
+           const matchNome = !searchNome || pet.nome.toLowerCase().includes(searchNome);
+           const matchLocal = !searchLocal || (pet.localiza || pet.localizacao || "").toLowerCase().includes(searchLocal);
+           const matchEspecie = !searchEspecie || pet.tipo === searchEspecie;
+           return matchId && matchNome && matchLocal && matchEspecie;
+         });
+
+         const container = document.querySelector(".container-cards");
+         if (!container) return;
+         container.innerHTML = "";
+
+         if (petsFiltrados.length === 0) {
+           container.innerHTML = "<p style='text-align:center; width:100%;'>Nenhum pet encontrado.</p>";
+           return;
+         }
+
+         petsFiltrados.forEach(pet => {
+           const card = document.createElement("div");
+           card.className = "pet-card";
+
+           // Estilos herdados do cadastrados.css de forma limpa (sem overrides inline de tamanho)
+           card.innerHTML = `
+             <img src="${pet.imagem || 'https://via.placeholder.com/150'}" alt="Foto de ${pet.nome}">
+             <h3 style="margin: 10px 0 5px 0;">${pet.nome}</h3>
+             <p style="font-size:13px; margin: 3px 0;"><strong>ID:</strong> ${pet.id}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Tipo:</strong> ${pet.tipo}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Sexo:</strong> ${pet.sexo}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Porte:</strong> ${pet.porte}</p>
+             <p style="font-size:13px; margin: 3px 0;"><strong>Local:</strong> ${pet.localiza || pet.localizacao}</p>
+             
+             <!-- 🚀 ADICIONADO: Painel de visualização de avistamentos em tempo real -->
+             <div class="avistamentos-container">
+               <h4 class="avistamentos-title">🚨 Alertas de Avistamentos</h4>
+               <button class="btn-avistamentos" data-pet-id="${pet.id}">📬 Ver avistamentos</button>
+               <div class="avistamentos-lista avistamentos-lista-${pet.id}">
+                 Clique para carregar.
+               </div>
+             </div>
+
+             <div style="display:flex; justify-content:space-between; margin-top:12px;">
+               <button class="btn-editar" style="padding: 6px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">✏️ Editar</button>
+               <button class="btn-excluir" style="padding: 6px 12px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Excluir</button>
+             </div>
+           `;
+
+           // Atribui funcionalidade de edição
+           card.querySelector(".btn-editar").addEventListener("click", () => {
+             window.location.href = `editar.html?id=${pet.id}`;
+           });
+
+           // Atribui funcionalidade de exclusão direta e reativa
+           card.querySelector(".btn-excluir").addEventListener("click", async () => {
+             if (confirm(`Deseja realmente excluir permanentemente o cadastro de ${pet.nome}?`)) {
+               try {
+                 await deleteDoc(doc(db, "pets", pet.id));
+                 alert("Pet excluído com sucesso!");
+                 if (usuarioAtual) {
+                   await carregarMeusPets(usuarioAtual.email);
+                 }
+               } catch (error) {
+                 console.error("Erro ao excluir pet: ", error);
+                 alert("Erro ao excluir o pet. Tente novamente.");
+               }
+             }
+           });
+
+           container.appendChild(card);
+
+           // ⚡ Carrega avistamentos só quando o usuário aciona o botão, reduzindo consultas e mantendo a tela leve.
+           const boxAvistamentos = card.querySelector(`.avistamentos-lista-${pet.id}`);
+           const btnAvistamentos = card.querySelector(".btn-avistamentos");
+           btnAvistamentos?.addEventListener("click", () => {
+             carregarAvistamentosPet(pet.id, boxAvistamentos);
+           });
+         });
+       }
+
+       // Associa os ouvintes de digitação para filtrar em tempo real
+       ['filtro-id', 'filtro-nome', 'filtro-localizacao', 'filtro-especie'].forEach(id => {
+         const el = document.getElementById(id);
+         if (el) el.addEventListener("input", filtrarERenderizarPets);
+       });
+     </script>
+</body>
+</html>
+

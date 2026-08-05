@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" role="img" aria-labelledby="title desc">
+  <title id="title">Zoonoses alerta</title>
+  <desc id="desc">Ilustracao informativa sobre prevencao de zoonoses</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f36d2f"/>
+      <stop offset="100%" stop-color="#f9b35f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="700" fill="url(#bg)"/>
+  <circle cx="250" cy="120" r="90" fill="#ffffff" opacity="0.14"/>
+  <circle cx="1370" cy="610" r="130" fill="#ffffff" opacity="0.11"/>
+  <rect x="120" y="110" width="520" height="480" rx="30" fill="#ffffff" opacity="0.95"/>
+  <rect x="170" y="180" width="420" height="20" rx="10" fill="#ffe0cc"/>
+  <rect x="170" y="230" width="300" height="20" rx="10" fill="#ffe0cc"/>
+  <circle cx="240" cy="370" r="70" fill="#f36d2f"/>
+  <path d="M240 328 l44 86 h-88 z" fill="#fff"/>
+  <circle cx="240" cy="415" r="8" fill="#f36d2f"/>
+  <text x="720" y="280" font-family="Arial, sans-serif" font-size="72" font-weight="700" fill="#ffffff">Zoonoses</text>
+  <text x="720" y="360" font-family="Arial, sans-serif" font-size="56" font-weight="700" fill="#ffffff">Prevencao em foco</text>
+  <text x="720" y="430" font-family="Arial, sans-serif" font-size="34" fill="#fff8ef">Leishmaniose, raiva e leptospirose</text>
+</svg>

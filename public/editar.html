@@ -1,0 +1,580 @@
+<!doctype html>
+<!-- Arquivo HTML: editar.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Editar Pet - PetFinder</title>
+    <!-- 🚀 ADICIONADO: Dependências CSS do Leaflet para o mapa interativo -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <link rel="stylesheet" href="css/editar-pet.css" />
+    <link rel="stylesheet" href="css/buttons-global.css" />
+  </head>
+  <body>
+    <header id="cabeca">
+      <h1 id="logo">🐾 PetConecta</h1>
+      <nav id="nav-menu">
+        <button
+          id="btn-mobile"
+          aria-label="Abrir Menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          Menu
+          <span id="hamburguer"></span>
+        </button>
+        <ul id="menu">
+          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a
+              href="https://www.anjosdajuda.org/adote"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Adoção</a
+            >
+          </li>
+          <li><a href="dicas.html">Cuidados</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="formulario">
+        <h2>Editar Dados do Pet</h2>
+        <form id="form-edicao">
+          <div>
+            <label for="nome">Nome do pet:</label>
+            <input type="text" id="nome" name="nome" required />
+          </div>
+
+          <div>
+            <label for="localizacao">Última localização vista:</label>
+            <input
+              type="text"
+              id="localizacao"
+              name="localizacao"
+              placeholder="Ex: Rua das flores, Bairro Rio Jardim..."
+              required
+            />
+
+            <!-- 🚀 ADICIONADO: Container do Mapa e campos ocultos de coordenadas geográficas -->
+            <div
+              id="map"
+              style="
+                height: 300px;
+                border-radius: 8px;
+                margin-top: 10px;
+                border: 1px solid #ccc;
+                z-index: 1;
+              "
+            ></div>
+            <input type="hidden" id="lat" name="latitude" />
+            <input type="hidden" id="lng" name="longitude" />
+          </div>
+
+          <div>
+            <label for="tipo">Tipo de Animal:</label>
+            <select id="tipo" name="tipo">
+              <option value="cachorro">Cachorro</option>
+              <option value="gato">Gato</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="sexo">Sexo:</label>
+            <select id="sexo" name="sexo" required>
+              <option value="macho">Macho</option>
+              <option value="fêmea">Fêmea</option>
+              <option value="indefinido">Indefinido</option>
+            </select>
+          </div>
+
+          <!-- 🚀 ADICIONADO: Campo Porte idêntico ao formulário de cadastro -->
+          <div>
+            <label for="porte">Porte:</label>
+            <select id="porte" name="porte" required>
+              <option value="Pequeno">Pequeno</option>
+              <option value="Médio">Médio</option>
+              <option value="Grande">Grande</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="idade">Idade estimada:</label>
+            <input
+              type="text"
+              id="idade"
+              name="idade"
+              placeholder="Ex: 1 ano e 3 meses"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="data">Data do desaparecimento:</label>
+            <input type="date" id="data" name="data" required />
+          </div>
+
+          <div>
+            <label for="contato">Contato (E-mail):</label>
+            <input
+              type="email"
+              id="contato"
+              name="contato"
+              placeholder="Ex: seuemail@exemplo.com"
+              required
+            />
+          </div>
+
+          <div>
+            <label for="whatsapp">WhatsApp:</label>
+            <input
+              type="text"
+              id="whatsapp"
+              name="whatsapp"
+              placeholder="Ex: 7399847372"
+            />
+          </div>
+
+          <div>
+            <label for="imagem">Imagem do pet:</label>
+            <input type="file" id="imagem" name="imagem" accept="image/*" />
+            <img
+              id="preview-imagem"
+              src=""
+              alt="Imagem atual do pet"
+              style="
+                max-width: 200px;
+                margin-top: 10px;
+                display: block;
+                border-radius: 8px;
+              "
+            />
+          </div>
+
+          <div>
+            <label for="descricao">Descrição do pet (opcional):</label>
+            <textarea
+              id="descricao"
+              name="descricao"
+              placeholder="Ex: cor, pequeno, assustado, coleira azul..."
+            ></textarea>
+          </div>
+
+          <div class="botoes">
+            <button type="submit">Salvar Alterações</button>
+            <button type="button" id="cancelar-btn">Cancelar</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-content">
+        <h3>🐶 PetConecta</h3>
+        <p>Conectando pets incríveis a lares amorosos 💕</p>
+        <div class="social-links">
+          <a
+            href="https://www.instagram.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Instagram"
+          >
+            <img
+              src="assets/img/icon-instagram.svg"
+              alt="Instagram"
+            />
+          </a>
+          <a
+            href="https://www.facebook.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Facebook"
+          >
+            <img
+              src="assets/img/icon-facebook.svg"
+              alt="Facebook"
+            />
+          </a>
+        </div>
+        <nav class="footer-nav">
+          <a href="index.html">Página Inicial</a>
+          <a href="adocao.html">Adoção</a>
+          <a href="dicas.html">Cuidados</a>
+          <a href="contato.html">Contato</a>
+        </nav>
+        <p class="copyright">
+          © 2026 PetConecta. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <!-- 🚀 ADICIONADO: Dependências JS do Leaflet antes do Firebase -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Script Modular Integrado com o Firebase -->
+    <script type="module">
+      import {
+        initializeApp,
+        getApps,
+        getApp,
+      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        getDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+      import {
+        getStorage,
+        ref as storageRef,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
+      import {
+        getAuth,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+      // Configuração do Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
+        authDomain: "petconecta-db068.firebaseapp.com",
+        projectId: "petconecta-db068",
+        storageBucket: "petconecta-db068.firebasestorage.app",
+        messagingSenderId: "1030110038715",
+        appId: "1:1030110038715:web:151deca61831138159b79e",
+      };
+
+      // Inicialização Blindada
+      const app =
+        getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+      const db = getFirestore(app);
+      const storage = getStorage(app);
+      const auth = getAuth(app);
+
+      let usuarioLogado = null;
+      let urlImagemAtual = "";
+
+      // 📦 Recupera o ID da URL ou do localStorage para flexibilidade
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id") || localStorage.getItem("petEditId");
+
+      if (!id) {
+        alert("ID de edição inválido ou não informado.");
+        window.location.href = "cadastrados.html";
+      }
+
+      // 🚀 ADICIONADO: Configuração e Inicialização Local do Mapa Leaflet
+      const map = L.map("map").setView([-14.235, -51.9253], 4);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "© OpenStreetMap contributors",
+      }).addTo(map);
+
+      let marker;
+
+      // Monitora o login e executa o carregamento dos dados do pet
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          usuarioLogado = user;
+          await carregarDadosPet();
+        } else {
+          alert("Sua sessão expirou. Faça login novamente para prosseguir.");
+          window.location.href = "criar-conta.html";
+        }
+      });
+
+      // Função para recuperar os dados reais do Firestore e mover o pin do mapa
+      async function carregarDadosPet() {
+        try {
+          const docRef = doc(db, "pets", id);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const pet = docSnap.data();
+
+            // Segurança: Apenas o criador pode editar as próprias publicações
+            if (
+              pet.usuarioCriador &&
+              usuarioLogado.email.toLowerCase() !==
+                pet.usuarioCriador.toLowerCase()
+            ) {
+              alert(
+                "Ação não autorizada. Você só pode editar as suas próprias publicações.",
+              );
+              window.location.href = "cadastrados.html";
+              return;
+            }
+
+            // Preenche as informações no formulário do HTML
+            document.getElementById("nome").value = pet.nome || "";
+            document.getElementById("localizacao").value =
+              pet.localizacao || pet.localiza || "";
+            document.getElementById("tipo").value =
+              pet.tipo || pet.raca || "cachorro";
+            document.getElementById("sexo").value = pet.sexo || "macho";
+            document.getElementById("porte").value = pet.porte || "Pequeno"; // 🚀 ADICIONADO
+            document.getElementById("idade").value = pet.idade || "";
+            document.getElementById("data").value = pet.data || "";
+            document.getElementById("contato").value = pet.contato || "";
+            document.getElementById("whatsapp").value = pet.whatsapp || "";
+            document.getElementById("descricao").value = pet.descricao || "";
+
+            urlImagemAtual = pet.imagem || "";
+            document.getElementById("preview-imagem").src =
+              urlImagemAtual || "https://via.placeholder.com/150";
+
+            // 🚀 ADICIONADO: Carrega e move o marcador do mapa para as coordenadas gravadas do pet
+            const lat = pet.lat || pet.latitude;
+            const lng = pet.lng || pet.longitude;
+
+            if (lat && lng) {
+              document.getElementById("lat").value = lat;
+              document.getElementById("lng").value = lng;
+
+              const latlng = L.latLng(lat, lng);
+              if (marker) {
+                marker.setLatLng(latlng);
+              } else {
+                marker = L.marker(latlng).addTo(map);
+              }
+              map.setView(latlng, 15);
+            }
+          } else {
+            alert("O pet solicitado não existe ou foi excluído.");
+            window.location.href = "cadastrados.html";
+          }
+        } catch (error) {
+          console.error("Erro ao carregar dados do pet no Firestore:", error);
+          alert("Erro ao buscar as informações do pet.");
+        }
+      }
+
+      // Lógica do mapa interativo (Search por Digitação)
+      const campoLocalizacao = document.getElementById("localizacao");
+      if (campoLocalizacao) {
+        campoLocalizacao.addEventListener("keydown", function (e) {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            this.blur();
+          }
+        });
+
+        campoLocalizacao.addEventListener("change", function () {
+          const query = this.value.trim();
+          if (!query) return;
+
+          fetch(
+            `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`,
+          )
+            .then((res) => res.json())
+            .then((data) => {
+              if (data && data.length > 0) {
+                const lat = parseFloat(data[0].lat);
+                const lon = parseFloat(data[0].lon);
+                const latlng = L.latLng(lat, lon);
+
+                if (marker) {
+                  marker.setLatLng(latlng);
+                } else {
+                  marker = L.marker(latlng).addTo(map);
+                }
+                map.setView(latlng, 15);
+
+                document.getElementById("lat").value = lat;
+                document.getElementById("lng").value = lon;
+              }
+            })
+            .catch((err) => console.error("Erro na geocodificação:", err));
+        });
+      }
+
+      // Lógica do mapa interativo (Click no mapa)
+      map.on("click", function (e) {
+        const lat = e.latlng.lat;
+        const lng = e.latlng.lng;
+
+        if (marker) {
+          marker.setLatLng(e.latlng);
+        } else {
+          marker = L.marker(e.latlng).addTo(map);
+        }
+
+        document.getElementById("lat").value = lat;
+        document.getElementById("lng").value = lng;
+
+        fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`,
+        )
+          .then((res) => res.json())
+          .then((data) => {
+            document.getElementById("localizacao").value =
+              data.display_name || `Lat: ${lat}, Lng: ${lng}`;
+          });
+      });
+
+      // Retorno do botão de cancelar edição
+      document
+        .getElementById("cancelar-btn")
+        .addEventListener("click", function () {
+          if (confirm("Deseja cancelar a edição e voltar sem salvar?")) {
+            window.location.href = "index.html";
+          }
+        });
+
+      // Visualização da imagem escolhida em tempo real
+      document.getElementById("imagem").addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("preview-imagem").src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // 💾 Salvamento das alterações e validações integradas
+      document
+        .getElementById("form-edicao")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          removerErros();
+
+          // Coleta dados estruturados
+          const petAtualizado = {
+            nome: document.getElementById("nome").value.trim(),
+            localiza: document.getElementById("localizacao").value.trim(),
+            localizacao: document.getElementById("localizacao").value.trim(),
+            raca: document.getElementById("tipo").value,
+            tipo: document.getElementById("tipo").value,
+            sexo: document.getElementById("sexo").value,
+            porte: document.getElementById("porte").value, // 🚀 ADICIONADO
+            idade: document.getElementById("idade").value.trim(),
+            data: document.getElementById("data").value,
+            contato: document.getElementById("contato").value.trim(),
+            whatsapp: document.getElementById("whatsapp").value.trim(),
+            descricao: document.getElementById("descricao").value.trim(),
+            lat: parseFloat(document.getElementById("lat").value) || null, // 🚀 ADICIONADO
+            lng: parseFloat(document.getElementById("lng").value) || null, // 🚀 ADICIONADO
+            usuarioCriador: usuarioLogado.email,
+          };
+
+          let valido = true;
+
+          // Validação dos campos obrigatórios
+          const camposObrigatorios = [
+            "nome",
+            "localiza",
+            "idade",
+            "data",
+            "contato",
+            "porte",
+          ];
+          camposObrigatorios.forEach((campo) => {
+            const valor = petAtualizado[campo];
+            if (!valor) {
+              const input = document.getElementById(
+                campo === "localiza" ? "localizacao" : campo,
+              );
+              mostrarErro(input, "Campo obrigatório.");
+              valido = false;
+            }
+          });
+
+          // Validação do contato como e-mail
+          const emailValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+            petAtualizado.contato,
+          );
+          if (!emailValido) {
+            mostrarErro(
+              document.getElementById("contato"),
+              "Insira um e-mail válido.",
+            );
+            valido = false;
+          }
+
+          // Validação do WhatsApp se estiver preenchido
+          if (petAtualizado.whatsapp) {
+            const apenasNumeros = petAtualizado.whatsapp.replace(/\D/g, "");
+            const whatsappValido = /^\d{10,13}$/.test(apenasNumeros);
+            if (!whatsappValido) {
+              mostrarErro(
+                document.getElementById("whatsapp"),
+                "Informe um número válido com 10 a 13 dígitos (ex: (73) 99124-3772 ou 73991243772).",
+              );
+              valido = false;
+            }
+          }
+
+          // Validação de data no futuro
+          const dataFormatada = new Date(petAtualizado.data);
+          const hoje = new Date();
+          if (dataFormatada > hoje) {
+            mostrarErro(
+              document.getElementById("data"),
+              "A data não pode ser no futuro.",
+            );
+            valido = false;
+          }
+
+          if (!valido) return;
+
+          if (!confirm("Deseja realmente salvar todas as alterações?")) return;
+
+          try {
+            let linkImagemFinal = urlImagemAtual;
+            const imagemInput = document.getElementById("imagem");
+            const novaImagem = imagemInput.files[0];
+
+            if (novaImagem) {
+              console.log(
+                "Realizando upload da nova foto para o Cloud Storage...",
+              );
+              const nomeArquivo = `${Date.now()}_${novaImagem.name}`;
+              const storageReference = storageRef(
+                storage,
+                `pets/${nomeArquivo}`,
+              );
+              const snapshot = await uploadBytes(storageReference, novaImagem);
+              linkImagemFinal = await getDownloadURL(snapshot.ref);
+            }
+
+            petAtualizado.imagem = linkImagemFinal;
+
+            // Atualização dos dados no Firestore [2]
+            console.log("Atualizando registro do Firestore...");
+            await updateDoc(doc(db, "pets", id), petAtualizado);
+
+            alert("Pet atualizado com sucesso!");
+            window.location.href = "cadastrados.html"; // Retorna para Meus Pets após a edição segura
+          } catch (error) {
+            console.error("Erro ao salvar dados no Firebase:", error);
+            alert(
+              "Ocorreu um erro ao atualizar os dados. Verifique sua conexão.",
+            );
+          }
+        });
+
+      // Funções auxiliares de validação visual
+      function mostrarErro(input, message) {
+        const erro = document.createElement("small");
+        erro.classList.add("erro");
+        erro.style.color = "red";
+        erro.style.fontWeight = "bold";
+        erro.style.display = "block";
+        erro.textContent = message;
+        input.insertAdjacentElement("afterend", erro);
+      }
+
+      function removerErros() {
+        document.querySelectorAll(".erro").forEach((el) => el.remove());
+      }
+    </script>
+  </body>
+</html>
+

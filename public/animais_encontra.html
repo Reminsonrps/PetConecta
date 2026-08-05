@@ -1,0 +1,148 @@
+<!doctype html>
+<!-- Arquivo HTML: animais_encontra.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animais Encontrados - PetConecta</title>
+    <link rel="stylesheet" href="css/encontrados.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/buttons-global.css" />
+  </head>
+
+  <div class="container">
+    <body>
+      <header id="cabeca">
+        <h1 id="logo">🐾 PetConecta</h1>
+
+        <nav id="nav-menu">
+          <button
+            id="btn-mobile"
+            aria-label="Abrir Menu"
+            aria-expanded="false"
+            aria-controls="menu"
+          >
+            Menu
+            <span id="hamburguer"></span>
+          </button>
+          <!-- Este menu de navegação será preenchido dinamicamente pelo Firebase Auth -->
+          <ul id="menu">
+            <li><a href="index.html">Página Inicial</a></li>
+            <li><a href="animais_encontra.html">Encontrados</a></li>
+            <li>
+              <a
+                href="https://www.anjosdajuda.org/adote"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Adoção</a
+              >
+            </li>
+            <li><a href="dicas.html">Cuidados</a></li>
+            <li><a href="contato.html">Contato</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main class="main-content">
+        <section class="search-filters">
+          <h1>Animais Encontrados</h1>
+          <div class="filters"></div>
+        </section>
+
+        <section class="pet-list">
+          <h1>🐾 Pets Encontrados</h1>
+
+          <div class="filtros">
+            <input type="text" id="filtro-id" placeholder="Filtrar por ID" />
+            <input
+              type="text"
+              id="filtro-nome"
+              placeholder="Filtrar por nome"
+            />
+            <input
+              type="text"
+              id="filtro-localizacao"
+              placeholder="Filtrar por localização"
+            />
+            <select
+              id="filtro-especie"
+              title="Filtrar por espécie"
+              aria-label="Filtrar por espécie"
+            >
+              <option value="">Todas as espécies</option>
+              <option value="cão">Cão</option>
+              <option value="gato">Gato</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="container-cards"></div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-content">
+          <h3>🐶 PetConecta</h3>
+          <p>Conectando pets incríveis a lares amorosos 💕</p>
+          <div class="social-links">
+            <a
+              href="https://www.instagram.com/seuusuario"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+            >
+              <img src="assets/img/icon-instagram.svg" alt="Instagram" />
+            </a>
+            <a
+              href="https://www.facebook.com/seuusuario"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+            >
+              <img src="assets/img/icon-facebook.svg" alt="Facebook" />
+            </a>
+          </div>
+          <nav class="footer-nav">
+            <a href="index.html">Página Inicial</a>
+            <a href="adocao.html">Adoção</a>
+            <a href="dicas.html">Cuidados</a>
+            <a href="contato.html">Contato</a>
+          </nav>
+          <p class="copyright">
+            © 2026 PetConecta. Todos os direitos reservados.
+          </p>
+        </div>
+      </footer>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const btnMobile = document.querySelector("#btn-mobile");
+          const navMenu = document.querySelector("#nav-menu");
+          const menuLinks = document.querySelectorAll("#menu a");
+
+          function toggleMenu() {
+            navMenu.classList.toggle("active");
+            const isOpen = navMenu.classList.contains("active");
+            btnMobile?.setAttribute("aria-expanded", String(isOpen));
+          }
+
+          if (btnMobile) {
+            btnMobile.addEventListener("click", toggleMenu);
+          }
+
+          menuLinks.forEach((link) => {
+            link.addEventListener("click", () => {
+              navMenu.classList.remove("active");
+              btnMobile?.setAttribute("aria-expanded", "false");
+            });
+          });
+        });
+      </script>
+      <!-- CORRIGIDO: Adicionado type="module" para aceitar comandos 'import' do JS -->
+      <script type="module" src="script/encontrado.js"></script>
+    </body>
+  </div>
+</html>
