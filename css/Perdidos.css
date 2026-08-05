@@ -1,0 +1,186 @@
+/* Arquivo de estilos: Perdidos.css
+   Define a apresentação visual da página correspondente e mantém padronização de layout. */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+header {
+  background-color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+main {
+  padding: 40px;
+}
+
+.container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.formulario {
+  flex: 1;
+  max-width: 450px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.formulario h2 {
+  margin-bottom: 20px;
+}
+
+.formulario label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.formulario input,
+.formulario select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.action-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dados {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.animal-card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  overflow: hidden;
+  max-width: 400px;
+}
+
+.animal-card img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  background-color: #ddd;
+}
+
+.info {
+  padding: 15px;
+  flex: 1;
+}
+.remover-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #555;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.remover-btn:hover {
+  background-color: #333;
+}
+/* Borda leve */
+
+.dados {
+  flex-direction: row; /* Exibe imagem e informações lado a lado */
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.dados img {
+  width: 300px; /* Reduz o tamanho da imagem */
+  height: 200px;
+  margin-right: 20px;
+}
+
+.dados .info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .formulario,
+  .dados {
+    max-width: 100%;
+  }
+
+  .dados {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .dados img {
+    width: 100px;
+  }
+
+  .dados .info {
+    text-align: center;
+  }
+
+  nav ul {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+

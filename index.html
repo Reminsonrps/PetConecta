@@ -1,0 +1,1924 @@
+<!doctype html>
+<!-- Arquivo HTML: index.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PetConecta | Página Inicial</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/home.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/buttons-global.css" />
+  </head>
+
+  <body>
+    <header id="cabeca">
+      <h1 id="logo">🐾 PetConecta</h1>
+      <nav id="nav-menu">
+        <button
+          id="btn-mobile"
+          aria-label="Abrir Menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          Menu
+          <span id="hamburguer"></span>
+        </button>
+
+        <!-- Este menu será preenchido dinamicamente pelo script modular do Firebase -->
+        <ul id="menu">
+          <li><a href="#home">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a
+              href="https://www.anjosdajuda.org/adote"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Adoção</a
+            >
+          </li>
+          <li><a href="#dicas">Cuidados</a></li>        
+          <li><a href="#contatos">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="welcome" id="home">
+        <div class="logoImg">
+          <div class="interno"></div>
+        </div>
+        <h1>Bem-vindo ao PetConecta!</h1>
+        <h2>Cadastre seu pet desaparecido aqui!</h2>
+        <!-- 🚀 ATIVADO: Agora este botão redireciona para a página de publicação -->
+        <button id="action-btn" class="btn">Cadastrar</button>
+      </section>
+
+      <section class="highlights">
+        <article class="highlight-box">
+          <h2>Campanhas Ativas</h2>
+          <a href="#campanhas">
+            <img
+              src="assets/img/campanha.png"
+              alt="Campanha Alimente o Amor"
+              class="highlight-image"
+            />
+          </a>
+          <h3>🐾 Campanha: Alimente o Amor</h3>
+          <p>
+            Milhares de focinhos esperam por um gesto seu. Doe ração. Doe
+            esperança. Juntos, podemos encher potes e corações.
+          </p>
+        </article>
+
+        <article class="highlight-box">
+          <h2>Adestramento</h2>
+          <a href="adestramento.html">
+            <img
+              src="assets/img/k9.png"
+              alt="Adestramento de pets"
+              class="highlight-image"
+            />
+          </a>
+          <h3>🐾 Treinamento e Bem-Estar</h3>
+          <p>
+            Eduque seu pet com paciência e amor. Adestramento transforma
+            comportamentos e fortalece a relação entre você e seu companheiro.
+          </p>
+          <a href="adestramento.html" class="card-link"
+            >Ver dicas de adestramento →</a
+          >
+        </article>
+
+        <article class="highlight-box">
+          <h2>Dicas</h2>
+          <a href="dicas.html">
+            <img
+              src="assets/img/gato-perdido.jpg"
+              alt="Dicas para encontrar pets"
+              class="highlight-image"
+            />
+          </a>
+          <h3>🐾 Como encontrar seu pet</h3>
+          <p>
+            Espalhe cartazes com foto, nome e telefone. Use redes sociais e
+            grupos locais de proteção animal.
+          </p>
+          <a href="dicas.html" class="card-link">Ver todas as dicas →</a>
+        </article>
+      </section>
+
+      <section class="about-container">
+        <div id="info">
+          <h1>Sobre Nós</h1>
+          <div class="linha"></div>
+          <p class="texto1">
+            Somos apaixonados por animais e movidos pelo desejo de reunir
+            famílias. Nossa plataforma nasceu com um propósito claro: ajudar na
+            localização de pets perdidos, oferecendo esperança e apoio a quem
+            enfrenta o sofrimento de uma separação inesperada. Aqui, cada
+            latido, miado ou olhar faz diferença. Acreditamos que nenhum animal
+            deve ficar longe de seu lar por falta de informação ou ajuda. Por
+            isso, criamos um espaço onde tutores podem divulgar rapidamente o
+            desaparecimento de seus companheiros, e onde a comunidade pode
+            colaborar ativamente com avistamentos e resgates. Além disso,
+            dedicamos uma área especial à adoção responsável. Sabemos que muitos
+            animais esperam por uma nova chance, por um lar cheio de carinho e
+            cuidado. Se você está pronto para abrir seu coração, nossa seção de
+            adoção conecta você a pets que precisam de uma nova história.
+            Juntos, podemos transformar perdas in reencontros e solidão em novos
+            começos. Seja bem-vindo à nossa rede de cuidado, empatia e amor
+            pelos animais.
+          </p>
+        </div>
+      </section>
+
+      <section class="campanha-container" id="campanhas">
+        <h2>🎉 Campanha em Destaque</h2>
+        <div class="card">
+          <p class="campanha-intro">
+            <span class="campanha-destaque"
+              >Cada compra gera uma doação para cães e gatos resgatados.</span
+            >
+          </p>
+
+          <div class="progress-container">
+            <div class="progress-label">
+              <span><strong>Meta:</strong> 5 toneladas de ração</span>
+              <span><strong>Progresso:</strong> 3.2 toneladas (64%)</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill"></div>
+            </div>
+          </div>
+
+          <button class="btn" disabled>🐾 Quero Ajudar</button>
+        </div>
+      </section>
+
+      <section class="carousel-section">
+        <div id="carousel_info" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="5" aria-label="Slide 6"></button>
+          </div>
+
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img
+                src="assets/img/visceral.jpg"
+                class="d-block w-100"
+                alt="Campanha Ativa"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/adoção.jpg"
+                class="d-block w-100"
+                alt="Adoções Recentes"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/gato-perdido.jpg"
+                class="d-block w-100"
+                alt="Dicas para Pets"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/leishmaniose.jpg"
+                class="d-block w-100"
+                alt="Campanha de Prevenção contra Leishmaniose"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/castrar-animais.jpg"
+                class="d-block w-100"
+                alt="Importância da Vacinação"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/castracao_campanha.png"
+                class="d-block w-100"
+                alt="Importância da Castração"
+              />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carousel_info"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carousel_info"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próximo</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="adocoes">
+        <div class="adocoes-container"></div>
+      </section>
+
+      <section id="dicas" class="dicas-container">
+        <h2>🔍 Dicas para Encontrar seu Pet</h2>
+        <div class="card dicas-card">
+          <div class="dicas-list">
+            <div class="dica-item">
+              <span class="dica-numero">01</span>
+              <div class="dica-content">
+                <h3>Espalhe cartazes na vizinhança</h3>
+                <p>
+                  Distribua por ruas próximas, comércios e postos de gasolina
+                </p>
+                <a
+                  href="https://br.freepik.com/vetores/cartaz-animal-perdido"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-download"
+                  >📥 Baixar Modelo</a
+                >
+              </div>
+            </div>
+
+            <div class="dica-item">
+              <span class="dica-numero">02</span>
+              <div class="dica-content">
+                <h3>Use redes sociais para ampliar o alcance</h3>
+                <p>
+                  Compartilhe em grupos locais, comunidades e perfis de proteção
+                  animal
+                </p>
+              </div>
+            </div>
+
+            <div class="dica-item">
+              <span class="dica-numero">03</span>
+              <div class="dica-content">
+                <h3>Cadastre seu pet perdido no PetFinder</h3>
+                <p>Aumente a visibilidade alertando a comunidade do sistema</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="cuidados">
+        <section class="grid" aria-label="Categorias de Dicas">
+          <article class="card">
+            <a href="dicas.html#saude">
+              <img
+                src="assets/img/saude-pet.png"
+                alt="Veterinária cuidando de cachorro"
+              />
+            </a>
+            <h2>🩺 Saúde</h2>
+            <ul>
+              <li>Vacinação em dia.</li>
+              <li>Consultas veterinárias anuais.</li>
+            </ul>
+            <a href="dicas.html#saude" class="card-link"
+              >Ver dicas de saúde →</a
+            >
+          </article>
+
+          <article class="card">
+            <a href="dicas.html#alimentacao">
+              <img src="assets/img/alimentacao.png" alt="Alimentando felino" />
+            </a>
+            <h2>🍽️ Alimentação</h2>
+            <ul>
+              <li>Ração de qualidade conforme idade e porte.</li>
+              <li>Evite alimentos humanos tóxicos como chocolate e cebola.</li>
+              <li>Água fresca sempre disponível.</li>
+              <li>Petiscos com moderação como recompensa.</li>
+            </ul>
+            <a href="dicas.html#alimentacao" class="card-link"
+              >Ver dicas de alimentação →</a
+            >
+          </article>
+
+          <article class="card">
+            <a href="dicas.html#viagens">
+              <img
+                src="assets/img/viagem.png"
+                alt="Família ao lado do carro colocando pet na caixa de transporte"
+              />
+            </a>
+            <h2>✈️ Viagens com Pets</h2>
+            <ul>
+              <li>Use caixas de transporte ou cintos específicos.</li>
+              <li>Leve carteira de vacinação e atestado de saúde.</li>
+              <li>Leve brinquedos e objetos familiares para adaptação.</li>
+              <li>Nunca deixe o pet sozinho no carro.</li>
+            </ul>
+            <a href="dicas.html#viagens" class="card-link"
+              >Ver dicas de viagem →</a
+            >
+          </article>
+
+          <article class="card">
+            <a href="dicas.html#comportamento">
+              <img
+                src="assets/img/exercicio-pet.png"
+                alt="Mulher fazendo exercícios ao ar livre com cachorros"
+              />
+            </a>
+            <h2>🧘‍♂️ Bem-estar e Comportamento</h2>
+            <ul>
+              <li>Exercícios diários e estímulos mentais.</li>
+              <li>Socialização com outros animais e pessoas.</li>
+              <li>Ambiente seguro e confortável com cama e brinquedos.</li>
+              <li>Use reforço positivo para ensinar comandos.</li>
+            </ul>
+            <a href="dicas.html#comportamento" class="card-link"
+              >Ver dicas de comportamento →</a
+            >
+          </article>
+
+          <article class="card">
+            <h2>🩹 Cuidados Especiais</h2>
+            <img
+              id="combo"
+              src="assets/img/cuidados-especiais.png"
+              alt="Veterinária examinando um gato idoso"
+            />
+          </article>
+        </section>
+
+        <div id="emergencia-container">
+          <section class="emergencia">
+            <h2>🚨 Emergências</h2>
+            <div class="emergency-box">
+              <p class="emergency-text">
+                Se seu pet ingeriu algo tóxico, procure um veterinário
+                imediatamente.
+              </p>
+              <a
+                href="https://www.google.com/search?q=emergencia+veterinaria+perto+de+mim"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-emergencia"
+                >Ver Veterinários 24h</a
+              >
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="frases-section">
+        <h2>💬 Frases que Inspiram</h2>
+        <div class="card">
+          <p>“Cada clique pode mudar uma vida.”</p>
+          <p>“Adotar é multiplicar amor.”</p>
+          <p>“Seu lar pode ser o recomeço de alguém.”</p>
+        </div>
+      </section>
+
+      <section class="mapa-section">
+        <h1>🗺️ Mapa de Ocorrências</h1>
+        <p class="legenda-mapa">
+          <span class="mapa-label-desaparecido">🔴 Desaparecidos</span>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <span class="mapa-label-encontrado">🟢 Encontrados</span>
+        </p>
+        <div class="mapa-toolbar">
+          <button type="button" id="btnCentralizarMapa" class="btn-geo">
+            🧭 Centralizar mapa
+          </button>
+          <span id="mapa-status" class="mapa-status"
+            >Carregando ocorrências...</span
+          >
+        </div>
+        <div id="mapa-pets"></div>
+      </section>
+      
+      <section class="desaparecidos">
+        <h1>Desaparecidos</h1>
+        <div class="filtros">
+          <h4>🔍 Filtrar pets</h4>
+          <select id="filtroTipoDesaparecido" title="Filtrar por tipo">
+            <option value="">Tipo</option>
+            <option value="Cão">Cão</option>
+            <option value="Gato">Gato</option>
+          </select>
+          <select id="filtroSexoDesaparecido" title="Filtrar por sexo">
+            <option value="">Sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Fêmea">Fêmea</option>
+          </select>
+          <select id="filtroPorteDesaparecido" title="Filtrar por porte">
+            <option value="">Porte</option>
+            <option value="Pequeno">Pequeno</option>
+            <option value="Médio">Médio</option>
+            <option value="Grande">Grande</option>
+          </select>
+
+          <button type="button" id="btnLocalizacaoPet" class="btn-geo">
+            📍 Pets Próximos
+          </button>
+
+          <button id="btnFiltrarDesaparecido">Filtrar</button>
+          <button id="btnLimparDesaparecido">Limpar</button>
+
+          <span id="statusLocalizacaoPet"></span>
+        </div>
+        <div class="container-cards"></div>
+      </section>
+
+      <section class="contact-section" id="contatos">
+        <h1>Fale Conosco</h1>
+        <form id="contact-form" class="contact-form">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome" required />
+
+          <label for="email">E-mail:</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="mensagem">Mensagem:</label>
+          <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+
+          <button type="submit">Enviar</button>
+          <p id="mensagemStatus"></p>
+        </form>
+      </section>
+
+      <section class="partners-section">
+        <h2>🤝 Parcerias</h2>
+        <div class="parceiros">
+          <div id="pelegrinos"></div>
+          <a
+            href="https://wa.me/5573998248286"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="partner-card"
+            title="Paulo Ventura - Adestrador | (73) 99824-8286"
+          >
+            <img
+              src="assets/img/paulo_ventura.jpeg"
+              alt="Paulo Ventura - Adestrador"
+              class="paulo-ventura"
+            />
+          </a>
+        </div>
+        <p>
+          Se você representa uma ONG, clínica veterinária, pet shop ou deseja
+          apoiar nossa causa, entre em contato!
+        </p>
+        <ul>
+          <li>
+            Email:
+            <a href="mailto:parcerias@petfinder.com.br"
+              >parcerias@petfinder.com.br</a
+            >
+          </li>
+          <li>Telefone: <a href="tel:+5571999999999">(71) 99999-9999</a></li>
+          <li>
+            Instagram:
+            <a
+              href="https://instagram.com/PetConecta"
+              target="_blank"
+              rel="noopener noreferrer"
+              >@petConecta</a
+            >
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <h3>🐶 PetConecta</h3>
+        <p>Conectando pets incríveis a lares amorosos 💕</p>
+        <div class="social-links">
+          <a
+            href="https://www.instagram.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+              alt="Instagram"
+            />
+          </a>
+          <a
+            href="https://www.facebook.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
+              alt="Facebook"
+            />
+          </a>
+        </div>
+        <nav class="footer-nav">
+          <a href="#home">Página Inicial</a>
+          <a href="#adocoes">Adoção</a>
+          <a href="#dicas">Cuidados</a>
+          <a href="#contatos">Contato</a>
+        </nav>
+        <p class="copyright">
+          © 2026 PetConecta. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script src="script/anima.js" defer></script>
+    <script src="script/parceiros.js"></script>
+    <script type="module" src="script/exibir_pets.js"></script>
+    <script type="module" src="script/main.js"></script>
+    <script type="module" src="script/contatoAPI.js"></script>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+
+    <script>
+      // Mobile navbar
+      const btnMobile = document.querySelector("#btn-mobile");
+      function toggleMenu() {
+        const nav = document.querySelector("#nav-menu");
+        nav.classList.toggle("active");
+      }
+      btnMobile.addEventListener("click", toggleMenu);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- ADICIONADO: Lógica de clique do botão "Cadastrar" do Banner ---
+        const actionBtn = document.getElementById("action-btn");
+        if (actionBtn) {
+          actionBtn.addEventListener("click", () => {
+            window.location.href = "publicar.html";
+          });
+        }
+
+        // --- ELEMENTOS DO PRIMEIRO FILTRO (ADOÇÃO) ---
+        const btnLocalizacao = document.getElementById("btnLocalizacao");
+        const statusLocalizacao = document.getElementById("statusLocalizacao");
+
+        // --- ELEMENTOS DO SEGUNDO FILTRO (DESAPARECIDOS) ---
+        const btnLocalizacaoPet = document.getElementById("btnLocalizacaoPet");
+        const statusLocalizacaoPet = document.getElementById(
+          "statusLocalizacaoPet",
+        );
+
+        // Função genérica para tratar a geolocalização em ambos os botões
+        function buscarGeolocalizacao(status1, status2) {
+          if (!navigator.geolocation) {
+            status1.textContent =
+              "Geolocalização não suportada no seu navegador.";
+            status2.textContent =
+              "Geolocalização não suportada no seu navegador.";
+            status1.style.color = "red";
+            status2.style.color = "red";
+            return;
+          }
+
+          status1.textContent =
+            "Buscando localização... Permita o acesso no navegador.";
+          status2.textContent =
+            "Buscando localização... Permita o acesso no navegador.";
+          status1.style.color = "#ff751a";
+          status2.style.color = "#ff751a";
+
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+
+              status1.textContent =
+                "Coordenadas obtidas! Identificando cidade...";
+              status2.textContent =
+                "Coordenadas obtidas! Identificando cidade...";
+
+              if (typeof mapa !== "undefined") {
+                mapa.setView([lat, lng], 13);
+              }
+
+              try {
+                const response = await fetch(
+                  `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1`,
+                  { headers: { "Accept-Language": "pt-BR" } },
+                );
+
+                if (!response.ok) throw new Error();
+
+                const data = await response.json();
+                const cidadeUsuario =
+                  data.address.city ||
+                  data.address.town ||
+                  data.address.village ||
+                  "";
+
+                if (cidadeUsuario) {
+                  const mensagemSucesso = `📍 Pets filtrados em: ${cidadeUsuario}`;
+                  status1.textContent = mensagemSucesso;
+                  status2.textContent = mensagemSucesso;
+                  status1.style.color = "green";
+                  status2.style.color = "green";
+
+                  filtrarPorCidadeDoUsuario(cidadeUsuario);
+                } else {
+                  status1.textContent =
+                    "Não encontramos uma cidade definida para esta localização.";
+                  status1.style.color = "orange";
+                }
+              } catch (error) {
+                status1.textContent =
+                  "Erro ao conectar com o serviço de mapas.";
+                status1.style.color = "red";
+              }
+            },
+            (error) => {
+              status1.style.color = "red";
+              if (error.code === error.PERMISSION_DENIED) {
+                status1.textContent =
+                  "Acesso à localização recusado pelo usuário.";
+              } else {
+                status1.textContent =
+                  "Não foi possível obter sua localização atual.";
+              }
+            },
+          );
+        }
+
+        // Ouvintes de evento para os botões de localização (ambos atualizam os respectivos spans)
+        if (btnLocalizacao) {
+          btnLocalizacao.addEventListener("click", () => {
+            buscarGeolocalizacao(statusLocalizacao, statusLocalizacaoPet);
+          });
+        }
+
+        if (btnLocalizacaoPet) {
+          btnLocalizacaoPet.addEventListener("click", () => {
+            buscarGeolocalizacao(statusLocalizacaoPet, statusLocalizacao);
+          });
+        }
+
+        function filtrarPorCidadeDoUsuario(cidade) {
+          console.log(
+            `Buscando no banco de dados do PetConecta animais cadastrados na cidade: ${cidade}`,
+          );
+        }
+
+        // --- CONFIGURAÇÃO E INICIALIZAÇÃO DO MAPA ---
+        const mapa = L.map("mapa-pets", {
+          zoomControl: true,
+          scrollWheelZoom: true,
+          doubleClickZoom: true,
+        }).setView([-16.3299, -39.0202], 14);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap contributors",
+        }).addTo(mapa);
+
+        L.control.scale({ position: "bottomleft" }).addTo(mapa);
+
+        const mapaStatus = document.getElementById("mapa-status");
+        const btnCentralizarMapa =
+          document.getElementById("btnCentralizarMapa");
+        let marcadoresAtivos = [];
+
+        function atualizarStatus(texto, cor = "#ff751a") {
+          if (mapaStatus) {
+            mapaStatus.textContent = texto;
+            mapaStatus.style.color = cor;
+          }
+        }
+
+        const iconeDesaparecido = L.divIcon({
+          className: "custom-pin-desaparecido",
+          html: `<div style="background-color: #ff3333; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.4);"></div>`,
+          iconSize: [14, 14],
+          iconAnchor: [7, 7],
+        });
+
+        const iconeEncontrado = L.divIcon({
+          className: "custom-pin-encontrado",
+          html: `<div style="background-color: #2beb31; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.4);"></div>`,
+          iconSize: [14, 14],
+          iconAnchor: [7, 7],
+        });
+
+        let ultimoEstadoMapa = "";
+
+        function limparMarcadores() {
+          marcadoresAtivos.forEach((marcador) => {
+            mapa.removeLayer(marcador);
+          });
+          marcadoresAtivos = [];
+        }
+
+        function renderizarPinsNoMapa(listaPets) {
+          limparMarcadores();
+
+          if (!listaPets || listaPets.length === 0) {
+            atualizarStatus("Nenhuma ocorrência cadastrada ainda.", "#777");
+            mapa.setView([-16.3299, -39.0202], 14);
+            return;
+          }
+
+          const coordenadas = [];
+
+          listaPets.forEach((pet) => {
+            const latitude = pet.lat || pet.latitude;
+            const longitude = pet.lng || pet.longitude;
+
+            if (!latitude || !longitude) return;
+
+            const iconeMarcador =
+              pet.status === "desaparecido"
+                ? iconeDesaparecido
+                : iconeEncontrado;
+            const corTextoPopup =
+              pet.status === "desaparecido" ? "#ff3333" : "#2beb31";
+            const tagStatus =
+              pet.status === "desaparecido"
+                ? "🚨 Desaparecido"
+                : "✅ Encontrado";
+
+            const conteudoPopup = `
+              <strong style="color: ${corTextoPopup}; font-size: 1rem;">${tagStatus}</strong><br>
+              <div><img style="width:100%; border-radius:8px; margin-top:6px;" src="${pet.imagem}" alt="${pet.nome}" onerror="this.src='https://via.placeholder.com/150'"></div>
+              <strong>Nome:</strong> ${pet.nome || "Sem nome"}<br>
+              <strong>Info:</strong> ${pet.descricao || "Sem informações adicionais."}
+            `;
+
+            const marcador = L.marker([latitude, longitude], {
+              icon: iconeMarcador,
+            })
+              .addTo(mapa)
+              .bindPopup(conteudoPopup);
+
+            const abrirPopupDoMarcador = () => {
+              marcador.openPopup();
+            };
+
+            const abrirPopupECentralizar = () => {
+              marcador.openPopup();
+              mapa.flyTo([latitude, longitude], 15, { duration: 1.1 });
+            };
+
+            marcador.on("click", abrirPopupECentralizar);
+
+            if (
+              window.matchMedia("(hover: hover) and (pointer: fine)").matches
+            ) {
+              marcador.on("mouseover", abrirPopupDoMarcador);
+              marcador.on("mouseout", () => marcador.closePopup());
+            } else {
+              marcador.on("touchstart", abrirPopupDoMarcador);
+            }
+
+            marcadoresAtivos.push(marcador);
+            coordenadas.push([latitude, longitude]);
+          });
+
+          if (coordenadas.length > 0) {
+            const grupo = L.featureGroup(marcadoresAtivos);
+            mapa.fitBounds(grupo.getBounds().pad(0.25));
+            atualizarStatus(
+              `${coordenadas.length} ocorrência(s) carregada(s)`,
+              "#2e8b57",
+            );
+          }
+        }
+
+        function carregarOcorrenciasMapa() {
+          const ocorrenciasPets =
+            JSON.parse(localStorage.getItem("ocorrenciasPets")) || [];
+          const estadoAtual = JSON.stringify(ocorrenciasPets);
+
+          if (estadoAtual === ultimoEstadoMapa) {
+            return;
+          }
+
+          ultimoEstadoMapa = estadoAtual;
+          renderizarPinsNoMapa(ocorrenciasPets);
+        }
+
+        if (btnCentralizarMapa) {
+          btnCentralizarMapa.addEventListener("click", () => {
+            if (marcadoresAtivos.length > 0) {
+              const grupo = L.featureGroup(marcadoresAtivos);
+              mapa.fitBounds(grupo.getBounds().pad(0.25));
+            } else {
+              mapa.setView([-16.3299, -39.0202], 14);
+            }
+          });
+        }
+
+        window.addEventListener("resize", () => mapa.invalidateSize());
+        setTimeout(() => mapa.invalidateSize(), 250);
+
+        carregarOcorrenciasMapa();
+        window.addEventListener("storage", () => carregarOcorrenciasMapa());
+        setInterval(carregarOcorrenciasMapa, 2000);
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+
+    <!-- Script modular integrado com o Firestore e o Authentication em tempo real -->
+    <script type="module">
+      // 🚀 ATUALIZADO: Importamos getApps e getApp para evitar erros de inicialização duplicada
+      import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+      import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+      // Configuração do Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
+        authDomain: "petconecta-db068.firebaseapp.com",
+        projectId: "petconecta-db068",
+        storageBucket: "petconecta-db068.firebasestorage.app",
+        messagingSenderId: "1030110038715",
+        appId: "1:1030110038715:web:151deca61831138159b79e"
+      };
+
+      // 🚀 CORREÇÃO: Inicialização segura do Firebase (evita conflitos com outros scripts)
+      const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // --- MENU DE NAVEGAÇÃO DINÂMICO COM AUTH ---
+      onAuthStateChanged(auth, (user) => {
+        const menu = document.getElementById("menu");
+        if (!menu) return;
+
+        // Mantém os links base estruturados que já estavam no seu HTML original
+        const linksBase = `
+          <li><a href="#home">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a href="https://www.anjosdajuda.org/adote" target="_blank" rel="noopener noreferrer">Adoção</a>
+          </li>
+          <li><a href="#dicas">Cuidados</a></li>         
+          <li><a href="#contatos">Contato</a></li>
+        `;
+
+                if (user) {
+          // Extrai o nome de exibição do usuário (ou o início do e-mail)
+          const nomeExibicao = user.displayName || user.email.split('@')[0];
+          
+          // 🚀 ATUALIZADO: Cores ajustadas para contraste WCAG perfeito sobre fundo laranja
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="cadastrados.html">Meus Pets</a></li>
+            <li><span style="color: #ffe0cc; font-weight: bold; margin-left: 10px; display: inline-block; padding: 10px 16px;">Olá, ${nomeExibicao}!</span></li>
+            <li><a href="#" id="btn-logout" style="color: #ffccd5; font-weight: bold; text-decoration: none;">Sair</a></li>
+          `;
+
+          // Atribui o clique do logout de forma reativa
+          const btnLogout = document.getElementById("btn-logout");
+          if (btnLogout) {
+            btnLogout.addEventListener("click", (e) => {
+              e.preventDefault();
+              signOut(auth).then(() => {
+                localStorage.removeItem("usuarioLogado");
+                window.location.reload(); 
+              });
+            });
+          }
+        }
+         else {
+          // Usuário deslogado: adiciona o botão verde "Entrar / Cadastrar"
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="criar-conta.html" style="color: #4CAF50; font-weight: bold; text-decoration: none;">Entrar / Cadastrar</a></li>
+          `;
+        }
+      });
+
+      // --- MAPA EM TEMPO REAL ---
+      // 🚀 ADICIONADO: Callback de tratamento de erro para capturar "Missing or insufficient permissions" de forma segura
+      onSnapshot(collection(db, "pets"), (snapshot) => {
+        const ocorrencias = [];
+        snapshot.forEach(doc => {
+          const pet = doc.data();
+          ocorrencias.push({
+            id: doc.id,
+            nome: pet.nome || pet.nomePet || "Sem nome",
+            status: pet.status || "desaparecido",
+            lat: pet.lat || pet.latitude,
+            lng: pet.lng || pet.longitude,
+            imagem: pet.imagem || pet.fotoPet || "",
+            descricao: pet.descricao || pet.descricaoPet || ""
+          });
+        });
+
+        // Grava os dados reativos no localStorage para alimentar o script nativo do Leaflet
+        localStorage.setItem("ocorrenciasPets", JSON.stringify(ocorrencias));
+      }, (error) => {
+        console.error("Erro na escuta de atualizações do mapa (Firestore):", error);
+        const statusMapa = document.getElementById("mapa-status");
+        if (statusMapa) {
+          statusMapa.textContent = "Erro de autorização nas regras do banco de dados.";
+          statusMapa.style.color = "red";
+        }
+      });
+    </script>
+  </body>
+</html>
+<!doctype html>
+<!-- Arquivo HTML: index.html | Estrutura e conteúdo da página correspondente. -->
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>PetConecta | Página Inicial</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/home.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/buttons-global.css" />
+  </head>
+
+  <body>
+    <header id="cabeca">
+      <h1 id="logo">🐾 PetConecta</h1>
+      <nav id="nav-menu">
+        <button
+          id="btn-mobile"
+          aria-label="Abrir Menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          Menu
+          <span id="hamburguer"></span>
+        </button>
+
+        <!-- Este menu será preenchido dinamicamente pelo script modular do Firebase -->
+        <ul id="menu">
+          <li><a href="#home">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a
+              href="https://www.anjosdajuda.org/adote"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Adoção</a
+            >
+          </li>
+          <li><a href="#dicas">Cuidados</a></li>        
+          <li><a href="#contatos">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="welcome" id="home">
+        <div class="logoImg">
+          <div class="interno"></div>
+        </div>
+        <h1>Bem-vindo ao PetConecta!</h1>
+        <h2>Cadastre seu pet desaparecido aqui!</h2>
+        <!-- 🚀 ATIVADO: Agora este botão redireciona para a página de publicação -->
+        <button id="action-btn" class="btn">Cadastrar</button>
+      </section>
+
+      <section class="highlights">
+        <article class="highlight-box">
+          <h2>Campanhas Ativas</h2>
+          <a href="#campanhas">
+            <img
+              src="assets/img/campanha.png"
+              alt="Campanha Alimente o Amor"
+              class="highlight-image"
+            />
+          </a>
+          <h3>🐾 Campanha: Alimente o Amor</h3>
+          <p>
+            Milhares de focinhos esperam por um gesto seu. Doe ração. Doe
+            esperança. Juntos, podemos encher potes e corações.
+          </p>
+        </article>
+
+        <article class="highlight-box">
+          <h2>Adestramento</h2>
+          <a href="adestramento.html">
+            <img
+              src="assets/img/k9.png"
+              alt="Adestramento de pets"
+              class="highlight-image"
+            />
+          </a>
+          <h3>🐾 Treinamento e Bem-Estar</h3>
+          <p>
+            Eduque seu pet com paciência e amor. Adestramento transforma
+            comportamentos e fortalece a relação entre você e seu companheiro.
+          </p>
+          <a href="adestramento.html" class="card-link"
+            >Ver dicas de adestramento →</a
+          >
+        </article>
+
+        <article class="highlight-box">
+          <h2>Dicas</h2>
+          <a href="dicas.html">
+            <img
+              src="assets/img/gato-perdido.jpg"
+              alt="Dicas para encontrar pets"
+              class="highlight-image"
+            />
+          </a>
+          <h3>🐾 Como encontrar seu pet</h3>
+          <p>
+            Espalhe cartazes com foto, nome e telefone. Use redes sociais e
+            grupos locais de proteção animal.
+          </p>
+          <a href="dicas.html" class="card-link">Ver todas as dicas →</a>
+        </article>
+      </section>
+
+      <section class="about-container">
+        <div id="info">
+          <h1>Sobre Nós</h1>
+          <div class="linha"></div>
+          <p class="texto1">
+            Somos apaixonados por animais e movidos pelo desejo de reunir
+            famílias. Nossa plataforma nasceu com um propósito claro: ajudar na
+            localização de pets perdidos, oferecendo esperança e apoio a quem
+            enfrenta o sofrimento de uma separação inesperada. Aqui, cada
+            latido, miado ou olhar faz diferença. Acreditamos que nenhum animal
+            deve ficar longe de seu lar por falta de informação ou ajuda. Por
+            isso, criamos um espaço onde tutores podem divulgar rapidamente o
+            desaparecimento de seus companheiros, e onde a comunidade pode
+            colaborar ativamente com avistamentos e resgates. Além disso,
+            dedicamos uma área especial à adoção responsável. Sabemos que muitos
+            animais esperam por uma nova chance, por um lar cheio de carinho e
+            cuidado. Se você está pronto para abrir seu coração, nossa seção de
+            adoção conecta você a pets que precisam de uma nova história.
+            Juntos, podemos transformar perdas in reencontros e solidão em novos
+            começos. Seja bem-vindo à nossa rede de cuidado, empatia e amor
+            pelos animais.
+          </p>
+        </div>
+      </section>
+
+      <section class="campanha-container" id="campanhas">
+        <h2>🎉 Campanha em Destaque</h2>
+        <div class="card">
+          <p class="campanha-intro">
+            <span class="campanha-destaque"
+              >Cada compra gera uma doação para cães e gatos resgatados.</span
+            >
+          </p>
+
+          <div class="progress-container">
+            <div class="progress-label">
+              <span><strong>Meta:</strong> 5 toneladas de ração</span>
+              <span><strong>Progresso:</strong> 3.2 toneladas (64%)</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill"></div>
+            </div>
+          </div>
+
+          <button class="btn" disabled>🐾 Quero Ajudar</button>
+        </div>
+      </section>
+
+      <section class="carousel-section">
+        <div id="carousel_info" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="3" aria-label="Slide 4"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="4" aria-label="Slide 5"></button>
+            <button type="button" data-bs-target="#carousel_info" data-bs-slide-to="5" aria-label="Slide 6"></button>
+          </div>
+
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img
+                src="assets/img/visceral.jpg"
+                class="d-block w-100"
+                alt="Campanha Ativa"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/adoção.jpg"
+                class="d-block w-100"
+                alt="Adoções Recentes"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/gato-perdido.jpg"
+                class="d-block w-100"
+                alt="Dicas para Pets"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/leishmaniose.jpg"
+                class="d-block w-100"
+                alt="Campanha de Prevenção contra Leishmaniose"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/castrar-animais.jpg"
+                class="d-block w-100"
+                alt="Importância da Vacinação"
+              />
+            </div>
+            <div class="carousel-item">
+              <img
+                src="assets/img/castracao_campanha.png"
+                class="d-block w-100"
+                alt="Importância da Castração"
+              />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carousel_info"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carousel_info"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próximo</span>
+          </button>
+        </div>
+      </section>
+
+      <section id="adocoes">
+        <div class="adocoes-container"></div>
+      </section>
+
+      <section id="dicas" class="dicas-container">
+        <h2>🔍 Dicas para Encontrar seu Pet</h2>
+        <div class="card dicas-card">
+          <div class="dicas-list">
+            <div class="dica-item">
+              <span class="dica-numero">01</span>
+              <div class="dica-content">
+                <h3>Espalhe cartazes na vizinhança</h3>
+                <p>
+                  Distribua por ruas próximas, comércios e postos de gasolina
+                </p>
+                <a
+                  href="https://br.freepik.com/vetores/cartaz-animal-perdido"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn btn-download"
+                  >📥 Baixar Modelo</a
+                >
+              </div>
+            </div>
+
+            <div class="dica-item">
+              <span class="dica-numero">02</span>
+              <div class="dica-content">
+                <h3>Use redes sociais para ampliar o alcance</h3>
+                <p>
+                  Compartilhe em grupos locais, comunidades e perfis de proteção
+                  animal
+                </p>
+              </div>
+            </div>
+
+            <div class="dica-item">
+              <span class="dica-numero">03</span>
+              <div class="dica-content">
+                <h3>Cadastre seu pet perdido no PetFinder</h3>
+                <p>Aumente a visibilidade alertando a comunidade do sistema</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="cuidados">
+        <section class="grid" aria-label="Categorias de Dicas">
+          <article class="card">
+            <a href="dicas.html#saude">
+              <img
+                src="assets/img/saude-pet.png"
+                alt="Veterinária cuidando de cachorro"
+              />
+            </a>
+            <h2>🩺 Saúde</h2>
+            <ul>
+              <li>Vacinação em dia.</li>
+              <li>Consultas veterinárias anuais.</li>
+            </ul>
+            <a href="dicas.html#saude" class="card-link"
+              >Ver dicas de saúde →</a
+            >
+          </article>
+
+          <article class="card">
+            <a href="dicas.html#alimentacao">
+              <img src="assets/img/alimentacao.png" alt="Alimentando felino" />
+            </a>
+            <h2>🍽️ Alimentação</h2>
+            <ul>
+              <li>Ração de qualidade conforme idade e porte.</li>
+              <li>Evite alimentos humanos tóxicos como chocolate e cebola.</li>
+              <li>Água fresca sempre disponível.</li>
+              <li>Petiscos com moderação como recompensa.</li>
+            </ul>
+            <a href="dicas.html#alimentacao" class="card-link"
+              >Ver dicas de alimentação →</a
+            >
+          </article>
+
+          <article class="card">
+            <a href="dicas.html#viagens">
+              <img
+                src="assets/img/viagem.png"
+                alt="Família ao lado do carro colocando pet na caixa de transporte"
+              />
+            </a>
+            <h2>✈️ Viagens com Pets</h2>
+            <ul>
+              <li>Use caixas de transporte ou cintos específicos.</li>
+              <li>Leve carteira de vacinação e atestado de saúde.</li>
+              <li>Leve brinquedos e objetos familiares para adaptação.</li>
+              <li>Nunca deixe o pet sozinho no carro.</li>
+            </ul>
+            <a href="dicas.html#viagens" class="card-link"
+              >Ver dicas de viagem →</a
+            >
+          </article>
+
+          <article class="card">
+            <a href="dicas.html#comportamento">
+              <img
+                src="assets/img/exercicio-pet.png"
+                alt="Mulher fazendo exercícios ao ar livre com cachorros"
+              />
+            </a>
+            <h2>🧘‍♂️ Bem-estar e Comportamento</h2>
+            <ul>
+              <li>Exercícios diários e estímulos mentais.</li>
+              <li>Socialização com outros animais e pessoas.</li>
+              <li>Ambiente seguro e confortável com cama e brinquedos.</li>
+              <li>Use reforço positivo para ensinar comandos.</li>
+            </ul>
+            <a href="dicas.html#comportamento" class="card-link"
+              >Ver dicas de comportamento →</a
+            >
+          </article>
+
+          <article class="card">
+            <h2>🩹 Cuidados Especiais</h2>
+            <img
+              id="combo"
+              src="assets/img/cuidados-especiais.png"
+              alt="Veterinária examinando um gato idoso"
+            />
+          </article>
+        </section>
+
+        <div id="emergencia-container">
+          <section class="emergencia">
+            <h2>🚨 Emergências</h2>
+            <div class="emergency-box">
+              <p class="emergency-text">
+                Se seu pet ingeriu algo tóxico, procure um veterinário
+                imediatamente.
+              </p>
+              <a
+                href="https://www.google.com/search?q=emergencia+veterinaria+perto+de+mim"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-emergencia"
+                >Ver Veterinários 24h</a
+              >
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <section class="frases-section">
+        <h2>💬 Frases que Inspiram</h2>
+        <div class="card">
+          <p>“Cada clique pode mudar uma vida.”</p>
+          <p>“Adotar é multiplicar amor.”</p>
+          <p>“Seu lar pode ser o recomeço de alguém.”</p>
+        </div>
+      </section>
+
+      <section class="mapa-section">
+        <h1>🗺️ Mapa de Ocorrências</h1>
+        <p class="legenda-mapa">
+          <span class="mapa-label-desaparecido">🔴 Desaparecidos</span>
+          &nbsp;&nbsp;|&nbsp;&nbsp;
+          <span class="mapa-label-encontrado">🟢 Encontrados</span>
+        </p>
+        <div class="mapa-toolbar">
+          <button type="button" id="btnCentralizarMapa" class="btn-geo">
+            🧭 Centralizar mapa
+          </button>
+          <span id="mapa-status" class="mapa-status"
+            >Carregando ocorrências...</span
+          >
+        </div>
+        <div id="mapa-pets"></div>
+      </section>
+      
+      <section class="desaparecidos">
+        <h1>Desaparecidos</h1>
+        <div class="filtros">
+          <h4>🔍 Filtrar pets</h4>
+          <select id="filtroTipoDesaparecido" title="Filtrar por tipo">
+            <option value="">Tipo</option>
+            <option value="Cão">Cão</option>
+            <option value="Gato">Gato</option>
+          </select>
+          <select id="filtroSexoDesaparecido" title="Filtrar por sexo">
+            <option value="">Sexo</option>
+            <option value="Macho">Macho</option>
+            <option value="Fêmea">Fêmea</option>
+          </select>
+          <select id="filtroPorteDesaparecido" title="Filtrar por porte">
+            <option value="">Porte</option>
+            <option value="Pequeno">Pequeno</option>
+            <option value="Médio">Médio</option>
+            <option value="Grande">Grande</option>
+          </select>
+
+          <button type="button" id="btnLocalizacaoPet" class="btn-geo">
+            📍 Pets Próximos
+          </button>
+
+          <button id="btnFiltrarDesaparecido">Filtrar</button>
+          <button id="btnLimparDesaparecido">Limpar</button>
+
+          <span id="statusLocalizacaoPet"></span>
+        </div>
+        <div class="container-cards"></div>
+      </section>
+
+      <section class="contact-section" id="contatos">
+        <h1>Fale Conosco</h1>
+        <form id="contact-form" class="contact-form">
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome" required />
+
+          <label for="email">E-mail:</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="mensagem">Mensagem:</label>
+          <textarea id="mensagem" name="mensagem" rows="5" required></textarea>
+
+          <button type="submit">Enviar</button>
+          <p id="mensagemStatus"></p>
+        </form>
+      </section>
+
+      <section class="partners-section">
+        <h2>🤝 Parcerias</h2>
+        <div class="parceiros">
+          <div id="pelegrinos"></div>
+          <a
+            href="https://wa.me/5573998248286"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="partner-card"
+            title="Paulo Ventura - Adestrador | (73) 99824-8286"
+          >
+            <img
+              src="assets/img/paulo_ventura.jpeg"
+              alt="Paulo Ventura - Adestrador"
+              class="paulo-ventura"
+            />
+          </a>
+        </div>
+        <p>
+          Se você representa uma ONG, clínica veterinária, pet shop ou deseja
+          apoiar nossa causa, entre em contato!
+        </p>
+        <ul>
+          <li>
+            Email:
+            <a href="mailto:parcerias@petfinder.com.br"
+              >parcerias@petfinder.com.br</a
+            >
+          </li>
+          <li>Telefone: <a href="tel:+5571999999999">(71) 99999-9999</a></li>
+          <li>
+            Instagram:
+            <a
+              href="https://instagram.com/PetConecta"
+              target="_blank"
+              rel="noopener noreferrer"
+              >@petConecta</a
+            >
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <h3>🐶 PetConecta</h3>
+        <p>Conectando pets incríveis a lares amorosos 💕</p>
+        <div class="social-links">
+          <a
+            href="https://www.instagram.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+              alt="Instagram"
+            />
+          </a>
+          <a
+            href="https://www.facebook.com/seuusuario"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
+              alt="Facebook"
+            />
+          </a>
+        </div>
+        <nav class="footer-nav">
+          <a href="#home">Página Inicial</a>
+          <a href="#adocoes">Adoção</a>
+          <a href="#dicas">Cuidados</a>
+          <a href="#contatos">Contato</a>
+        </nav>
+        <p class="copyright">
+          © 2026 PetConecta. Todos os direitos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script src="script/anima.js" defer></script>
+    <script src="script/parceiros.js"></script>
+    <script type="module" src="script/exibir_pets.js"></script>
+    <script type="module" src="script/main.js"></script>
+    <script type="module" src="script/contatoAPI.js"></script>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+
+    <script>
+      // Mobile navbar
+      const btnMobile = document.querySelector("#btn-mobile");
+      function toggleMenu() {
+        const nav = document.querySelector("#nav-menu");
+        nav.classList.toggle("active");
+      }
+      btnMobile.addEventListener("click", toggleMenu);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- ADICIONADO: Lógica de clique do botão "Cadastrar" do Banner ---
+        const actionBtn = document.getElementById("action-btn");
+        if (actionBtn) {
+          actionBtn.addEventListener("click", () => {
+            window.location.href = "publicar.html";
+          });
+        }
+
+        // --- ELEMENTOS DO PRIMEIRO FILTRO (ADOÇÃO) ---
+        const btnLocalizacao = document.getElementById("btnLocalizacao");
+        const statusLocalizacao = document.getElementById("statusLocalizacao");
+
+        // --- ELEMENTOS DO SEGUNDO FILTRO (DESAPARECIDOS) ---
+        const btnLocalizacaoPet = document.getElementById("btnLocalizacaoPet");
+        const statusLocalizacaoPet = document.getElementById(
+          "statusLocalizacaoPet",
+        );
+
+        // Função genérica para tratar a geolocalização em ambos os botões
+        function buscarGeolocalizacao(status1, status2) {
+          if (!navigator.geolocation) {
+            status1.textContent =
+              "Geolocalização não suportada no seu navegador.";
+            status2.textContent =
+              "Geolocalização não suportada no seu navegador.";
+            status1.style.color = "red";
+            status2.style.color = "red";
+            return;
+          }
+
+          status1.textContent =
+            "Buscando localização... Permita o acesso no navegador.";
+          status2.textContent =
+            "Buscando localização... Permita o acesso no navegador.";
+          status1.style.color = "#ff751a";
+          status2.style.color = "#ff751a";
+
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+
+              status1.textContent =
+                "Coordenadas obtidas! Identificando cidade...";
+              status2.textContent =
+                "Coordenadas obtidas! Identificando cidade...";
+
+              if (typeof mapa !== "undefined") {
+                mapa.setView([lat, lng], 13);
+              }
+
+              try {
+                const response = await fetch(
+                  `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&addressdetails=1`,
+                  { headers: { "Accept-Language": "pt-BR" } },
+                );
+
+                if (!response.ok) throw new Error();
+
+                const data = await response.json();
+                const cidadeUsuario =
+                  data.address.city ||
+                  data.address.town ||
+                  data.address.village ||
+                  "";
+
+                if (cidadeUsuario) {
+                  const mensagemSucesso = `📍 Pets filtrados em: ${cidadeUsuario}`;
+                  status1.textContent = mensagemSucesso;
+                  status2.textContent = mensagemSucesso;
+                  status1.style.color = "green";
+                  status2.style.color = "green";
+
+                  filtrarPorCidadeDoUsuario(cidadeUsuario);
+                } else {
+                  status1.textContent =
+                    "Não encontramos uma cidade definida para esta localização.";
+                  status1.style.color = "orange";
+                }
+              } catch (error) {
+                status1.textContent =
+                  "Erro ao conectar com o serviço de mapas.";
+                status1.style.color = "red";
+              }
+            },
+            (error) => {
+              status1.style.color = "red";
+              if (error.code === error.PERMISSION_DENIED) {
+                status1.textContent =
+                  "Acesso à localização recusado pelo usuário.";
+              } else {
+                status1.textContent =
+                  "Não foi possível obter sua localização atual.";
+              }
+            },
+          );
+        }
+
+        // Ouvintes de evento para os botões de localização (ambos atualizam os respectivos spans)
+        if (btnLocalizacao) {
+          btnLocalizacao.addEventListener("click", () => {
+            buscarGeolocalizacao(statusLocalizacao, statusLocalizacaoPet);
+          });
+        }
+
+        if (btnLocalizacaoPet) {
+          btnLocalizacaoPet.addEventListener("click", () => {
+            buscarGeolocalizacao(statusLocalizacaoPet, statusLocalizacao);
+          });
+        }
+
+        function filtrarPorCidadeDoUsuario(cidade) {
+          console.log(
+            `Buscando no banco de dados do PetConecta animais cadastrados na cidade: ${cidade}`,
+          );
+        }
+
+        // --- CONFIGURAÇÃO E INICIALIZAÇÃO DO MAPA ---
+        const mapa = L.map("mapa-pets", {
+          zoomControl: true,
+          scrollWheelZoom: true,
+          doubleClickZoom: true,
+        }).setView([-16.3299, -39.0202], 14);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          maxZoom: 19,
+          attribution: "© OpenStreetMap contributors",
+        }).addTo(mapa);
+
+        L.control.scale({ position: "bottomleft" }).addTo(mapa);
+
+        const mapaStatus = document.getElementById("mapa-status");
+        const btnCentralizarMapa =
+          document.getElementById("btnCentralizarMapa");
+        let marcadoresAtivos = [];
+
+        function atualizarStatus(texto, cor = "#ff751a") {
+          if (mapaStatus) {
+            mapaStatus.textContent = texto;
+            mapaStatus.style.color = cor;
+          }
+        }
+
+        const iconeDesaparecido = L.divIcon({
+          className: "custom-pin-desaparecido",
+          html: `<div style="background-color: #ff3333; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.4);"></div>`,
+          iconSize: [14, 14],
+          iconAnchor: [7, 7],
+        });
+
+        const iconeEncontrado = L.divIcon({
+          className: "custom-pin-encontrado",
+          html: `<div style="background-color: #2beb31; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.4);"></div>`,
+          iconSize: [14, 14],
+          iconAnchor: [7, 7],
+        });
+
+        let ultimoEstadoMapa = "";
+
+        function limparMarcadores() {
+          marcadoresAtivos.forEach((marcador) => {
+            mapa.removeLayer(marcador);
+          });
+          marcadoresAtivos = [];
+        }
+
+        function renderizarPinsNoMapa(listaPets) {
+          limparMarcadores();
+
+          if (!listaPets || listaPets.length === 0) {
+            atualizarStatus("Nenhuma ocorrência cadastrada ainda.", "#777");
+            mapa.setView([-16.3299, -39.0202], 14);
+            return;
+          }
+
+          const coordenadas = [];
+
+          listaPets.forEach((pet) => {
+            const latitude = pet.lat || pet.latitude;
+            const longitude = pet.lng || pet.longitude;
+
+            if (!latitude || !longitude) return;
+
+            const iconeMarcador =
+              pet.status === "desaparecido"
+                ? iconeDesaparecido
+                : iconeEncontrado;
+            const corTextoPopup =
+              pet.status === "desaparecido" ? "#ff3333" : "#2beb31";
+            const tagStatus =
+              pet.status === "desaparecido"
+                ? "🚨 Desaparecido"
+                : "✅ Encontrado";
+
+            const conteudoPopup = `
+              <strong style="color: ${corTextoPopup}; font-size: 1rem;">${tagStatus}</strong><br>
+              <div><img style="width:100%; border-radius:8px; margin-top:6px;" src="${pet.imagem}" alt="${pet.nome}" onerror="this.src='https://via.placeholder.com/150'"></div>
+              <strong>Nome:</strong> ${pet.nome || "Sem nome"}<br>
+              <strong>Info:</strong> ${pet.descricao || "Sem informações adicionais."}
+            `;
+
+            const marcador = L.marker([latitude, longitude], {
+              icon: iconeMarcador,
+            })
+              .addTo(mapa)
+              .bindPopup(conteudoPopup);
+
+            const abrirPopupDoMarcador = () => {
+              marcador.openPopup();
+            };
+
+            const abrirPopupECentralizar = () => {
+              marcador.openPopup();
+              mapa.flyTo([latitude, longitude], 15, { duration: 1.1 });
+            };
+
+            marcador.on("click", abrirPopupECentralizar);
+
+            if (
+              window.matchMedia("(hover: hover) and (pointer: fine)").matches
+            ) {
+              marcador.on("mouseover", abrirPopupDoMarcador);
+              marcador.on("mouseout", () => marcador.closePopup());
+            } else {
+              marcador.on("touchstart", abrirPopupDoMarcador);
+            }
+
+            marcadoresAtivos.push(marcador);
+            coordenadas.push([latitude, longitude]);
+          });
+
+          if (coordenadas.length > 0) {
+            const grupo = L.featureGroup(marcadoresAtivos);
+            mapa.fitBounds(grupo.getBounds().pad(0.25));
+            atualizarStatus(
+              `${coordenadas.length} ocorrência(s) carregada(s)`,
+              "#2e8b57",
+            );
+          }
+        }
+
+        function carregarOcorrenciasMapa() {
+          const ocorrenciasPets =
+            JSON.parse(localStorage.getItem("ocorrenciasPets")) || [];
+          const estadoAtual = JSON.stringify(ocorrenciasPets);
+
+          if (estadoAtual === ultimoEstadoMapa) {
+            return;
+          }
+
+          ultimoEstadoMapa = estadoAtual;
+          renderizarPinsNoMapa(ocorrenciasPets);
+        }
+
+        if (btnCentralizarMapa) {
+          btnCentralizarMapa.addEventListener("click", () => {
+            if (marcadoresAtivos.length > 0) {
+              const grupo = L.featureGroup(marcadoresAtivos);
+              mapa.fitBounds(grupo.getBounds().pad(0.25));
+            } else {
+              mapa.setView([-16.3299, -39.0202], 14);
+            }
+          });
+        }
+
+        window.addEventListener("resize", () => mapa.invalidateSize());
+        setTimeout(() => mapa.invalidateSize(), 250);
+
+        carregarOcorrenciasMapa();
+        window.addEventListener("storage", () => carregarOcorrenciasMapa());
+        setInterval(carregarOcorrenciasMapa, 2000);
+      });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      defer
+    ></script>
+
+    <!-- Script modular integrado com o Firestore e o Authentication em tempo real -->
+    <script type="module">
+      // 🚀 ATUALIZADO: Importamos getApps e getApp para evitar erros de inicialização duplicada
+      import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+      import { getFirestore, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+      import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+      // Configuração do Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
+        authDomain: "petconecta-db068.firebaseapp.com",
+        projectId: "petconecta-db068",
+        storageBucket: "petconecta-db068.firebasestorage.app",
+        messagingSenderId: "1030110038715",
+        appId: "1:1030110038715:web:151deca61831138159b79e"
+      };
+
+      // 🚀 CORREÇÃO: Inicialização segura do Firebase (evita conflitos com outros scripts)
+      const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+      const db = getFirestore(app);
+      const auth = getAuth(app);
+
+      // --- MENU DE NAVEGAÇÃO DINÂMICO COM AUTH ---
+      onAuthStateChanged(auth, (user) => {
+        const menu = document.getElementById("menu");
+        if (!menu) return;
+
+        // Mantém os links base estruturados que já estavam no seu HTML original
+        const linksBase = `
+          <li><a href="#home">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a href="https://www.anjosdajuda.org/adote" target="_blank" rel="noopener noreferrer">Adoção</a>
+          </li>
+          <li><a href="#dicas">Cuidados</a></li>         
+          <li><a href="#contatos">Contato</a></li>
+        `;
+
+                if (user) {
+          // Extrai o nome de exibição do usuário (ou o início do e-mail)
+          const nomeExibicao = user.displayName || user.email.split('@')[0];
+          
+          // 🚀 ATUALIZADO: Cores ajustadas para contraste WCAG perfeito sobre fundo laranja
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="cadastrados.html">Meus Pets</a></li>
+            <li><span style="color: #ffe0cc; font-weight: bold; margin-left: 10px; display: inline-block; padding: 10px 16px;">Olá, ${nomeExibicao}!</span></li>
+            <li><a href="#" id="btn-logout" style="color: #ffccd5; font-weight: bold; text-decoration: none;">Sair</a></li>
+          `;
+
+          // Atribui o clique do logout de forma reativa
+          const btnLogout = document.getElementById("btn-logout");
+          if (btnLogout) {
+            btnLogout.addEventListener("click", (e) => {
+              e.preventDefault();
+              signOut(auth).then(() => {
+                localStorage.removeItem("usuarioLogado");
+                window.location.reload(); 
+              });
+            });
+          }
+        }
+         else {
+          // Usuário deslogado: adiciona o botão verde "Entrar / Cadastrar"
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="criar-conta.html" style="color: #4CAF50; font-weight: bold; text-decoration: none;">Entrar / Cadastrar</a></li>
+          `;
+        }
+      });
+
+      // --- MAPA EM TEMPO REAL ---
+      // 🚀 ADICIONADO: Callback de tratamento de erro para capturar "Missing or insufficient permissions" de forma segura
+      onSnapshot(collection(db, "pets"), (snapshot) => {
+        const ocorrencias = [];
+        snapshot.forEach(doc => {
+          const pet = doc.data();
+          ocorrencias.push({
+            id: doc.id,
+            nome: pet.nome || pet.nomePet || "Sem nome",
+            status: pet.status || "desaparecido",
+            lat: pet.lat || pet.latitude,
+            lng: pet.lng || pet.longitude,
+            imagem: pet.imagem || pet.fotoPet || "",
+            descricao: pet.descricao || pet.descricaoPet || ""
+          });
+        });
+
+        // Grava os dados reativos no localStorage para alimentar o script nativo do Leaflet
+        localStorage.setItem("ocorrenciasPets", JSON.stringify(ocorrencias));
+      }, (error) => {
+        console.error("Erro na escuta de atualizações do mapa (Firestore):", error);
+        const statusMapa = document.getElementById("mapa-status");
+        if (statusMapa) {
+          statusMapa.textContent = "Erro de autorização nas regras do banco de dados.";
+          statusMapa.style.color = "red";
+        }
+      });
+    </script>
+  </body>
+</html>
