@@ -22,7 +22,7 @@ Objetivos do sistema:
 
 ### 2.2 Fora de escopo
 
-- moderacao automatica por IA;
+- moderacao automatica por IA (evolucao futura, nao obrigatoria nesta entrega);
 - trilha completa de auditoria legal;
 - BI avancado e dashboards executivos;
 - app mobile nativo.
@@ -43,6 +43,8 @@ Objetivos do sistema:
 - Administrador (futuro): consulta contatos e modera conteudo.
 
 ### 3.2 Requisitos funcionais
+
+Observacao: os requisitos funcionais desta versao nao dependem de inteligencia artificial. O uso de IA aparece apenas como possibilidade de evolucao futura e fora do escopo da entrega atual.
 
 - RF01: autenticar usuario com Firebase Authentication.
 - RF02: publicar pet com dados estruturados e imagem.
