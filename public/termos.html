@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Termos de Uso e Privacidade - PetConecta</title>
+    <link rel="stylesheet" href="css/publicar.css" />
+  </head>
+  <body>
+    <header id="cabeca">
+      <h1 id="logo">🐾 PetConecta</h1>
+      <nav id="nav-menu">
+        <button
+          id="btn-mobile"
+          aria-label="Abrir Menu"
+          aria-expanded="false"
+          aria-controls="menu"
+        >
+          Menu <span id="hamburguer"></span>
+        </button>
+        <ul id="menu">
+          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a
+              href="https://www.anjosdajuda.org/adote"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Adoção</a
+            >
+          </li>
+          <li><a href="dicas.html">Cuidados</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <div class="cadastro-container" style="max-width: 900px; line-height: 1.6">
+      <h2>Política de Privacidade e Termos de Uso</h2>
+
+      <p>
+        A presente Política de Privacidade regula o tratamento dos dados
+        pessoais coletados pela plataforma <strong>PetConecta</strong>, em
+        conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº
+        13.709/2018 - LGPD).
+      </p>
+
+      <h3>1. Coleta e Finalidade dos Dados</h3>
+      <p>
+        Para viabilizar a localização de animais desaparecidos, coletamos os
+        seguintes dados informados voluntariamente pelo usuário:
+      </p>
+      <ul>
+        <li>
+          <strong>Dados de Contato:</strong> E-mail e WhatsApp (utilizados para
+          que pessoas que encontrarem o pet entrem em contato).
+        </li>
+        <li>
+          <strong>Dados de Localização:</strong> Endereço e coordenadas
+          geográficas da última vez em que o pet foi visto.
+        </li>
+        <li>
+          <strong>Registros de Auditoria:</strong> Data, hora, e-mail e ID de
+          autenticação da aceitação deste termo.
+        </li>
+      </ul>
+
+      <h3>2. Visibilidade Pública</h3>
+      <p>
+        Ao publicar um anúncio de pet desaparecido, o usuário declara ciência de
+        que os dados do pet e a localização aproximada selecionada no mapa ficam
+        visíveis para os visitantes da plataforma com o único propósito de
+        facilitar o resgate. Os dados de contato (e-mail/WhatsApp) são
+        protegidos e só passam a ser exibidos após a pessoa demonstrar interesse
+        real em ajudar, por meio do fluxo interno de detalhes e confirmação do
+        contato.
+      </p>
+
+      <h3>3. Consentimento e Auditoria</h3>
+      <p>
+        O tratamento dos dados baseia-se no consentimento expresso do titular ao
+        marcar a caixa de seleção no formulário de cadastro. Esse aceite é
+        registrado em nosso banco de dados para fins de auditoria e conformidade
+        legal.
+      </p>
+
+      <h3>4. Exclusão de Dados</h3>
+      <p>
+        O usuário pode, a qualquer momento, solicitar a remoção de seus dados e
+        anúncios diretamente no painel da conta ("Meus Pets") ou entrando em
+        contato com a equipe do PetConecta.
+      </p>
+
+      <p style="margin-top: 20px; font-size: 0.85rem; color: #666">
+        Última atualização: Agosto de 2026.
+      </p>
+    </div>
+
+    <script>
+      const btnMobile = document.querySelector("#btn-mobile");
+      const navMenu = document.querySelector("#nav-menu");
+
+      btnMobile?.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+        btnMobile.setAttribute(
+          "aria-expanded",
+          String(navMenu.classList.contains("active")),
+        );
+      });
+    </script>
+  </body>
+</html>

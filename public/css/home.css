@@ -1,8 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
 /* =========================
-   VARIABLES & GLOBAL DESIGN
+   TOKENS DE DESIGN E BASE GLOBAL
    ========================= */
+/*
+  A manutenção visual do site começa aqui.
+  Qualquer ajuste de cor, espaçamento, raio ou fonte deve ser feito nesta seção
+  para manter a identidade visual consistente em todas as páginas.
+*/
 :root {
   --primary-color: #ff751a;
   --primary-hover: #e06414;
@@ -48,9 +53,13 @@ a {
 }
 
 /* =========================
-   HEADER
+   CABEÇALHO
 ========================= */
-
+/*
+  Cabeçalho principal do site.
+  Alterações aqui afetam a navegação global, sticky position e comportamento em mobile.
+  Se a marca ou a estrutura do menu mudar, revisar este bloco antes de mexer em outros layouts.
+*/
 #cabeca {
   height: 80px;
   display: flex;
@@ -156,9 +165,9 @@ a {
 }
 
 /* =========================
-   HERO / WELCOME
+   HERO / BOAS-VINDAS
 ========================= */
-
+/* Área de destaque inicial com imagem principal, título e chamada para ação. */
 .welcome {
   text-align: center;
   padding: 4rem 2rem 2rem;
@@ -212,7 +221,11 @@ a {
 /* =========================
    BOTÕES GERAIS
 ========================= */
-
+/*
+  Estilo base dos botões do sistema.
+  Como a maioria das ações usam esta regra, qualquer mudança aqui impacta CTA, filtros,
+  botões de ação e elementos interativos em múltiplas páginas.
+*/
 button,
 .btn {
   display: inline-flex;
@@ -257,6 +270,16 @@ button:disabled {
 
 .btn a {
   color: white;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #2e7d32 0%, #1e5e22 100%);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.22);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #1e5e22 0%, #2e7d32 100%);
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
 }
 
 /* =========================
@@ -914,9 +937,14 @@ h2 {
 }
 
 /* ==========================================================================
-   CARDS DE PETS & AÇÕES (CORRIGIDO PARA QUEBRA E ALINHAMENTO)
+   CARDS DE PETS & AÇÕES
    ========================================================================== */
-
+/*
+  Esta seção é crítica para o conteúdo dinâmico do projeto.
+  Os cards de pet reutilizam o mesmo padrão em várias telas e seu layout funciona como
+  base para exibição, filtros, ações e estados de status (encontrado/desaparecido).
+  Alterações aqui impactam a experiência visual completa do catálogo.
+*/
 .container-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -1026,6 +1054,11 @@ h2 {
 }
 
 /* --- ÁREA DE BOTÕES NOS CARDS DE PETS --- */
+/*
+  Botões de ação dos pets.
+  Relembrar: este bloco define o comportamento responsivo e os estilos de ação
+  (editar, excluir, compartilhar, saber mais, encontrou). Qualquer nova ação deve entrar aqui.
+*/
 .pet-card .actions {
   display: flex !important;
   flex-wrap: wrap !important;
@@ -1219,10 +1252,116 @@ footer {
   opacity: 0.8;
 }
 
+.onboarding-guide {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 3000;
+}
+
+.onboarding-guide.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.onboarding-guide__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(25, 18, 12, 0.55);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.onboarding-guide__panel {
+  position: relative;
+  width: min(100%, 640px);
+  background: #fffdf9;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 117, 26, 0.2);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.24);
+  padding: 1.5rem;
+}
+
+.onboarding-guide__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.onboarding-guide__eyebrow {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary-color);
+}
+
+.onboarding-guide__panel h2 {
+  margin: 0;
+  color: var(--text-dark);
+  font-size: 1.75rem;
+}
+
+.onboarding-guide__close {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: #f4efe9;
+  color: var(--text-dark);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+
+.onboarding-guide__intro {
+  margin: 1rem 0 1rem;
+  color: var(--text-light);
+  line-height: 1.6;
+}
+
+.onboarding-guide__steps {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.9rem;
+  color: var(--text-dark);
+  line-height: 1.55;
+}
+
+.onboarding-guide__steps li strong {
+  color: var(--primary-color);
+}
+
+.onboarding-guide__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+body.guide-open {
+  overflow: hidden;
+}
+
 /* =========================
    RESPONSIVIDADE
 ========================= */
-
+/*
+  Responsividade central do layout.
+  Esta área é a primeira a ser revisada quando o painel quebra em tablet ou celular.
+  Sempre testar o menu, cards e mapa após ajustar qualquer regra aqui.
+*/
 @media (max-width: 1024px) {
   .card {
     padding: 12px;
@@ -1273,11 +1412,15 @@ footer {
   }
 
   .highlights {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .highlight-box {
     width: 100%;
+  }
+
+  .cuidados-especiais-grid {
+    grid-template-columns: 1fr;
   }
 
   .carousel-track-wrapper {
@@ -1379,6 +1522,19 @@ footer {
 @media (max-width: 480px) {
   #mapa-pets {
     height: 250px;
+  }
+
+  .onboarding-guide__panel {
+    padding: 1.1rem;
+    border-radius: 18px;
+  }
+
+  .onboarding-guide__panel h2 {
+    font-size: 1.45rem;
+  }
+
+  .onboarding-guide__actions {
+    flex-direction: column;
   }
 
   .dica-item {
@@ -1600,7 +1756,8 @@ footer {
   }
   .pelegrinos-vet,
   .anjosDajuda,
-  .paulo-ventura {
+  .paulo-ventura,
+  .dogsbalsa {
     width: 80px;
     height: 80px;
   }
@@ -1641,12 +1798,12 @@ footer {
     font-size: 0.68rem;
   }
 
-  footer nav {
+  .footer-nav {
     flex-direction: row;
     gap: 0.3rem;
   }
 
-  footer nav a {
+  .footer-nav a {
     font-size: 0.7rem;
     font-weight: bolder;
   }
@@ -1676,7 +1833,8 @@ footer {
 .partner-card img,
 .pelegrinos-vet,
 .anjosDajuda,
-.paulo-ventura {
+.paulo-ventura,
+.dogsbalsa {
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -1684,9 +1842,15 @@ footer {
   display: block;
 }
 
+.dogsbalsa {
+  object-position: center;
+  background: #f4f6f1;
+}
+
 .pelegrinos-vet:hover,
 .anjosDajuda:hover,
-.paulo-ventura:hover {
+.paulo-ventura:hover,
+.dogsbalsa:hover {
   transform: scale(1.05);
   cursor: pointer;
 }
@@ -1715,15 +1879,59 @@ footer {
   margin-bottom: 15px;
 }
 
+.cuidados-especiais-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.cuidados-especiais-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cuidados-especiais-item img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.cuidados-especiais-item figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cuidados-especiais-item h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-dark);
+}
+
+.cuidados-especiais-item p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: var(--text-light);
+}
+
 .btn-emergencia {
   display: inline-block;
   padding: 12px 20px;
-  background-color: #e74c3c;
+  background-color: #d32f2f;
   color: white;
   text-decoration: none;
   font-weight: bold;
   border-radius: 8px;
   text-align: center;
+}
+
+.btn-emergencia:hover {
+  background-color: #b71c1c;
 }
 
 .emergency-text {
@@ -1746,16 +1954,65 @@ footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin: 1rem 0 0;
+  padding: 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fffaf6 0%, #fff3ea 100%);
+  border: 1px solid rgba(255, 117, 26, 0.16);
+  box-shadow: 0 8px 18px rgba(255, 117, 26, 0.1);
 }
 
 .filtros h4 {
   flex-basis: 100%;
   margin: 0;
+  color: #c85a13;
+  font-size: 0.98rem;
+  letter-spacing: 0.2px;
 }
 
-.filtros select,
+.filtros select {
+  -webkit-appearance: none;
+  appearance: none;
+  min-width: 185px;
+  height: 42px;
+  padding: 0 38px 0 12px;
+  border-radius: 10px;
+  border: 1px solid #ffc59f;
+  background-color: #fff;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #d36a24 50%),
+    linear-gradient(135deg, #d36a24 50%, transparent 50%),
+    linear-gradient(to right, #ffe4d1, #ffe4d1);
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%,
+    calc(100% - 36px) 50%;
+  background-size:
+    6px 6px,
+    6px 6px,
+    1px 60%;
+  background-repeat: no-repeat;
+  color: #4a3b33;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(255, 117, 26, 0.08);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.filtros select:hover {
+  border-color: #f39b61;
+}
+
+.filtros select:focus {
+  outline: none;
+  border-color: #f27a2a;
+  box-shadow: 0 0 0 3px rgba(242, 122, 42, 0.2);
+  transform: translateY(-1px);
+}
+
 .filtros button {
   margin: 0;
 }
@@ -1763,9 +2020,10 @@ footer {
 #statusLocalizacaoPet {
   flex-basis: 100%;
   display: block;
-  margin-top: 4px;
+  margin-top: 2px;
   font-size: 0.9rem;
   font-weight: 600;
+  color: #6f4c3a;
 }
 
 @media (max-width: 932px) {
@@ -1773,10 +2031,16 @@ footer {
     display: grid;
     grid-template-columns: 1fr;
     gap: 12px;
+    padding: 12px;
   }
 
   .filtros h4 {
     margin-bottom: 0;
+  }
+
+  .filtros select {
+    width: 100%;
+    min-width: 0;
   }
 
   #statusLocalizacaoPet {

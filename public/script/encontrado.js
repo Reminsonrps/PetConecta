@@ -1,120 +1,136 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+import { auth, db, buildPetsQuery } from "./firebase.js?v=20260818-3";
+import { onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  onSnapshot,
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-import {
-  getAuth,
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-// Configuração do seu projeto PetConecta (CHAVES COMPLETAS ADICIONADAS) [3]
-const firebaseConfig = {
-  apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
-  authDomain: "petconecta-db068.firebaseapp.com",
-  projectId: "petconecta-db068",
-  storageBucket: "petconecta-db068.firebasestorage.app",
-  messagingSenderId: "1030110038715",
-  appId: "1:1030110038715:web:151deca61831138159b79e",
-};
-
-// Inicialização
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-// --- MENU DE NAVEGAÇÃO DINÂMICO COM AUTH ---
+// --- MENU DE NAVEGACAO DINAMICO COM AUTH ---
+// Reconstroi o menu conforme o estado de autenticacao sem inserir dados do usuario como HTML bruto.
 onAuthStateChanged(auth, (user) => {
   const menu = document.getElementById("menu");
   if (!menu) return;
 
-  const linksBase = `
-    <li><a href="index.html">Página Inicial</a></li>
-    <li><a href="animais_encontra.html">Encontrados</a></li>
-    <li>
-      <a
-        href="https://www.anjosdajuda.org/adote"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Adoção</a
-      >
-    </li>
-    <li><a href="dicas.html">Cuidados</a></li>
-    <li><a href="contato.html">Contato</a></li>
-  `;
+  const createLinkItem = (href, label, external = false) => {
+    const item = document.createElement("li");
+    const link = document.createElement("a");
+    link.href = href;
+    link.textContent = label;
+    if (external) {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+    }
+    item.appendChild(link);
+    return item;
+  };
+
+  const createTextItem = (label, className) => {
+    const item = document.createElement("li");
+    item.className = className;
+    const span = document.createElement("span");
+    span.className = className === "menu-user-item" ? "menu-user" : "";
+    span.textContent = label;
+    item.appendChild(span);
+    return item;
+  };
+
+  menu.replaceChildren();
+
+  menu.appendChild(createLinkItem("index.html", "Página Inicial"));
+  menu.appendChild(createLinkItem("animais_encontra.html", "Encontrados"));
+  menu.appendChild(
+    createLinkItem("https://www.anjosdajuda.org/adote", "Adoção", true),
+  );
+  menu.appendChild(createLinkItem("dicas.html", "Cuidados"));
+  menu.appendChild(createLinkItem("contato.html", "Contato"));
 
   if (user) {
     const nomeExibicao = user.displayName || user.email.split("@")[0];
-    menu.innerHTML = `
-      ${linksBase}
-      <li><a href="cadastrados.html">Meus Pets</a></li>
-      <li class="menu-user-item"><span class="menu-user">Olá, ${nomeExibicao}!</span></li>
-      <li><a href="#" id="btn-logout">Sair</a></li>
-    `;
+    menu.appendChild(createLinkItem("cadastrados.html", "Meus Pets"));
+    menu.appendChild(createTextItem(`Olá, ${nomeExibicao}!`, "menu-user-item"));
 
-    const btnLogout = document.getElementById("btn-logout");
-    if (btnLogout) {
-      btnLogout.addEventListener("click", (e) => {
-        e.preventDefault();
-        signOut(auth).then(() => {
-          localStorage.removeItem("usuarioLogado");
-          window.location.reload();
-        });
+    const itemLogout = document.createElement("li");
+    const btnLogout = document.createElement("a");
+    btnLogout.href = "#";
+    btnLogout.textContent = "Sair";
+    btnLogout.addEventListener("click", (e) => {
+      e.preventDefault();
+      signOut(auth).then(() => {
+        localStorage.removeItem("usuarioLogado");
+        window.location.reload();
       });
-    }
+    });
+    itemLogout.appendChild(btnLogout);
+    menu.appendChild(itemLogout);
   } else {
-    menu.innerHTML = `
-      ${linksBase}
-      <li><a href="criar-conta.html">Entrar / Cadastrar</a></li>
-    `;
+    menu.appendChild(createLinkItem("criar-conta.html", "Entrar / Cadastrar"));
   }
 });
 
-// Array em memória sincronizado
 let encontradosFirestore = [];
+let renderQueued = false;
 
-// 🔍 Consulta inteligente: Busca apenas os pets com status "encontrado" direto no Firestore
-const consultaEncontrados = query(
-  collection(db, "pets"),
-  where("status", "==", "encontrado"),
-);
-
-// Escuta em tempo real somente os pets filtrados no servidor [1]
-onSnapshot(consultaEncontrados, (snapshot) => {
-  encontradosFirestore = snapshot.docs.map((doc) => {
-    const pet = doc.data();
-    const idCurto = doc.id.slice(0, 4);
-
-    return {
-      id: idCurto,
-      idCompleto: doc.id,
-      nome: pet.nome || pet.nomePet || "Sem nome",
-      raca: pet.raca || pet.tipoPet || "Não informada",
-      sexo: pet.sexo || pet.sexoPet || "Indefinido",
-      idade: pet.idade || pet.idadePet || "Não informada",
-      localiza: pet.localiza || pet.localizacao || "Não informada",
-      data: pet.data || "Não informada",
-      contato: pet.contato || "Não informado",
-      whatsapp: pet.whatsapp || "",
-      descricao: pet.descricao || pet.descricaoPet || "Não informada",
-      imagem: pet.imagem || pet.fotoPet || "",
-    };
+// Agrupa atualizacoes do Firestore e dos filtros em um unico frame de renderizacao.
+function scheduleRender() {
+  if (renderQueued) return;
+  renderQueued = true;
+  requestAnimationFrame(() => {
+    renderQueued = false;
+    exibirPets();
   });
+}
 
-  // Re-renderiza a tela automaticamente
-  exibirPets();
-});
+// Escuta somente documentos marcados como encontrados; a ordenacao ocorre no cliente para evitar indice composto.
+onSnapshot(
+  buildPetsQuery({ status: "encontrado", maxItems: null, orderByData: false }),
+  (snapshot) => {
+    encontradosFirestore = snapshot.docs.map((doc) => {
+      const pet = doc.data();
+      const idCurto = doc.id.slice(0, 4);
+
+      return {
+        id: idCurto,
+        idCompleto: doc.id,
+        nome: pet.nome || pet.nomePet || "Sem nome",
+        raca: pet.raca || pet.tipoPet || "Não informada",
+        sexo: pet.sexo || pet.sexoPet || "Indefinido",
+        idade: pet.idade || pet.idadePet || "Não informada",
+        localiza: pet.localiza || pet.localizacao || "Não informada",
+        data: pet.data || "Não informada",
+        descricao: pet.descricao || pet.descricaoPet || "Não informada",
+        imagem: pet.imagem || pet.fotoPet || "",
+      };
+    });
+
+    encontradosFirestore.sort((petA, petB) => {
+      const dataA = new Date(petA.data).getTime() || 0;
+      const dataB = new Date(petB.data).getTime() || 0;
+      return dataB - dataA;
+    });
+
+    scheduleRender();
+  },
+  (error) => {
+    console.error("Erro ao carregar pets encontrados:", error);
+    const container = document.querySelector(".container-cards");
+    if (container) {
+      container.innerHTML = "";
+      const mensagem = document.createElement("p");
+      mensagem.textContent =
+        "Não foi possível carregar os pets encontrados. Tente novamente mais tarde.";
+      mensagem.style.color = "#b42318";
+      mensagem.style.textAlign = "center";
+      container.appendChild(mensagem);
+    }
+  },
+);
 
 export function exibirPets() {
   const container = document.querySelector(".container-cards");
   if (!container) return;
   container.innerHTML = "";
 
-  // 🔍 Captura os valores dos filtros digitados pelo usuário
+  // Captura os valores dos filtros digitados pelo usuario.
   let filtroId = document.getElementById("filtro-id")?.value.trim();
   if (filtroId && filtroId.length > 4) filtroId = filtroId.slice(0, 4);
 
@@ -137,7 +153,7 @@ export function exibirPets() {
     outro: ["coelho", "pássaro", "tartaruga", "outro"],
   };
 
-  // Os pets abaixo já vêm com o status "encontrado" garantido pelo Firestore!
+  // Os pets abaixo ja chegam com status "encontrado" garantido pela consulta do Firestore.
   const petsFiltrados = encontradosFirestore.filter((pet) => {
     const idMatch =
       !filtroId ||
@@ -158,40 +174,63 @@ export function exibirPets() {
   });
 
   if (petsFiltrados.length === 0) {
-    container.innerHTML =
-      '<p style="text-align: center; width: 100%;">Nenhum pet encontrado com os filtros aplicados.</p>';
+    const msg = document.createElement("p");
+    msg.style.textAlign = "center";
+    msg.style.width = "100%";
+    msg.textContent = "Nenhum pet encontrado com os filtros aplicados.";
+    container.appendChild(msg);
     return;
   }
 
+  // Monta os cards com elementos DOM para manter os dados recebidos como texto seguro.
   petsFiltrados.forEach((pet) => {
     const card = document.createElement("div");
     card.className = "pet-card";
 
-    card.innerHTML = `
-      <img src="${pet.imagem || "https://via.placeholder.com/150"}" alt="Imagem do pet" onerror="this.src='https://via.placeholder.com/150'">
-      <h3>${pet.nome}</h3>
-      <p><strong>ID:</strong> ${pet.id}</p>
-      <p><strong>Tipo:</strong> ${pet.raca}</p>
-      <p><strong>Sexo:</strong> ${pet.sexo}</p>
-      <p><strong>Idade:</strong> ${pet.idade}</p>
-      <p><strong>Última localização:</strong> ${pet.localiza}</p>
-      <p><strong>Data:</strong> ${pet.data}</p>
-      <p><strong>Contato:</strong> ${pet.contato}</p>
-      ${
-        pet.whatsapp
-          ? `
-        <p>
-          <a href="https://wa.me/55${pet.whatsapp.replace(/\D/g, "")}" target="_blank" class="whatsapp-link">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon">
-            Falar no WhatsApp
-          </a>
-        </p>
-      `
-          : ""
-      }
-      <p><strong>Descrição:</strong> ${pet.descricao}</p>
-      <p><strong>Status:</strong> <span style="color:green;"><strong>ENCONTRADO</strong></span></p>
-    `;
+    const img = document.createElement("img");
+    img.src = pet.imagem || "https://via.placeholder.com/150";
+    img.alt = "Imagem do pet";
+    img.loading = "lazy";
+    img.className = "pet-image";
+    img.onerror = () => {
+      img.src = "https://via.placeholder.com/150";
+    };
+    card.appendChild(img);
+
+    const title = document.createElement("h3");
+    title.textContent = pet.nome;
+    card.appendChild(title);
+
+    const campos = [
+      ["Tipo", pet.raca],
+      ["Sexo", pet.sexo],
+      ["Idade", pet.idade],
+      ["Última localização", pet.localiza],
+      ["Data", pet.data],
+      ["Descrição", pet.descricao],
+    ];
+
+    campos.forEach(([label, valor]) => {
+      const linha = document.createElement("p");
+      const strong = document.createElement("strong");
+      strong.textContent = `${label}: `;
+      linha.appendChild(strong);
+      linha.appendChild(
+        document.createTextNode(String(valor ?? "Não informado")),
+      );
+      card.appendChild(linha);
+    });
+
+    const status = document.createElement("p");
+    const statusStrong = document.createElement("strong");
+    statusStrong.textContent = "Status: ";
+    const statusValue = document.createElement("span");
+    statusValue.style.color = "green";
+    statusValue.style.fontWeight = "700";
+    statusValue.textContent = "ENCONTRADO";
+    status.appendChild(statusStrong);
+    status.appendChild(statusValue);
+    card.appendChild(status);
 
     container.appendChild(card);
   });
@@ -209,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.getElementById(id);
     if (input) {
       input.addEventListener("input", () => {
-        exibirPets(); // CORRIGIDO: Agora aponta corretamente para 'exibirPets'
+        scheduleRender();
       });
     }
   });

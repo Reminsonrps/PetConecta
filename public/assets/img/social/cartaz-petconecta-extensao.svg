@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">Cartaz de divulgação - PetConecta</title>
+  <desc id="desc">Cartaz de divulgação do PetConecta, projeto de extensão universitária, com QR code para acessar o site.</desc>
+
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f26b21"/>
+      <stop offset="0.55" stop-color="#ff9b4a"/>
+      <stop offset="1" stop-color="#ffd3a4"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf9"/>
+      <stop offset="1" stop-color="#fff4e8"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#9b3d0a" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1350" fill="url(#background)"/>
+  <circle cx="90" cy="120" r="180" fill="#fff" opacity="0.14"/>
+  <circle cx="1010" cy="270" r="160" fill="#fff" opacity="0.14"/>
+  <circle cx="990" cy="1230" r="240" fill="#fff" opacity="0.12"/>
+
+  <rect x="72" y="72" width="936" height="1206" rx="42" fill="url(#panel)" filter="url(#shadow)"/>
+
+  <rect x="120" y="126" width="840" height="58" rx="29" fill="#e9f5ec"/>
+  <circle cx="153" cy="155" r="10" fill="#2e8b57"/>
+  <text x="178" y="166" font-family="Nunito, Arial, sans-serif" font-size="20" font-weight="900" letter-spacing="1" fill="#246d45">CARTAZ DE DIVULGAÇÃO | ATIVIDADE EXTENSIONISTA | UNINTER</text>
+
+  <text x="120" y="302" font-family="Fredoka, Nunito, Arial, sans-serif" font-size="112" font-weight="900" fill="#f26b21">🐾 PetConecta</text>
+  <text x="124" y="362" font-family="Nunito, Arial, sans-serif" font-size="39" font-weight="800" fill="#44352d">Tecnologia para cuidar, conectar e reencontrar.</text>
+
+  <rect x="120" y="418" width="840" height="140" rx="28" fill="#fff0df"/>
+  <text x="158" y="477" font-family="Nunito, Arial, sans-serif" font-size="43" font-weight="900" fill="#8e3d0c">Perdeu ou encontrou um pet?</text>
+  <text x="158" y="527" font-family="Nunito, Arial, sans-serif" font-size="30" font-weight="700" fill="#5b4539">Publique, acompanhe e ajude a comunidade.</text>
+
+  <g font-family="Nunito, Arial, sans-serif" font-size="30" font-weight="800" fill="#44352d">
+    <circle cx="145" cy="628" r="11" fill="#f26b21"/>
+    <text x="178" y="638">Divulgue pets perdidos e encontrados</text>
+    <circle cx="145" cy="704" r="11" fill="#f26b21"/>
+    <text x="178" y="714">Encontre informações e pontos de apoio</text>
+    <circle cx="145" cy="780" r="11" fill="#2e8b57"/>
+    <text x="178" y="790">Fortaleça a rede de proteção animal</text>
+  </g>
+
+  <rect x="120" y="850" width="840" height="116" rx="28" fill="#2e8b57"/>
+  <text x="540" y="921" text-anchor="middle" font-family="Nunito, Arial, sans-serif" font-size="48" font-weight="900" fill="#fff">ACESSE O SITE AGORA</text>
+
+  <g transform="translate(148 1004)">
+    <rect x="0" y="0" width="220" height="220" rx="18" fill="#fff" stroke="#f2c69f" stroke-width="5"/>
+    <image x="14" y="14" width="192" height="192" preserveAspectRatio="xMidYMid meet" href="petconecta-site-qrcode.png"/>
+  </g>
+  <text x="410" y="1064" font-family="Nunito, Arial, sans-serif" font-size="34" font-weight="900" fill="#246d45">Aponte a câmera</text>
+  <text x="410" y="1112" font-family="Nunito, Arial, sans-serif" font-size="31" font-weight="700" fill="#44352d">ou acesse pelo navegador:</text>
+  <text x="410" y="1166" font-family="Nunito, Arial, sans-serif" font-size="27" font-weight="900" fill="#f26b21">petconecta-db068.web.app</text>
+  <text x="410" y="1218" font-family="Nunito, Arial, sans-serif" font-size="22" font-weight="800" fill="#6f5a4c">Versão funcional para teste e avaliação acadêmica.</text>
+  <text x="540" y="1254" text-anchor="middle" font-family="Nunito, Arial, sans-serif" font-size="23" font-weight="800" fill="#246d45">Desenvolvido por Reminson | RU: 5287384</text>
+</svg>

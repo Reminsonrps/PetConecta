@@ -3,7 +3,8 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <title>Editar Pet - PetFinder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Pet - PetConecta</title>
     <!-- 🚀 ADICIONADO: Dependências CSS do Leaflet para o mapa interativo -->
     <link
       rel="stylesheet"
@@ -26,7 +27,7 @@
           <span id="hamburguer"></span>
         </button>
         <ul id="menu">
-          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="#home">Página Inicial</a></li>
           <li><a href="animais_encontra.html">Encontrados</a></li>
           <li>
             <a
@@ -36,8 +37,8 @@
               >Adoção</a
             >
           </li>
-          <li><a href="dicas.html">Cuidados</a></li>
-          <li><a href="contato.html">Contato</a></li>
+          <li><a href="#dicas">Cuidados</a></li>
+          <li><a href="#contatos">Contato</a></li>
         </ul>
       </nav>
     </header>
@@ -179,15 +180,12 @@
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
           <a
-            href="https://www.instagram.com/seuusuario"
+            href="javascript:void(0)"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
           >
-            <img
-              src="assets/img/icon-instagram.svg"
-              alt="Instagram"
-            />
+            <img src="assets/img/icon-instagram.svg" alt="Instagram" />
           </a>
           <a
             href="https://www.facebook.com/seuusuario"
@@ -195,10 +193,7 @@
             rel="noopener noreferrer"
             aria-label="Facebook"
           >
-            <img
-              src="assets/img/icon-facebook.svg"
-              alt="Facebook"
-            />
+            <img src="assets/img/icon-facebook.svg" alt="Facebook" />
           </a>
         </div>
         <nav class="footer-nav">
@@ -218,44 +213,18 @@
 
     <!-- Script Modular Integrado com o Firebase -->
     <script type="module">
+      import { auth, db, storage } from "./script/firebase.js";
       import {
-        initializeApp,
-        getApps,
-        getApp,
-      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-      import {
-        getFirestore,
         doc,
         getDoc,
         updateDoc,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
       import {
-        getStorage,
         ref as storageRef,
         uploadBytes,
         getDownloadURL,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
-      import {
-        getAuth,
-        onAuthStateChanged,
-      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-
-      // Configuração do Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
-        authDomain: "petconecta-db068.firebaseapp.com",
-        projectId: "petconecta-db068",
-        storageBucket: "petconecta-db068.firebasestorage.app",
-        messagingSenderId: "1030110038715",
-        appId: "1:1030110038715:web:151deca61831138159b79e",
-      };
-
-      // Inicialização Blindada
-      const app =
-        getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-      const db = getFirestore(app);
-      const storage = getStorage(app);
-      const auth = getAuth(app);
+      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
       let usuarioLogado = null;
       let urlImagemAtual = "";
@@ -286,6 +255,71 @@
           alert("Sua sessão expirou. Faça login novamente para prosseguir.");
           window.location.href = "criar-conta.html";
         }
+      });
+
+      // --- MENU DE NAVEGAÇÃO DINÂMICO COM AUTH ---
+      onAuthStateChanged(auth, (user) => {
+        const menu = document.getElementById("menu");
+        if (!menu) return;
+
+        const linksBase = `
+          <li><a href="#home">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a href="https://www.anjosdajuda.org/adote" target="_blank" rel="noopener noreferrer">Adoção</a>
+          </li>
+          <li><a href="#dicas">Cuidados</a></li>
+          <li><a href="#contatos">Contato</a></li>
+        `;
+
+        if (user) {
+          const nomeExibicao =
+            user.displayName || user.email?.split("@")[0] || "Usuário";
+
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="cadastrados.html">Meus Pets</a></li>
+            <li><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.55);color:#fff;font-weight:700;border-radius:20px;padding:5px 14px;font-size:0.9rem;">👤 ${nomeExibicao}</span></li>
+            <li><a href="#" id="btn-logout" style="color: #ffccd5; font-weight: bold; text-decoration: none;">Sair</a></li>
+          `;
+
+          const btnLogout = document.getElementById("btn-logout");
+          if (btnLogout) {
+            btnLogout.addEventListener("click", (e) => {
+              e.preventDefault();
+              signOut(auth).then(() => {
+                localStorage.removeItem("usuarioLogado");
+                window.location.reload();
+              });
+            });
+          }
+        } else {
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="criar-conta.html" style="color: #4CAF50; font-weight: bold; text-decoration: none;">Entrar / Cadastrar</a></li>
+          `;
+        }
+      });
+
+      const btnMobile = document.querySelector("#btn-mobile");
+      const navMenu = document.querySelector("#nav-menu");
+      const menuLinks = document.querySelectorAll("#menu a");
+
+      function toggleMenu() {
+        navMenu.classList.toggle("active");
+        const isOpen = navMenu.classList.contains("active");
+        btnMobile.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      if (btnMobile) {
+        btnMobile.addEventListener("click", toggleMenu);
+      }
+
+      menuLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          navMenu.classList.remove("active");
+          btnMobile?.setAttribute("aria-expanded", "false");
+        });
       });
 
       // Função para recuperar os dados reais do Firestore e mover o pin do mapa
@@ -426,9 +460,42 @@
           }
         });
 
+      function validarImagemParaUpload(arquivo) {
+        const limiteTamanho = 5 * 1024 * 1024;
+        const tiposPermitidos = ["image/jpeg", "image/png", "image/webp"];
+
+        if (!arquivo) {
+          return { ok: true };
+        }
+
+        if (!tiposPermitidos.includes(arquivo.type)) {
+          return {
+            ok: false,
+            mensagem: "Erro: selecione uma imagem válida em JPG, PNG ou WEBP.",
+          };
+        }
+
+        if (arquivo.size > limiteTamanho) {
+          return {
+            ok: false,
+            mensagem: "Erro: a imagem excede o tamanho limite de 5MB.",
+          };
+        }
+
+        return { ok: true };
+      }
+
       // Visualização da imagem escolhida em tempo real
       document.getElementById("imagem").addEventListener("change", function () {
         const file = this.files[0];
+        const validacao = validarImagemParaUpload(file);
+
+        if (!validacao.ok) {
+          alert(validacao.mensagem);
+          this.value = "";
+          return;
+        }
+
         if (file) {
           const reader = new FileReader();
           reader.onload = function (e) {
@@ -532,6 +599,12 @@
             const novaImagem = imagemInput.files[0];
 
             if (novaImagem) {
+              const validacaoImagem = validarImagemParaUpload(novaImagem);
+              if (!validacaoImagem.ok) {
+                alert(validacaoImagem.mensagem);
+                return;
+              }
+
               console.log(
                 "Realizando upload da nova foto para o Cloud Storage...",
               );
@@ -540,7 +613,11 @@
                 storage,
                 `pets/${nomeArquivo}`,
               );
-              const snapshot = await uploadBytes(storageReference, novaImagem);
+              const snapshot = await uploadBytes(storageReference, novaImagem, {
+                customMetadata: {
+                  uploadedBy: usuarioLogado.email,
+                },
+              });
               linkImagemFinal = await getDownloadURL(snapshot.ref);
             }
 
@@ -577,4 +654,3 @@
     </script>
   </body>
 </html>
-

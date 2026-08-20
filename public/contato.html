@@ -63,12 +63,87 @@
 
       <section class="partners-section">
         <h2>🤝 Parcerias</h2>
-
-        <section>
-          <div class="parceiros">
-            <div id="pelegrinos"></div>
+        <div class="parceiros">
+          <div id="pelegrinos"></div>
+        </div>
+        <article
+          class="parceiro-destaque"
+          aria-labelledby="titulo-parceiro-destaque"
+        >
+          <h3 id="titulo-parceiro-destaque">🌟 Destaque: Peregrinos Vet</h3>
+          <p>
+            O Peregrinos Vet atua com foco em medicina veterinaria do coletivo,
+            com conteudo educativo e frentes importantes como zoonoses,
+            castracoes, leishmaniose e prevencao da raiva.
+          </p>
+          <div
+            class="destaque-tags"
+            aria-label="Temas de atuacao do Peregrinos Vet"
+          >
+            <span>Linha de frente</span>
+            <span>Zoonoses</span>
+            <span>Leishmaniose</span>
+            <span>Castracoes</span>
+            <span>Raiva</span>
           </div>
-        </section>
+          <a
+            href="https://www.instagram.com/peregrinosvet/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-parceiro"
+            >Conhecer perfil do Peregrinos Vet</a
+          >
+        </article>
+
+        <div
+          class="acoes-parceiros"
+          aria-label="Acoes em destaque com parceiros"
+        >
+          <article class="acao-card">
+            <h3>🦟 Campanha de Leishmaniose</h3>
+            <p>
+              Conteudos de orientacao preventiva e impacto na saude coletiva
+              para tutores e comunidade.
+            </p>
+            <a
+              href="https://www.instagram.com/stories/highlights/18081141425087617/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="acao-link"
+              >Ver destaque no Pelegrinos Vet →</a
+            >
+          </article>
+
+          <article class="acao-card">
+            <h3>✂️ Frente de Castracoes</h3>
+            <p>
+              Iniciativas que apoiam controle populacional e melhoria da
+              qualidade de vida dos animais.
+            </p>
+            <a
+              href="https://www.instagram.com/stories/highlights/18022832647623629/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="acao-link"
+              >Acompanhar acao de castracoes →</a
+            >
+          </article>
+
+          <article class="acao-card">
+            <h3>📚 Informes para Tutores</h3>
+            <p>
+              Materiais educativos sobre zoonoses, prevencao de raiva e boas
+              praticas de cuidado no dia a dia.
+            </p>
+            <a
+              href="https://www.instagram.com/stories/highlights/18026218400112560/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="acao-link"
+              >Acessar informes publicados →</a
+            >
+          </article>
+        </div>
         <p>
           Se você representa uma ONG, clínica veterinária, pet shop ou deseja
           apoiar nossa causa, entre em contato!
@@ -85,7 +160,7 @@
           <li>
             Instagram:
             <a
-              href="https://instagram.com/PetConecta"
+              href="javascript:void(0)"
               target="_blank"
               rel="noopener noreferrer"
               >@petConecta</a
@@ -101,7 +176,7 @@
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
           <a
-            href="https://www.instagram.com/seuusuario"
+            href="javascript:void(0)"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -129,6 +204,8 @@
       </div>
     </footer>
 
+    <script src="script/parceiros.js" defer></script>
+
     <!-- Script de Parcerias e Mobile Navbar -->
     <script>
       const btnMobile = document.querySelector("#btn-mobile");
@@ -151,36 +228,6 @@
           btnMobile?.setAttribute("aria-expanded", "false");
         });
       });
-
-      // Adicionando imagem das ongs parceiras dinamicamente
-      const galeria = document.querySelector(".parceiros");
-      if (galeria) {
-        const criaImagem = document.createElement("img");
-        criaImagem.src = "assets/img/pelegrinos.jpg";
-        criaImagem.alt = "Imagem de peregrinos";
-        criaImagem.style.width = "150px";
-        criaImagem.style.borderRadius = "10px";
-        criaImagem.classList.add("pelegrinos-vet");
-        galeria.appendChild(criaImagem);
-
-        const criaImg = document.createElement("img");
-        criaImg.src = "assets/img/AnjosDajuda.jpg";
-        criaImg.alt = "Imagem de Anjos D'ajuda";
-        criaImg.style.width = "150px";
-        criaImg.style.borderRadius = "10px";
-        criaImg.style.border = "1px solid";
-        criaImg.classList.add("anjosDajuda");
-        galeria.appendChild(criaImg);
-
-        // Eventos de clique para redirecionamento
-        criaImg.addEventListener("click", () => {
-          window.location.href = "https://www.anjosdajuda.org/nossos-pets";
-        });
-
-        criaImagem.addEventListener("click", () => {
-          window.location.href = "https://www.instagram.com/peregrinosvet/";
-        });
-      }
     </script>
 
     <!-- Envio do formulário para e-mail (sem salvar no Firebase) -->
@@ -188,6 +235,13 @@
       const contactForm = document.getElementById("contactForm");
       const mensagemStatus = document.getElementById("mensagemStatus");
       const emailDestinoContato = "reminsonrps2023@gmail.com";
+
+      function dispositivoMovel() {
+        const agente = navigator.userAgent || "";
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+          agente,
+        );
+      }
 
       function montarURLServidorEmail(
         emailOrigem,
@@ -201,9 +255,16 @@
         const su = encodeURIComponent(assunto);
         const body = encodeURIComponent(corpo);
 
+        if (dispositivoMovel()) {
+          return {
+            url: `mailto:${destinatario}?subject=${su}&body=${body}`,
+            servidor: "app de e-mail do celular",
+          };
+        }
+
         if (dominio.includes("gmail.com")) {
           return {
-            url: `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${su}&body=${body}`,
+            url: `https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=${to}&su=${su}&body=${body}`,
             servidor: "Gmail",
           };
         }
@@ -215,7 +276,7 @@
           dominio.includes("msn.com")
         ) {
           return {
-            url: `https://outlook.live.com/mail/0/deeplink/compose?to=${to}&subject=${su}&body=${body}`,
+            url: `https://outlook.live.com/mail/0/?path=/mail/action/compose&to=${to}&subject=${su}&body=${body}`,
             servidor: "Outlook",
           };
         }
@@ -224,6 +285,18 @@
           return {
             url: `https://compose.mail.yahoo.com/?to=${to}&subject=${su}&body=${body}`,
             servidor: "Yahoo",
+          };
+        }
+
+        if (
+          dominio.includes("icloud.com") ||
+          dominio.includes("me.com") ||
+          dominio.includes("proton.me") ||
+          dominio.includes("protonmail.com")
+        ) {
+          return {
+            url: `mailto:${destinatario}?subject=${su}&body=${body}`,
+            servidor: "aplicativo de e-mail padrão",
           };
         }
 
@@ -277,3 +350,4 @@
     </script>
   </body>
 </html>
+

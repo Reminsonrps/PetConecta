@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Arquivo HTML: index.html | Estrutura e conteúdo da página correspondente. -->
+<!-- Página inicial do PetConecta. Estrutura a home, o menu, o carrossel e os destaques do projeto. -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -90,6 +90,9 @@
         <h2>Cadastre seu pet desaparecido aqui!</h2>
         <!-- 🚀 ATIVADO: Agora este botão redireciona para a página de publicação -->
         <button id="action-btn" class="btn">Cadastrar</button>
+        <button id="guide-btn" class="btn btn-secondary" type="button">
+          Guia rápido
+        </button>
       </section>
 
       <section class="highlights">
@@ -151,16 +154,16 @@
           <h1>Sobre Nós</h1>
           <div class="linha"></div>
           <p class="texto1">
-            O PetConecta e uma iniciativa extensionista com compromisso social:
-            apoiar tutores na localizacao de pets desaparecidos e fortalecer a
-            rede de protecao animal da comunidade. A pagina foi criada para
-            facilitar o cadastro e a divulgacao rapida de ocorrencias, reunir
-            informacoes em um mapa de apoio a buscas e aproximar pessoas que
-            podem colaborar com avistamentos e reencontros. Alem da funcao de
-            busca, o projeto tambem tem cunho educativo, com conteudos sobre
-            saude animal, zoonoses, prevencao, bem-estar e guarda responsavel.
-            Nosso objetivo principal e transformar informacao em acao,
-            conectando tecnologia, cuidado e participacao coletiva para reduzir
+            O PetConecta é uma iniciativa extensionista com compromisso social:
+            apoiar tutores na localização de pets desaparecidos e fortalecer a
+            rede de proteção animal da comunidade. A página foi criada para
+            facilitar o cadastro e a divulgação rápida de ocorrências, reunir
+            informações em um mapa de apoio a buscas e aproximar pessoas que
+            podem colaborar com avistamentos e reencontros. Além da função de
+            busca, o projeto também tem cunho educativo, com conteúdos sobre
+            saúde animal, zoonoses, prevenção, bem-estar e guarda responsável.
+            Nosso objetivo principal é transformar informação em ação,
+            conectando tecnologia, cuidado e participação coletiva para reduzir
             o tempo de desaparecimento e aumentar as chances de cada pet voltar
             para casa.
           </p>
@@ -279,7 +282,7 @@
             <div class="dica-item">
               <span class="dica-numero">03</span>
               <div class="dica-content">
-                <h3>Cadastre seu pet perdido no PetFinder</h3>
+                <h3>Cadastre seu pet perdido no PetConecta</h3>
                 <p>Aumente a visibilidade alertando a comunidade do sistema</p>
               </div>
             </div>
@@ -362,11 +365,40 @@
 
           <article class="card">
             <h2>🩹 Cuidados Especiais</h2>
-            <img
-              id="combo"
-              src="assets/img/cuidados-especiais.png"
-              alt="Veterinária examinando um gato idoso"
-            />
+            <div class="cuidados-especiais-grid">
+              <figure class="cuidados-especiais-item">
+                <img
+                  src="assets/img/cuidados-filhote.jpg"
+                  alt="Filhote de pet em ambiente acolhedor"
+                />
+                <figcaption>
+                  <h3>Filhotes</h3>
+                  <p>Atenção redobrada e socialização precoce.</p>
+                </figcaption>
+              </figure>
+
+              <figure class="cuidados-especiais-item">
+                <img
+                  src="assets/img/cuidados-idoso.jpg"
+                  alt="Pet idoso descansando com conforto"
+                />
+                <figcaption>
+                  <h3>Pets idosos</h3>
+                  <p>Camas macias, rampas e rotina tranquila.</p>
+                </figcaption>
+              </figure>
+
+              <figure class="cuidados-especiais-item">
+                <img
+                  src="assets/img/cuidados-especiais-pet.jpg"
+                  alt="Pet com necessidades especiais recebendo cuidado"
+                />
+                <figcaption>
+                  <h3>Necessidades especiais</h3>
+                  <p>Suporte veterinário e atenção contínua.</p>
+                </figcaption>
+              </figure>
+            </div>
           </article>
         </section>
 
@@ -460,6 +492,10 @@
             <option value="Grande">Grande</option>
           </select>
 
+          <select id="filtroCidadeDesaparecido" title="Filtrar por cidade">
+            <option value="">Localidade</option>
+          </select>
+
           <button type="button" id="btnLocalizacaoPet" class="btn-geo">
             📍 Pets Próximos
           </button>
@@ -493,19 +529,6 @@
         <h2>🤝 Parcerias</h2>
         <div class="parceiros">
           <div id="pelegrinos"></div>
-          <a
-            href="https://wa.me/5573998248286"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="partner-card"
-            title="Paulo Ventura - Adestrador | (73) 99824-8286"
-          >
-            <img
-              src="assets/img/paulo_ventura.jpeg"
-              alt="Paulo Ventura - Adestrador"
-              class="paulo-ventura"
-            />
-          </a>
         </div>
         <article
           class="parceiro-destaque"
@@ -591,19 +614,20 @@
         <ul>
           <li>
             Email:
-            <a href="mailto:parcerias@petfinder.com.br"
-              >parcerias@petfinder.com.br</a
+            <a href="mailto:parcerias@petconecta.com.br"
+              >parcerias@petconecta.com.br</a
             >
           </li>
           <li>Telefone: <a href="tel:+5571999999999">(71) 99999-9999</a></li>
           <li>
             Instagram:
             <a
-              href="https://instagram.com/PetConecta"
+              href="javascript:void(0)"
               target="_blank"
               rel="noopener noreferrer"
-              >@petConecta</a
             >
+              @PetConecta
+            </a>
           </li>
         </ul>
       </section>
@@ -616,7 +640,7 @@
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
           <a
-            href="https://www.instagram.com/seuusuario"
+            href="javascript:void(0)"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -626,7 +650,7 @@
           <a
             href="https://www.facebook.com/seuusuario"
             target="_blank"
-            rel="noopener noreferrer" <!-- Corrigido: Adicionado 'noopener noreferrer' para segurança -->
+            rel="noopener noreferrer"
             aria-label="Facebook"
           >
             <img src="assets/img/icon-facebook.svg" alt="Facebook" />
@@ -644,13 +668,119 @@
       </div>
     </footer>
 
-    <script src="script/anima.js" defer></script>
+    <div id="onboarding-guide" class="onboarding-guide" aria-hidden="true">
+      <div class="onboarding-guide__backdrop" data-guide-close></div>
+      <section
+        class="onboarding-guide__panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="guide-title"
+      >
+        <div class="onboarding-guide__header">
+          <div>
+            <p class="onboarding-guide__eyebrow">Primeira visita</p>
+            <h2 id="guide-title">Guia rápido do PetConecta</h2>
+          </div>
+          <button
+            type="button"
+            class="onboarding-guide__close"
+            aria-label="Fechar guia"
+            data-guide-close
+          >
+            ×
+          </button>
+        </div>
+
+        <p class="onboarding-guide__intro">
+          Em menos de 1 minuto você entende como usar o site:
+        </p>
+
+        <ol class="onboarding-guide__steps">
+          <li>
+            Use o botão <strong>Cadastrar</strong> para publicar um pet perdido
+            ou encontrado.
+          </li>
+          <li>
+            Navegue pelo menu e pelos destaques para ver campanhas, adoção e
+            dicas úteis.
+          </li>
+          <li>
+            Procure o carrossel e o mapa para acompanhar informativos e casos da
+            comunidade.
+          </li>
+        </ol>
+
+        <div class="onboarding-guide__actions">
+          <button type="button" class="btn" data-guide-close>
+            Entendi, começar
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-guide-close
+            data-guide-dont-show
+          >
+            Não mostrar novamente
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <script src="script/anima.js?v=20260818-2" defer></script>
     <script src="script/carrossel-informativo.js" defer></script>
     <script src="script/parceiros.js"></script>
-    <script type="module" src="script/exibir_pets.js"></script>
+    <script type="module" src="script/exibir_pets.js?v=20260818-2"></script>
     <script type="module" src="script/main.js"></script>
     <script type="module" src="script/contatoAPI.js"></script>
 
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const guide = document.getElementById("onboarding-guide");
+        const guideBtn = document.getElementById("guide-btn");
+        const guideCloseButtons =
+          document.querySelectorAll("[data-guide-close]");
+        const guideStorageKey = "petconecta_first_visit_guide_seen";
+
+        function openGuide() {
+          if (!guide) return;
+          guide.classList.add("is-open");
+          guide.setAttribute("aria-hidden", "false");
+          document.body.classList.add("guide-open");
+        }
+
+        function closeGuide(markAsSeen = false) {
+          if (!guide) return;
+          guide.classList.remove("is-open");
+          guide.setAttribute("aria-hidden", "true");
+          document.body.classList.remove("guide-open");
+
+          if (markAsSeen) {
+            localStorage.setItem(guideStorageKey, "1");
+          }
+        }
+
+        if (guideBtn) {
+          guideBtn.addEventListener("click", openGuide);
+        }
+
+        guideCloseButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            const dontShowAgain = button.hasAttribute("data-guide-dont-show");
+            closeGuide(dontShowAgain);
+          });
+        });
+
+        if (!localStorage.getItem(guideStorageKey)) {
+          window.setTimeout(openGuide, 700);
+        }
+
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && guide?.classList.contains("is-open")) {
+            closeGuide(false);
+          }
+        });
+      });
+    </script>
     <script
       src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
       integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
@@ -701,6 +831,13 @@
 
         // Função genérica para tratar a geolocalização em ambos os botões
         function buscarGeolocalizacao(status1, status2) {
+          status1 = status1 || status2;
+          status2 = status2 || status1;
+
+          if (!status1 && !status2) {
+            return;
+          }
+
           if (!navigator.geolocation) {
             status1.textContent =
               "Geolocalização não suportada no seu navegador.";
@@ -727,6 +864,10 @@
                 "Coordenadas obtidas! Identificando cidade...";
               status2.textContent =
                 "Coordenadas obtidas! Identificando cidade...";
+                
+              <!-- Definindo o raio de proximidade em quilômetros -->
+              const raioProximidadeKm = 10;
+              window.filtrarPetsPorRaio?.(lat, lng, raioProximidadeKm);
 
               if (typeof mapa !== "undefined") {
                 mapa.setView([lat, lng], 13);
@@ -748,13 +889,11 @@
                   "";
 
                 if (cidadeUsuario) {
-                  const mensagemSucesso = `📍 Pets filtrados em: ${cidadeUsuario}`;
+                  const mensagemSucesso = `📍 Pets próximos de ${cidadeUsuario} (até ${raioProximidadeKm} km)`;
                   status1.textContent = mensagemSucesso;
                   status2.textContent = mensagemSucesso;
                   status1.style.color = "green";
                   status2.style.color = "green";
-
-                  filtrarPorCidadeDoUsuario(cidadeUsuario);
                 } else {
                   status1.textContent =
                     "Não encontramos uma cidade definida para esta localização.";
@@ -790,12 +929,6 @@
           btnLocalizacaoPet.addEventListener("click", () => {
             buscarGeolocalizacao(statusLocalizacaoPet, statusLocalizacao);
           });
-        }
-
-        function filtrarPorCidadeDoUsuario(cidade) {
-          console.log(
-            `Buscando no banco de dados do PetConecta animais cadastrados na cidade: ${cidade}`,
-          );
         }
 
         // --- CONFIGURAÇÃO E INICIALIZAÇÃO DO MAPA ---
@@ -983,46 +1116,22 @@
         setTimeout(() => mapa.invalidateSize(), 250);
 
         carregarOcorrenciasMapa();
-        window.addEventListener("storage", () => carregarOcorrenciasMapa());
-        setInterval(carregarOcorrenciasMapa, 2000);
+        window.addEventListener("storage", carregarOcorrenciasMapa);
       });
     </script>
     <!-- Script modular integrado com o Firestore e o Authentication em tempo real -->
     <script type="module">
-      // 🚀 ATUALIZADO: Importamos getApps e getApp para evitar erros de inicialização duplicada
+      import { auth, db } from "./script/firebase.js";
       import {
-        initializeApp,
-        getApps,
-        getApp,
-      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-      import {
-        getFirestore,
         collection,
+        query,
         getDocs,
         limit,
-        query,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
       import {
-        getAuth,
         onAuthStateChanged,
         signOut,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-
-      // Configuração do Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
-        authDomain: "petconecta-db068.firebaseapp.com",
-        projectId: "petconecta-db068",
-        storageBucket: "petconecta-db068.firebasestorage.app",
-        messagingSenderId: "1030110038715",
-        appId: "1:1030110038715:web:151deca61831138159b79e",
-      };
-
-      // 🚀 CORREÇÃO: Inicialização segura do Firebase (evita conflitos com outros scripts)
-      const app =
-        getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-      const db = getFirestore(app);
-      const auth = getAuth(app);
 
       // --- MENU DE NAVEGAÇÃO DINÂMICO COM AUTH ---
       onAuthStateChanged(auth, (user) => {
@@ -1042,7 +1151,8 @@
 
         if (user) {
           // Extrai o nome de exibição do usuário (ou o início do e-mail)
-          const nomeExibicao = user.displayName || user.email.split("@")[0];
+          const nomeExibicao =
+            user.displayName || user.email?.split("@")[0] || "Usuário";
 
           // 🚀 ATUALIZADO: Cores ajustadas para contraste WCAG perfeito sobre fundo laranja
           menu.innerHTML = `

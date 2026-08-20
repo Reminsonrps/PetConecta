@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Arquivo HTML: publicar.html | Estrutura e conteúdo da página correspondente. -->
+<!-- Página de cadastro de pets. Organiza o formulário, mapa e campos obrigatórios para publicação. -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -10,6 +10,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/publicar.css" />
+    <link rel="stylesheet" href="css/guide-primeira-visita.css" />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
@@ -18,7 +19,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="css/buttons-global.css" />
   </head>
-  <body>
+  <body data-guide-page="publicar">
     <!-- Cabeçalho -->
     <header id="cabeca">
       <h1 id="logo">🐾 PetConecta</h1>
@@ -89,6 +90,16 @@
         </div>
 
         <div>
+          <label for="raca">Raça (opcional):</label>
+          <input
+            type="text"
+            id="raca"
+            name="raca"
+            placeholder="Ex: Vira-lata, Shih Tzu, Persa"
+          />
+        </div>
+
+        <div>
           <label for="sexo">Sexo:</label>
           <select id="sexo" name="sexo" required>
             <option value="macho">Macho</option>
@@ -135,7 +146,7 @@
             accept="image/*"
             required
           />
-          <!-- 🚀 ADICIONADO: Container de erro visual para a imagem -->
+          <!-- Container de erro visual para a imagem -->
           <div
             id="erro-imagem"
             style="
@@ -153,7 +164,58 @@
           <textarea id="descricao" name="descricao"></textarea>
         </div>
 
-        <button type="submit">Cadastrar</button>
+        <!-- Área de Consentimento para Autorização do Uso de Dados (LGPD) -->
+        <div
+          class="lgpd-container"
+          style="
+            margin-top: 15px;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+          "
+        >
+          <label
+            style="
+              display: flex;
+              align-items: flex-start;
+              gap: 10px;
+              cursor: pointer;
+              font-size: 0.9rem;
+              color: #333;
+            "
+          >
+            <input
+              type="checkbox"
+              id="termo-lgpd"
+              name="termo_lgpd"
+              style="
+                margin-top: 3px;
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+              "
+              required
+            />
+            <span>
+              Estou ciente e
+              <strong
+                >autorizo o uso e compartilhamento dos meus dados de contato e
+                localização</strong
+              >
+              cadastrados neste formulário, exclusivamente para a finalidade de
+              localização e resgate do pet conforme os
+              <a
+                href="termos.html"
+                target="_blank"
+                style="color: #007bff; text-decoration: underline"
+                >Termos de Uso e Privacidade</a
+              >.
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" style="margin-top: 15px">Cadastrar</button>
       </form>
     </div>
 
@@ -163,7 +225,7 @@
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
           <a
-            href="https://www.instagram.com/seuusuario"
+            href="javascript:void(0)"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -192,37 +254,20 @@
     </footer>
 
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+      import { auth, db, storage } from "./script/firebase.js";
       import {
-        getFirestore,
         collection,
         addDoc,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
       import {
-        getAuth,
         onAuthStateChanged,
         signOut,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
       import {
-        getStorage,
         ref,
         uploadBytes,
         getDownloadURL,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
-        authDomain: "petconecta-db068.firebaseapp.com",
-        projectId: "petconecta-db068",
-        storageBucket: "petconecta-db068.firebasestorage.app",
-        messagingSenderId: "1030110038715",
-        appId: "1:1030110038715:web:151deca61831138159b79e",
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      const auth = getAuth(app);
-      const storage = getStorage(app);
 
       let usuarioLogado = null;
 
@@ -399,34 +444,105 @@
           });
       });
 
-      // 🚀 ADICIONADO: Validação visual dinâmica no campo de upload de imagem
+      function validarImagemParaUpload(arquivo) {
+        const limiteTamanho = 5 * 1024 * 1024;
+        const tiposPermitidos = ["image/jpeg", "image/png", "image/webp"];
+
+        if (!arquivo) {
+          return { ok: true };
+        }
+
+        if (!tiposPermitidos.includes(arquivo.type)) {
+          return {
+            ok: false,
+            mensagem: "Erro: selecione uma imagem válida em JPG, PNG ou WEBP.",
+          };
+        }
+
+        if (arquivo.size > limiteTamanho) {
+          return {
+            ok: false,
+            mensagem: "Erro: a imagem excede o tamanho limite de 5MB.",
+          };
+        }
+
+        return { ok: true };
+      }
+
+      function validarCamposObrigatorios() {
+        const campos = [
+          { id: "nome", label: "Nome do pet" },
+          { id: "localizacao", label: "Última localização vista" },
+          { id: "tipo", label: "Tipo de animal" },
+          { id: "sexo", label: "Sexo" },
+          { id: "porte", label: "Porte" },
+          { id: "idade", label: "Idade estimada" },
+          { id: "data", label: "Data do desaparecimento" },
+          { id: "contato", label: "Contato (email)" },
+          { id: "imagem", label: "Imagem do pet" },
+        ];
+
+        for (const campo of campos) {
+          const elemento = document.getElementById(campo.id);
+          const valor =
+            elemento && elemento.type === "file"
+              ? elemento.files && elemento.files.length > 0
+              : (elemento?.value || "").trim();
+
+          if (!valor) {
+            alert(`Preencha o campo obrigatório: ${campo.label}.`);
+            elemento?.focus();
+            return false;
+          }
+        }
+
+        const termo = document.getElementById("termo-lgpd");
+        if (!termo || !termo.checked) {
+          alert(
+            "É necessário aceitar os termos de uso de dados para cadastrar o pet.",
+          );
+          termo?.focus();
+          return false;
+        }
+
+        const lat = Number.parseFloat(document.getElementById("lat").value);
+        const lng = Number.parseFloat(document.getElementById("lng").value);
+        if (
+          !Number.isFinite(lat) ||
+          !Number.isFinite(lng) ||
+          !estaNoBrasil(lat, lng)
+        ) {
+          alert(
+            "Para cadastrar, selecione uma localização válida dentro do Brasil no mapa.",
+          );
+          return false;
+        }
+
+        const email = document.getElementById("contato").value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          alert("Informe um e-mail válido no campo de contato.");
+          document.getElementById("contato").focus();
+          return false;
+        }
+
+        return true;
+      }
+
+      // Validação visual dinâmica no campo de upload de imagem
       const inputImagem = document.getElementById("imagem");
       const containerErro = document.getElementById("erro-imagem");
 
       if (inputImagem) {
         inputImagem.addEventListener("change", function () {
           const arquivo = this.files[0];
+          const validacao = validarImagemParaUpload(arquivo);
           containerErro.style.display = "none";
           containerErro.textContent = "";
 
-          if (arquivo) {
-            // Validação de tipo (MIME-Type deve ser imagem)
-            if (!arquivo.type.startsWith("image/")) {
-              containerErro.textContent =
-                "Erro: O arquivo selecionado precisa ser uma imagem válida.";
-              containerErro.style.display = "block";
-              this.value = ""; // Limpa a seleção
-              return;
-            }
-
-            // Validação de tamanho (5 MB = 5 * 1024 * 1024 bytes)
-            const limiteTamanho = 5 * 1024 * 1024;
-            if (arquivo.size > limiteTamanho) {
-              containerErro.textContent =
-                "Erro: A imagem excede o tamanho limite de 5MB. Escolha uma foto menor.";
-              containerErro.style.display = "block";
-              this.value = ""; // Limpa a seleção
-            }
+          if (!validacao.ok) {
+            containerErro.textContent = validacao.mensagem;
+            containerErro.style.display = "block";
+            this.value = "";
           }
         });
       }
@@ -444,11 +560,16 @@
             return;
           }
 
+          if (!validarCamposObrigatorios()) {
+            return;
+          }
+
           const pet = {
             nome: document.getElementById("nome").value.trim(),
             localiza: document.getElementById("localizacao").value.trim(),
             localizacao: document.getElementById("localizacao").value.trim(),
-            raca: document.getElementById("tipo").value,
+            raca:
+              document.getElementById("raca").value.trim() || "Não informada",
             tipo: document.getElementById("tipo").value,
             sexo: document.getElementById("sexo").value,
             porte: document.getElementById("porte").value,
@@ -461,6 +582,17 @@
             lng: parseFloat(document.getElementById("lng").value) || null,
             status: "desaparecido",
             usuarioCriador: usuarioLogado.email,
+
+            // Dados para auditoria de consentimento (LGPD)
+            consentimentoLGPD: {
+              aceito: true,
+              dataHora: new Date().toISOString(),
+              usuarioUid: usuarioLogado.uid,
+              usuarioEmail: usuarioLogado.email,
+              versaoTermo: "1.0",
+              textoExibido:
+                "Autorizo o uso e compartilhamento dos meus dados de contato e localização para a finalidade de localização e resgate do pet.",
+            },
           };
 
           const coordenadasValidas =
@@ -474,18 +606,28 @@
           }
 
           const imagemInput = document.getElementById("imagem").files[0];
+          const validacaoImagem = validarImagemParaUpload(imagemInput);
+
+          if (!validacaoImagem.ok) {
+            alert(validacaoImagem.mensagem);
+            return;
+          }
 
           try {
             if (imagemInput) {
-              // Upload seguro direto ao Storage
+              // Upload seguro direto ao Storage com validação de tipo/tamanho em cliente e metadata de autoria.
               const nomeArquivo = `${Date.now()}_${imagemInput.name}`;
               const storageRef = ref(storage, `pets/${nomeArquivo}`);
 
               console.log("Iniciando upload da imagem...");
-              const snapshot = await uploadBytes(storageRef, imagemInput);
+              const snapshot = await uploadBytes(storageRef, imagemInput, {
+                customMetadata: {
+                  uploadedBy: usuarioLogado.email,
+                },
+              });
               const downloadURL = await getDownloadURL(snapshot.ref);
 
-              pet.imagem = downloadURL; // Salva o link encurtado no objeto do pet
+              pet.imagem = downloadURL; // Salva o link no objeto do pet
             } else {
               pet.imagem = "";
             }
@@ -513,5 +655,7 @@
         }
       }
     </script>
+    <script src="script/guide-primeira-visita.js" defer></script>
   </body>
 </html>
+

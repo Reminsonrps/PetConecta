@@ -4,8 +4,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Criar Conta - PetFinder</title>
+    <title>Criar Conta - PetConecta</title>
     <link rel="stylesheet" href="css/buttons-global.css" />
+    <link rel="stylesheet" href="css/guide-primeira-visita.css" />
     <style>
       html,
       body {
@@ -97,7 +98,7 @@
     </style>
     <link rel="stylesheet" href="css/buttons-global.css" />
   </head>
-  <body>
+  <body data-guide-page="cadastro">
     <header id="cabeca">
       <h1 id="logo">🐾 PetConecta</h1>
       <nav id="nav-menu">
@@ -177,15 +178,12 @@
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
           <a
-            href="https://www.instagram.com/seuusuario"
+            href="javascript:void(0)"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
           >
-            <img
-              src="assets/img/icon-instagram.svg"
-              alt="Instagram"
-            />
+            <img src="assets/img/icon-instagram.svg" alt="Instagram" />
           </a>
           <a
             href="https://www.facebook.com/seuusuario"
@@ -193,10 +191,7 @@
             rel="noopener noreferrer"
             aria-label="Facebook"
           >
-            <img
-              src="assets/img/icon-facebook.svg"
-              alt="Facebook"
-            />
+            <img src="assets/img/icon-facebook.svg" alt="Facebook" />
           </a>
         </div>
         <nav class="footer-nav">
@@ -211,40 +206,45 @@
       </div>
     </footer>
 
+    <script src="script/guide-primeira-visita.js" defer></script>
+
     <!-- Firebase Script Modificado -->
     <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+      import { auth } from "./script/firebase.js";
       import {
-        getAuth,
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
         GoogleAuthProvider,
         signInWithPopup,
         signInWithRedirect,
         getRedirectResult,
+        onAuthStateChanged,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
-      // Configuração do seu projeto Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
-        authDomain: "petconecta-db068.firebaseapp.com",
-        projectId: "petconecta-db068",
-        storageBucket: "petconecta-db068.firebasestorage.app",
-        messagingSenderId: "1030110038715",
-        appId: "1:1030110038715:web:151deca61831138159b79e",
-      };
-
-      // Inicialização do Firebase
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
       const provider = new GoogleAuthProvider();
 
-      // Função de tratamento de redirecionamento após autenticado com sucesso
-      function redirecionarUsuario() {
+      onAuthStateChanged(auth, (usuario) => {
+        const authInProgress = sessionStorage.getItem(
+          "petconectaAuthInProgress",
+        );
+
+        if (usuario && !authInProgress) {
+          window.location.href = "index.html";
+        }
+      });
+
+      // Função de tratamento de redirecionamento após autenticação.
+      // Primeiro cadastro segue para publicação; usuário existente volta para a home.
+      function redirecionarUsuario(destinoPadrao) {
         const destino =
-          localStorage.getItem("destinoAposLogin") || "publicar.html";
+          localStorage.getItem("destinoAposLogin") || destinoPadrao;
         localStorage.removeItem("destinoAposLogin");
+        sessionStorage.removeItem("petconectaAuthInProgress");
         window.location.href = destino;
+      }
+
+      function destinoDepoisDoLogin(isNovoUsuario) {
+        return isNovoUsuario ? "publicar.html" : "index.html";
       }
 
       // --- TRATAR RETORNO DO REDIRECIONAMENTO (MOBILE) ---
@@ -253,12 +253,14 @@
         .then((resultado) => {
           if (resultado) {
             const usuario = resultado.user;
-            alert(`Bem-vindo ao PetFinder, ${usuario.displayName}!`);
+            const isNovoUsuario =
+              resultado.additionalUserInfo?.isNewUser ?? false;
+            alert(`Bem-vindo ao PetConecta, ${usuario.displayName}!`);
             localStorage.setItem(
               "usuarioLogado",
               JSON.stringify({ usuario: usuario.email }),
             );
-            redirecionarUsuario();
+            redirecionarUsuario(destinoDepoisDoLogin(isNovoUsuario));
           }
         })
         .catch((error) => {
@@ -302,18 +304,25 @@
           }
 
           try {
+            sessionStorage.setItem("petconectaAuthInProgress", "true");
+
             if (isLoginMode) {
               await signInWithEmailAndPassword(auth, email, senha);
               alert("Login realizado com sucesso!");
+              localStorage.setItem(
+                "usuarioLogado",
+                JSON.stringify({ usuario: email }),
+              );
+              redirecionarUsuario("index.html");
             } else {
               await createUserWithEmailAndPassword(auth, email, senha);
               alert("Conta criada com sucesso!");
+              localStorage.setItem(
+                "usuarioLogado",
+                JSON.stringify({ usuario: email }),
+              );
+              redirecionarUsuario("publicar.html");
             }
-            localStorage.setItem(
-              "usuarioLogado",
-              JSON.stringify({ usuario: email }),
-            );
-            redirecionarUsuario();
           } catch (error) {
             console.error("Erro na autenticação:", error);
             if (error.code === "auth/email-already-in-use") {
@@ -345,12 +354,14 @@
               // No computador, abre o pop-up nativo normalmente
               const resultado = await signInWithPopup(auth, provider);
               const usuario = resultado.user;
-              alert(`Bem-vindo ao PetFinder, ${usuario.displayName}!`);
+              const isNovoUsuario =
+                resultado.additionalUserInfo?.isNewUser ?? false;
+              alert(`Bem-vindo ao PetConecta, ${usuario.displayName}!`);
               localStorage.setItem(
                 "usuarioLogado",
                 JSON.stringify({ usuario: usuario.email }),
               );
-              redirecionarUsuario();
+              redirecionarUsuario(destinoDepoisDoLogin(isNovoUsuario));
             }
           } catch (error) {
             console.error("Erro no login com Google:", error);
@@ -381,4 +392,3 @@
     </script>
   </body>
 </html>
-

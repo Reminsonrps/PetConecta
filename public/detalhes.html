@@ -164,7 +164,7 @@
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
           <a
-            href="https://www.instagram.com/seuusuario"
+            href="javascript:void(0)"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -218,13 +218,8 @@
 
     <!-- Script Modular do Firebase -->
     <script type="module">
+      import { auth, db } from "./script/firebase.js";
       import {
-        initializeApp,
-        getApps,
-        getApp,
-      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
-      import {
-        getFirestore,
         doc,
         getDoc,
         collection,
@@ -232,26 +227,9 @@
         serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
       import {
-        getAuth,
         onAuthStateChanged,
         signOut,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-
-      // Configuração do Firebase
-      const firebaseConfig = {
-        apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
-        authDomain: "petconecta-db068.firebaseapp.com",
-        projectId: "petconecta-db068",
-        storageBucket: "petconecta-db068.firebasestorage.app",
-        messagingSenderId: "1030110038715",
-        appId: "1:1030110038715:web:151deca61831138159b79e",
-      };
-
-      // Inicialização segura
-      const app =
-        getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-      const db = getFirestore(app);
-      const auth = getAuth(app);
 
       // --- MENU DE NAVEGAÇÃO DINÂMICO COM AUTH ---
       onAuthStateChanged(auth, (user) => {
@@ -330,6 +308,10 @@
               secaoAvistamentos.style.display = "block";
             }
 
+            const emailContato = pet.contato || "Não informado";
+            const whatsappContato = pet.whatsapp || "";
+            const whatsappNumero = whatsappContato.replace(/\D/g, "");
+
             container.innerHTML = `
               <article class="pet-detail-card">
                 <div class="pet-image-wrapper">
@@ -341,7 +323,6 @@
                   <h2>${pet.nome || "Sem nome"}</h2>
                   <p class="pet-description">${pet.descricao || "Sem descrição disponível."}</p>
 
-                  <!-- 🚀 ATUALIZADO: Grid agora possui Tipo (Espécie) e Porte do animal -->
                   <div class="pet-info-grid">
                     <div><strong>Tipo:</strong> ${pet.tipo || pet.raca || "Não informado"}</div>
                     <div><strong>Porte:</strong> ${pet.porte || "Não informado"}</div>
@@ -351,21 +332,34 @@
                     <div><strong>Data:</strong> ${pet.data || "Não informada"}</div>
                   </div>
 
-                  <p class="pet-contact" style="margin-top: 15px;"><strong>Contato (E-mail):</strong> ${pet.contato || "Não informado"}</p>
-                  
-                  ${
-                    pet.whatsapp
-                      ? `
-                    <p class="pet-whatsapp" style="margin-top: 8px;">
-                      <strong>WhatsApp:</strong> 
-                      <a href="https://wa.me/55${pet.whatsapp.replace(/\D/g, "")}" target="_blank" style="text-decoration: none; color: #25D366; font-weight: bold; display: inline-flex; align-items: center; gap: 5px;">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 20px; height: 20px; vertical-align: middle;">
-                        Falar no WhatsApp
-                      </a>
+                  <div style="margin-top: 18px; padding: 14px 16px; border: 1px solid rgba(255,117,26,0.25); border-radius: 12px; background: #fffaf6;">
+                    <p style="margin: 0 0 10px; font-weight: 700; color: #b85613;">Contato do anunciante</p>
+                    <p style="margin: 0 0 12px; color: #51453d;">
+                      Os dados de contato ficam protegidos para evitar exposição indevida. Revele somente quando houver interesse real em ajudar.
                     </p>
-                  `
-                      : ""
-                  }
+
+                    <button id="btn-revelar-contato" type="button" style="padding: 10px 16px; border: none; border-radius: 10px; background: linear-gradient(135deg, #ff751a 0%, #d85f13 100%); color: white; font-weight: 700; cursor: pointer;">
+                      Revelar contato
+                    </button>
+
+                    <div id="contato-privado" style="display: none; margin-top: 14px;">
+                      <p class="pet-contact" style="margin: 8px 0;"><strong>E-mail:</strong> ${emailContato}</p>
+
+                      ${
+                        whatsappNumero
+                          ? `
+                        <p class="pet-whatsapp" style="margin: 8px 0;">
+                          <strong>WhatsApp:</strong>
+                          <a href="https://wa.me/55${whatsappNumero}" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: #25D366; font-weight: bold; display: inline-flex; align-items: center; gap: 5px;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width: 20px; height: 20px; vertical-align: middle;">
+                            Falar no WhatsApp
+                          </a>
+                        </p>
+                      `
+                          : ""
+                      }
+                    </div>
+                  </div>
 
                   <div class="pet-actions" style="margin-top: 20px;">
                     <a href="index.html" class="voltar-btn" style="text-decoration: none;">← Voltar</a>
@@ -373,6 +367,26 @@
                 </div>
               </article>
             `;
+
+            const btnRevelarContato = document.getElementById(
+              "btn-revelar-contato",
+            );
+            const blocoContatoPrivado =
+              document.getElementById("contato-privado");
+
+            if (btnRevelarContato && blocoContatoPrivado) {
+              btnRevelarContato.addEventListener("click", () => {
+                const confirmar = window.confirm(
+                  "Você está prestes a visualizar os dados de contato do anunciante. Use com responsabilidade e apenas para ajudar no resgate do pet.",
+                );
+
+                if (confirmar) {
+                  blocoContatoPrivado.style.display = "block";
+                  btnRevelarContato.textContent = "Contato revelado";
+                  btnRevelarContato.disabled = true;
+                }
+              });
+            }
           } else {
             container.innerHTML = `
               <p style="text-align: center;">Pet não encontrado. Volte à página anterior e tente novamente.</p>
@@ -447,3 +461,4 @@
     </script>
   </body>
 </html>
+
