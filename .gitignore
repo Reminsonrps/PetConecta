@@ -1,5 +1,14 @@
 node_modules
-docs/
+# Bloqueia toda a pasta docs por padrão
+docs/**
+# Reabre a pasta para permitir exceções pontuais
+!docs/
+# Arquivos permitidos para versionamento
+!docs/arquitetura.md
+!docs/metodologia_e_evidencias_petconecta.docx
+!docs/riscos-e-mitigacoes.md
+!docs/modelagem-site.md
+!docs/diagrama-metodologia-extensionista.md
 *.log
 *.xlsx
 *.xls
