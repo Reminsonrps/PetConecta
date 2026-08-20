@@ -743,6 +743,15 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 - FIREBASE. _Documentacao do Firebase_. Disponivel em: <https://firebase.google.com/docs>. Acesso em: 19 ago. 2026.
 - W3C. _Web Content Accessibility Guidelines (WCAG) 2.2_. Disponivel em: <https://www.w3.org/TR/WCAG22/>. Acesso em: 19 ago. 2026.
 
+### 17.3 Ferramentas utilizadas na modelagem e documentacao
+
+- Mermaid: modelagem textual de diagramas de caso de uso, processo, estados, arquitetura e sequencia.
+- Markdown: consolidacao dos artefatos tecnicos e rastreabilidade da modelagem.
+- Visual Studio Code: edicao dos diagramas, documentos e revisao de consistencia.
+- Python (`python-docx` e `Pillow`): geracao de diagrama em imagem e incorporacao no arquivo DOCX exigido na entrega.
+
+Observacao: na entrega academica, os diagramas tecnicos foram mantidos em Mermaid para rastreabilidade e manutencao, e o diagrama da metodologia foi incorporado no documento final em formato compativel com o modelo da disciplina.
+
 ## 18. Conclusao
 
 A modelagem apresenta o PetConecta sob as perspectivas de negocio, requisitos, comportamento, dados, arquitetura, navegacao, seguranca, interface e validacao. Ela representa o estado atual do site sem confundir funcionalidades propostas com funcionalidades implementadas e oferece uma base para apresentacao academica, manutencao e evolucao do sistema.
