@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" role="img" aria-labelledby="title desc">
   <title id="title">Viagens seguras</title>
-  <desc id="desc">Informativo sobre viagem segura com pets</desc>
+  <desc id="desc">Informativo sobre viagens seguras com pets</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0089a8"/>
@@ -16,6 +16,6 @@
   <path d="M730 230 l110 50 -110 50 20 -50 z" fill="#ffffff" opacity="0.75"/>
   <path d="M860 230 l110 50 -110 50 20 -50 z" fill="#ffffff" opacity="0.6"/>
   <text x="1020" y="280" font-family="Arial, sans-serif" font-size="64" font-weight="700" fill="#ffffff">Viagens</text>
-  <text x="1020" y="350" font-family="Arial, sans-serif" font-size="52" font-weight="700" fill="#ffffff">com seguranca</text>
+  <text x="1020" y="350" font-family="Arial, sans-serif" font-size="52" font-weight="700" fill="#ffffff">com segurança</text>
   <text x="1020" y="420" font-family="Arial, sans-serif" font-size="32" fill="#eaffff">Transporte certo e documentos em dia</text>
 </svg>

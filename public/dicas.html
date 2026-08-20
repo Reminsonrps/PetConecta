@@ -292,6 +292,10 @@
         background: #fff8f3;
       }
 
+      .vacinas-table-wrap {
+        width: 100%;
+      }
+
       /* ===== EMERGENCIA ===== */
       .emergencia-section {
         background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
@@ -417,11 +421,62 @@
         .dicas-grid {
           grid-template-columns: 1fr;
         }
+
+        .vacinas-table {
+          border: 0;
+          box-shadow: none;
+          margin-bottom: 2rem;
+        }
+
+        .vacinas-table thead {
+          display: none;
+        }
+
+        .vacinas-table tbody,
+        .vacinas-table tr,
+        .vacinas-table td {
+          display: block;
+          width: 100%;
+        }
+
+        .vacinas-table tr {
+          margin-bottom: 0.85rem;
+          border: 1px solid #f0e8e0;
+          border-radius: 12px;
+          overflow: hidden;
+          background: #fff;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .vacinas-table td {
+          border: 0;
+          border-bottom: 1px solid #f3ece5;
+          padding: 0.65rem 0.85rem;
+          font-size: 0.88rem;
+          line-height: 1.45;
+          text-align: left;
+          background: #fff !important;
+        }
+
+        .vacinas-table td:last-child {
+          border-bottom: 0;
+        }
+
+        .vacinas-table td::before {
+          content: attr(data-label);
+          display: block;
+          margin-bottom: 0.2rem;
+          font-weight: 700;
+          color: #c95d12;
+          font-size: 0.8rem;
+          text-transform: uppercase;
+          letter-spacing: 0.2px;
+        }
       }
     </style>
     <link rel="stylesheet" href="css/buttons-global.css" />
   </head>
-  <body>
+  <body class="menu-reference-index">
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
 
     <header id="cabeca">
@@ -433,10 +488,13 @@
           aria-expanded="false"
           aria-controls="menu"
         >
-          Menu <span id="hamburguer"></span>
+          Menu
+          <span id="hamburguer"></span>
         </button>
+
+        <!-- Este menu será preenchido dinamicamente pelo script modular do Firebase -->
         <ul id="menu">
-          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="#home">Página Inicial</a></li>
           <li><a href="animais_encontra.html">Encontrados</a></li>
           <li>
             <a
@@ -446,15 +504,15 @@
               >Adoção</a
             >
           </li>
-          <li><a href="dicas.html">Cuidados</a></li>
-          <li><a href="contato.html">Contato</a></li>
+          <li><a href="#dicas">Cuidados</a></li>
+          <li><a href="#contatos">Contato</a></li>
         </ul>
       </nav>
     </header>
 
     <main id="conteudo">
       <!-- HERO -->
-      <section class="page-hero">
+      <section class="page-hero" id="home">
         <h1>🐾 Dicas para Cuidar do Seu Pet</h1>
         <p>
           Tudo o que você precisa saber para garantir saúde, felicidade e
@@ -471,7 +529,7 @@
         </div>
       </section>
 
-      <div class="content-wrap">
+      <div class="content-wrap" id="dicas">
         <!-- SAÚDE -->
         <h2 class="sec-title" id="saude">🩺 Saúde</h2>
         <p class="sec-sub">
@@ -545,63 +603,85 @@
         >
           📅 Calendário de Vacinas — Cães (referência geral)
         </h3>
-        <table class="vacinas-table">
-          <thead>
-            <tr>
-              <th>Vacina</th>
-              <th>Início</th>
-              <th>Esquema básico</th>
-              <th>Reforço</th>
-              <th>O que Protege</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>V10 / V8</strong></td>
-              <td>6 a 8 semanas</td>
-              <td>2 a 3 doses com intervalo de 3 a 4 semanas</td>
-              <td>Anual</td>
-              <td>Cinomose, Parvovirose, Hepatite, Leptospirose</td>
-            </tr>
-            <tr>
-              <td><strong>Antirrábica</strong></td>
-              <td>3 meses</td>
-              <td>1 dose inicial</td>
-              <td>Anual (lei)</td>
-              <td>Raiva</td>
-            </tr>
-            <tr>
-              <td><strong>Gripe Canina</strong></td>
-              <td>6 semanas</td>
-              <td>1 ou 2 doses iniciais (conforme fabricante)</td>
-              <td>Anual</td>
-              <td>Tosse dos Canis</td>
-            </tr>
-            <tr>
-              <td><strong>Giárdia</strong></td>
-              <td>8 semanas</td>
-              <td>2 doses com intervalo de 2 a 4 semanas</td>
-              <td>Anual (quando indicada)</td>
-              <td>Reduz risco e gravidade de giardíase</td>
-            </tr>
-            <tr>
-              <td><strong>Leptospirose (complementar)</strong></td>
-              <td>Conforme protocolo após V10/V8</td>
-              <td>Aplicação estratégica em pets de maior exposição</td>
-              <td>Semestral ou anual (conforme risco)</td>
-              <td>Amplia cobertura contra leptospirose em áreas de risco</td>
-            </tr>
-            <tr>
-              <td><strong>Leishmaniose</strong></td>
-              <td>A partir de 4 meses</td>
-              <td>
-                Após avaliação veterinária e teste indicado pelo protocolo
-              </td>
-              <td>Anual</td>
-              <td>Leishmaniose visceral (uso conforme risco da região)</td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="vacinas-table-wrap">
+          <table class="vacinas-table">
+            <thead>
+              <tr>
+                <th>Vacina</th>
+                <th>Início</th>
+                <th>Esquema básico</th>
+                <th>Reforço</th>
+                <th>O que Protege</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-label="Vacina"><strong>V10 / V8</strong></td>
+                <td data-label="Início">6 a 8 semanas</td>
+                <td data-label="Esquema básico">
+                  2 a 3 doses com intervalo de 3 a 4 semanas
+                </td>
+                <td data-label="Reforço">Anual</td>
+                <td data-label="O que Protege">
+                  Cinomose, Parvovirose, Hepatite, Leptospirose
+                </td>
+              </tr>
+              <tr>
+                <td data-label="Vacina"><strong>Antirrábica</strong></td>
+                <td data-label="Início">3 meses</td>
+                <td data-label="Esquema básico">1 dose inicial</td>
+                <td data-label="Reforço">Anual (lei)</td>
+                <td data-label="O que Protege">Raiva</td>
+              </tr>
+              <tr>
+                <td data-label="Vacina"><strong>Gripe Canina</strong></td>
+                <td data-label="Início">6 semanas</td>
+                <td data-label="Esquema básico">
+                  1 ou 2 doses iniciais (conforme fabricante)
+                </td>
+                <td data-label="Reforço">Anual</td>
+                <td data-label="O que Protege">Tosse dos Canis</td>
+              </tr>
+              <tr>
+                <td data-label="Vacina"><strong>Giárdia</strong></td>
+                <td data-label="Início">8 semanas</td>
+                <td data-label="Esquema básico">
+                  2 doses com intervalo de 2 a 4 semanas
+                </td>
+                <td data-label="Reforço">Anual (quando indicada)</td>
+                <td data-label="O que Protege">
+                  Reduz risco e gravidade de giardíase
+                </td>
+              </tr>
+              <tr>
+                <td data-label="Vacina">
+                  <strong>Leptospirose (complementar)</strong>
+                </td>
+                <td data-label="Início">Conforme protocolo após V10/V8</td>
+                <td data-label="Esquema básico">
+                  Aplicação estratégica em pets de maior exposição
+                </td>
+                <td data-label="Reforço">
+                  Semestral ou anual (conforme risco)
+                </td>
+                <td data-label="O que Protege">
+                  Amplia cobertura contra leptospirose em áreas de risco
+                </td>
+              </tr>
+              <tr>
+                <td data-label="Vacina"><strong>Leishmaniose</strong></td>
+                <td data-label="Início">A partir de 4 meses</td>
+                <td data-label="Esquema básico">
+                  Após avaliação veterinária e teste indicado pelo protocolo
+                </td>
+                <td data-label="Reforço">Anual</td>
+                <td data-label="O que Protege">
+                  Leishmaniose visceral (uso conforme risco da região)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
         <!-- ALIMENTAÇÃO -->
         <h2 class="sec-title" id="alimentacao">🍽️ Alimentação</h2>
@@ -936,13 +1016,13 @@
       <!-- /content-wrap -->
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer" id="contatos">
       <div class="footer-content">
         <h3>🐶 PetConecta</h3>
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
           <a
-            href="https://www.instagram.com/seuusuario"
+            href="javascript:void(0)"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Instagram"
@@ -972,6 +1052,57 @@
       </div>
     </footer>
 
+    <script type="module">
+      import { auth } from "./script/firebase.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+      onAuthStateChanged(auth, (user) => {
+        const menu = document.getElementById("menu");
+        if (!menu) return;
+
+        const linksBase = `
+          <li><a href="index.html">Página Inicial</a></li>
+          <li><a href="animais_encontra.html">Encontrados</a></li>
+          <li>
+            <a href="https://www.anjosdajuda.org/adote" target="_blank" rel="noopener noreferrer">Adoção</a>
+          </li>
+          <li><a href="dicas.html">Cuidados</a></li>
+          <li><a href="contato.html">Contato</a></li>
+        `;
+
+        if (user) {
+          const nomeExibicao =
+            user.displayName || user.email?.split("@")[0] || "Usuário";
+
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="cadastrados.html">Meus Pets</a></li>
+            <li><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.55);color:#fff;font-weight:700;border-radius:20px;padding:5px 14px;font-size:0.9rem;">👤 ${nomeExibicao}</span></li>
+            <li><a href="#" id="btn-logout" style="color: #ffccd5; font-weight: bold; text-decoration: none;">Sair</a></li>
+          `;
+
+          const btnLogout = document.getElementById("btn-logout");
+          if (btnLogout) {
+            btnLogout.addEventListener("click", (e) => {
+              e.preventDefault();
+              signOut(auth).then(() => {
+                localStorage.removeItem("usuarioLogado");
+                window.location.reload();
+              });
+            });
+          }
+        } else {
+          menu.innerHTML = `
+            ${linksBase}
+            <li><a href="criar-conta.html" style="color: #4CAF50; font-weight: bold; text-decoration: none;">Entrar / Cadastrar</a></li>
+          `;
+        }
+      });
+    </script>
+
     <script>
       const btnMobile = document.querySelector("#btn-mobile");
       const navMenu = document.querySelector("#nav-menu");
@@ -996,3 +1127,4 @@
     </script>
   </body>
 </html>
+

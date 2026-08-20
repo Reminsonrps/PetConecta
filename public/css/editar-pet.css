@@ -5,31 +5,64 @@
   --primaria: #ff6600;
   --cinza-suave: #f9f9f9;
   --borda-fina: 1px solid #ccc;
-  --sombra-card: 0 4px 15px rgba(0,0,0,0.1);
+  --sombra-card: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-body, ul {
+body {
   margin: 0;
-  padding: 0;
   overflow-x: hidden;
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: "Segoe UI", system-ui, sans-serif;
   background-color: var(--cinza-suave);
 }
 
-header, main, section {
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+header,
+main,
+section {
   margin: 0;
   padding: 0;
 }
 
 /* Cabeçalho */
-header {
+#cabeca {
   background-color: var(--primaria);
-  padding: 20px;
-  text-align: center;
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
   color: white;
-  font-size: 2rem;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+#logo {
+  font-family: "Fredoka One", cursive;
+  font-size: 1.8rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+}
+
+#nav-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#menu {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  background: transparent;
 }
 
 /* Conteúdo principal */
@@ -38,7 +71,8 @@ main {
 }
 
 /* Container do formulário */
-.formulario, .form-container {
+.formulario,
+.form-container {
   max-width: 600px;
   margin: 20px auto 40px auto;
   background-color: #fff;
@@ -48,7 +82,8 @@ main {
 }
 
 /* Título do formulário */
-.formulario h2, .form-container h2 {
+.formulario h2,
+.form-container h2 {
   text-align: center;
   margin-bottom: 25px;
   color: var(--primaria);
@@ -103,7 +138,7 @@ form textarea {
 /* Mapa interativo Leaflet */
 #map {
   margin-bottom: 15px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* Botões */
@@ -118,7 +153,9 @@ button {
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.2s ease;
 }
 
 form button[type="submit"]:hover,
@@ -140,7 +177,7 @@ footer {
   background-color: var(--primaria);
   color: white;
   padding: 2rem 1rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -173,7 +210,9 @@ footer nav a {
   text-decoration: none;
   font-weight: 600;
   font-size: 0.95rem;
-  transition: color 0.3s ease, transform 0.2s ease;
+  transition:
+    color 0.3s ease,
+    transform 0.2s ease;
 }
 
 footer nav a:hover {
@@ -191,7 +230,8 @@ footer div a img:hover {
 
 /* Responsividade de Mídia */
 @media (max-width: 900px) {
-  .formulario, .form-container {
+  .formulario,
+  .form-container {
     padding: 25px;
     margin: 20px;
   }
@@ -206,7 +246,8 @@ footer div a img:hover {
     font-size: 0.9rem;
   }
 
-  .formulario h2, .form-container h2 {
+  .formulario h2,
+  .form-container h2 {
     font-size: 1.6rem;
   }
 
@@ -216,7 +257,8 @@ footer div a img:hover {
 }
 
 @media (max-width: 600px) {
-  .formulario, .form-container {
+  .formulario,
+  .form-container {
     padding: 20px;
   }
 
@@ -229,11 +271,12 @@ footer div a img:hover {
     font-size: 0.95rem;
   }
 
-  header {
-    font-size: 1.5rem;
+  #cabeca {
+    padding: 0 16px;
   }
 
-  .formulario h2, .form-container h2 {
+  .formulario h2,
+  .form-container h2 {
     font-size: 1.5rem;
   }
 
@@ -255,7 +298,8 @@ footer div a img:hover {
 }
 
 @media (max-width: 400px) {
-  .formulario, .form-container {
+  .formulario,
+  .form-container {
     padding: 15px;
     margin: 10px;
   }
@@ -266,7 +310,8 @@ footer div a img:hover {
     padding: 12px;
   }
 
-  .formulario h2, .form-container h2 {
+  .formulario h2,
+  .form-container h2 {
     font-size: 1.3rem;
   }
 

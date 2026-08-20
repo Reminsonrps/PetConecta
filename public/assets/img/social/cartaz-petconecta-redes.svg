@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+  <title id="title">Cartaz PetConecta para redes sociais</title>
+  <desc id="desc">Arte de divulgação do PetConecta com chamada para participação da comunidade.</desc>
+
+  <defs>
+    <linearGradient id="bgMain" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ff7f2a"/>
+      <stop offset="52%" stop-color="#ff9c4c"/>
+      <stop offset="100%" stop-color="#ffd3a4"/>
+    </linearGradient>
+
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#fff4e8" stop-opacity="0.96"/>
+    </linearGradient>
+
+    <linearGradient id="ctaGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2e8b57"/>
+      <stop offset="100%" stop-color="#3fbf78"/>
+    </linearGradient>
+
+    <filter id="shadowSoft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#a84d11" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1350" fill="url(#bgMain)"/>
+
+  <circle cx="120" cy="100" r="170" fill="#ffffff" opacity="0.15"/>
+  <circle cx="980" cy="210" r="140" fill="#ffffff" opacity="0.12"/>
+  <circle cx="960" cy="1220" r="210" fill="#ffffff" opacity="0.1"/>
+  <circle cx="70" cy="1230" r="120" fill="#ffffff" opacity="0.12"/>
+
+  <g opacity="0.24" fill="#fff4e5">
+    <circle cx="165" cy="330" r="16"/>
+    <circle cx="142" cy="305" r="10"/>
+    <circle cx="188" cy="305" r="10"/>
+    <circle cx="132" cy="340" r="9"/>
+    <circle cx="198" cy="340" r="9"/>
+
+    <circle cx="930" cy="450" r="20"/>
+    <circle cx="900" cy="420" r="12"/>
+    <circle cx="960" cy="420" r="12"/>
+    <circle cx="887" cy="463" r="10"/>
+    <circle cx="973" cy="463" r="10"/>
+
+    <circle cx="860" cy="1020" r="18"/>
+    <circle cx="833" cy="993" r="11"/>
+    <circle cx="887" cy="993" r="11"/>
+    <circle cx="820" cy="1034" r="9"/>
+    <circle cx="900" cy="1034" r="9"/>
+  </g>
+
+  <rect x="86" y="110" width="908" height="1130" rx="42" fill="url(#cardGrad)" filter="url(#shadowSoft)"/>
+
+  <g>
+    <circle cx="188" cy="240" r="52" fill="#ff7b1f"/>
+    <circle cx="188" cy="228" r="18" fill="#ffffff"/>
+    <circle cx="168" cy="208" r="11" fill="#ffffff"/>
+    <circle cx="208" cy="208" r="11" fill="#ffffff"/>
+    <circle cx="156" cy="236" r="10" fill="#ffffff"/>
+    <circle cx="220" cy="236" r="10" fill="#ffffff"/>
+  </g>
+
+  <text x="260" y="222" font-family="Fredoka, Baloo, Nunito, Arial, sans-serif" font-size="44" font-weight="700" fill="#b44a0d">Rede de Proteção Animal</text>
+
+  <text x="120" y="335" font-family="Fredoka, Baloo, Nunito, Arial, sans-serif" font-size="106" font-weight="900" fill="#ff6d00">PetConecta</text>
+
+  <rect x="120" y="378" width="840" height="116" rx="26" fill="#fff1e3"/>
+  <text x="158" y="448" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="45" font-weight="800" fill="#8f3b0b">Perdeu ou encontrou um pet?</text>
+
+  <text x="120" y="564" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="40" font-weight="800" fill="#3f322b">Conectamos tutores, ONGs e comunidade</text>
+  <text x="120" y="612" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="40" font-weight="800" fill="#3f322b">para gerar mais finais felizes.</text>
+
+  <g>
+    <rect x="120" y="678" width="840" height="76" rx="20" fill="#ffffff"/>
+    <circle cx="166" cy="716" r="11" fill="#ff7b1f"/>
+    <text x="196" y="729" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#3f322b">Publique casos de pets perdidos e encontrados</text>
+
+    <rect x="120" y="772" width="840" height="76" rx="20" fill="#ffffff"/>
+    <circle cx="166" cy="810" r="11" fill="#ff7b1f"/>
+    <text x="196" y="823" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#3f322b">Receba alertas rápidos da sua região</text>
+
+    <rect x="120" y="866" width="840" height="76" rx="20" fill="#ffffff"/>
+    <circle cx="166" cy="904" r="11" fill="#2e8b57"/>
+    <text x="196" y="917" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="30" font-weight="700" fill="#3f322b">Fortaleça a rede de proteção animal</text>
+  </g>
+
+  <rect x="120" y="986" width="840" height="118" rx="28" fill="url(#ctaGrad)"/>
+  <text x="208" y="1058" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="50" font-weight="900" fill="#ffffff">Acesse e participe agora</text>
+
+  <text x="120" y="1160" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="27" font-weight="700" fill="#7f3f14">PetConecta | Proteção Animal | Adoção Responsável</text>
+  <text x="120" y="1198" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="31" font-weight="900" fill="#2e8b57">https://petconecta-db068.web.app</text>
+
+  <g transform="translate(836 1122)">
+    <rect x="0" y="0" width="132" height="132" rx="14" fill="#ffffff" stroke="#ffd7b3" stroke-width="4"/>
+    <image
+      x="8"
+      y="8"
+      width="116"
+      height="116"
+      preserveAspectRatio="xMidYMid meet"
+      href="petconecta-site-qrcode.png"
+    />
+  </g>
+
+  <text x="120" y="1234" font-family="Nunito, Montserrat, Arial, sans-serif" font-size="26" font-weight="700" fill="#7f3f14">Escaneie o QR e entre para a comunidade.</text>
+</svg>

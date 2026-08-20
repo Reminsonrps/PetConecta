@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wireframe Mobile - PetConecta</title>
+    <style>
+      :root {
+        --bg: #f7f1ea;
+        --panel: #ffffff;
+        --primary: #ff751a;
+        --primary-dark: #d95d10;
+        --secondary: #2e7d32;
+        --text: #1f1f1f;
+        --muted: #6b6b6b;
+        --line: #ebdfd5;
+        --shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #efe7de;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
+      }
+
+      .phone-frame {
+        width: 390px;
+        max-width: 100%;
+        margin: 30px auto;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .status-bar {
+        height: 24px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 14px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .topbar {
+        background: var(--primary);
+        color: #fff;
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .topbar .logo {
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .menu-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.18);
+        position: relative;
+      }
+
+      .menu-btn::before,
+      .menu-btn::after,
+      .menu-btn span {
+        content: "";
+        position: absolute;
+        left: 7px;
+        right: 7px;
+        height: 2px;
+        background: white;
+        border-radius: 2px;
+      }
+
+      .menu-btn::before {
+        top: 8px;
+      }
+      .menu-btn span {
+        top: 13px;
+      }
+      .menu-btn::after {
+        top: 18px;
+      }
+
+      .hero {
+        padding: 14px;
+      }
+
+      .hero-banner {
+        height: 170px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #ffd8b7, #f4af75 40%, #d9f0d6 100%);
+        border: 1px solid var(--line);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-banner::before {
+        content: "🐾";
+        position: absolute;
+        font-size: 52px;
+        right: 26px;
+        bottom: 20px;
+        opacity: 0.75;
+      }
+
+      .hero-text {
+        position: absolute;
+        left: 16px;
+        top: 18px;
+        right: 80px;
+      }
+
+      .hero-text h2 {
+        margin: 0 0 8px;
+        font-size: 26px;
+        line-height: 1.1;
+        color: #473225;
+      }
+
+      .hero-text p {
+        margin: 0;
+        font-size: 12px;
+        color: #5d4335;
+        line-height: 1.4;
+      }
+
+      .cta-row {
+        display: flex;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .btn {
+        flex: 1;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 10px;
+        font-weight: 700;
+        font-size: 12px;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #fff;
+        border: 1px solid var(--line);
+        color: var(--text);
+      }
+
+      .filter-bar {
+        margin: 0 14px 14px;
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .chip {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .section-title {
+        margin: 14px 14px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 700;
+        font-size: 16px;
+      }
+
+      .section-title span:last-child {
+        color: var(--primary-dark);
+        font-size: 12px;
+      }
+
+      .pet-list {
+        padding: 0 14px 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .pet-card {
+        background: white;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.03);
+      }
+
+      .pet-image {
+        height: 130px;
+        background: linear-gradient(135deg, #f3d9bd, #dcefd3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+      }
+
+      .pet-body {
+        padding: 10px 12px 12px;
+      }
+
+      .pet-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+
+      .pet-name {
+        font-weight: 700;
+        font-size: 16px;
+      }
+
+      .status-pill {
+        font-size: 10px;
+        padding: 5px 8px;
+        border-radius: 999px;
+        font-weight: 700;
+        color: white;
+        background: var(--primary);
+      }
+
+      .pet-meta {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 4px 0;
+      }
+
+      .pet-action {
+        margin-top: 10px;
+        width: 100%;
+        background: #f6f0eb;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 9px;
+        font-weight: 700;
+      }
+
+      .bottom-nav {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        background: white;
+        border-top: 1px solid var(--line);
+        padding: 8px 0;
+      }
+
+      .nav-item {
+        text-align: center;
+        font-size: 11px;
+        color: var(--muted);
+        padding: 8px 0;
+      }
+
+      .nav-item strong {
+        display: block;
+        margin-top: 2px;
+        font-size: 16px;
+      }
+
+      .nav-item.active {
+        color: var(--primary-dark);
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="phone-frame">
+      <div class="status-bar">
+        <span>9:41</span>
+        <span>5G 82%</span>
+      </div>
+
+      <header class="topbar">
+        <div class="logo">PetConecta</div>
+        <div class="menu-btn"><span></span></div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <div class="hero-banner">
+            <div class="hero-text">
+              <h2>Ajude a encontrar pets perdidos</h2>
+              <p>Divulgue ou acompanhe casos perto de você.</p>
+            </div>
+          </div>
+
+          <div class="cta-row">
+            <button class="btn btn-primary">Publicar pet</button>
+            <button class="btn btn-secondary">Encontrados</button>
+          </div>
+        </section>
+
+        <div class="filter-bar">
+          <div class="chip">Todos</div>
+          <div class="chip">Desaparecidos</div>
+          <div class="chip">Encontrados</div>
+          <div class="chip">Perto de mim</div>
+        </div>
+
+        <div class="section-title">
+          <span>Pets em destaque</span>
+          <span>Ver mais</span>
+        </div>
+
+        <section class="pet-list">
+          <article class="pet-card">
+            <div class="pet-image">🐶</div>
+            <div class="pet-body">
+              <div class="pet-header">
+                <div class="pet-name">Thor</div>
+                <span class="status-pill">Desaparecido</span>
+              </div>
+              <div class="pet-meta">Cachorro · Porte médio</div>
+              <div class="pet-meta">Último local: Centro</div>
+              <button class="pet-action">Saiba mais</button>
+            </div>
+          </article>
+
+          <article class="pet-card">
+            <div class="pet-image">🐱</div>
+            <div class="pet-body">
+              <div class="pet-header">
+                <div class="pet-name">Luna</div>
+                <span class="status-pill" style="background: var(--secondary)"
+                  >Encontrado</span
+                >
+              </div>
+              <div class="pet-meta">Gato · Porte pequeno</div>
+              <div class="pet-meta">Último local: Vila Nova</div>
+              <button class="pet-action">Saiba mais</button>
+            </div>
+          </article>
+
+          <article class="pet-card">
+            <div class="pet-image">🐕</div>
+            <div class="pet-body">
+              <div class="pet-header">
+                <div class="pet-name">Nina</div>
+                <span class="status-pill">Desaparecido</span>
+              </div>
+              <div class="pet-meta">Cachorro · Porte grande</div>
+              <div class="pet-meta">Último local: Bairro Azul</div>
+              <button class="pet-action">Saiba mais</button>
+            </div>
+          </article>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="menu inferior">
+        <div class="nav-item active"><strong>⌂</strong>Início</div>
+        <div class="nav-item"><strong>🐾</strong>Pets</div>
+        <div class="nav-item"><strong>📍</strong>Mapa</div>
+        <div class="nav-item"><strong>☰</strong>Conta</div>
+      </nav>
+    </div>
+  </body>
+</html>

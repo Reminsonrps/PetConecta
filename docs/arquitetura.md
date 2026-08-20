@@ -1,96 +1,160 @@
 # Arquitetura do PetConecta
 
-> Documento complementar para entrega academica: [modelagem-site.md](modelagem-site.md)
+> Documento complementar para entrega acadêmica e manutenção do projeto: [modelagem-site.md](modelagem-site.md)
 
 ## 1. Visão geral
 
-O PetConecta é uma aplicação web estática hospedada no Firebase Hosting, com persistência de dados em Firestore e autenticação via Firebase Authentication. A interface é composta por páginas HTML independentes, cada uma com seus próprios scripts modulares em JavaScript.
+O PetConecta é uma aplicação web estática hospedada no Firebase Hosting, com persistência em Firestore, autenticação em Firebase Authentication e armazenamento de imagens em Firebase Storage. O frontend é composto por páginas HTML e scripts modulares em JavaScript, sem backend tradicional em Node.js para a experiência principal do usuário.
 
 ## 2. Componentes principais
 
 ### Frontend
 
-- páginas estáticas em HTML
-- estilos em CSS
-- scripts JavaScript para interação, formulário e integração com o Firebase
+- páginas estáticas em HTML/CSS/JS;
+- scripts de listagem, filtro, autenticação e formulário;
+- integração com o Firebase via SDK Web;
+- renderização de cards, mapa e ações do usuário no navegador.
 
-### Backend / serviços
+### Serviços do Firebase
 
-- Firebase Hosting para hospedar o site
-- Firebase Authentication para login e identificação do usuário
-- Firestore para armazenar pets e avistamentos
+- Firebase Hosting: entrega do site estático;
+- Firebase Authentication: login e identidade do usuário;
+- Firestore: persistência de dados de pets e ocorrências;
+- Firebase Storage: upload e armazenamento de imagens;
+- App Check: controle de abuso e proteção da API em produção.
 
-## 3. Fluxo de cadastro de pet
+## 3. Padrão arquitetural atual
 
-1. O usuário acessa a página de publicação.
-2. Preenche os dados do pet.
-3. O formulário envia os dados para a coleção pets no Firestore.
-4. O documento criado recebe um identificador único.
-5. A página de detalhes usa esse identificador para carregar as informações do pet.
+A estrutura atual prioriza simplicidade operacional e baixo custo, mantendo o projeto com arquitetura leve:
 
-## 4. Fluxo de avistamento
+- frontend estático sem servidor de aplicação próprio;
+- lógica principal no navegador;
+- Firestore como fonte principal de dados;
+- regras de segurança para validação de acesso e escrita;
+- centralização da inicialização do Firebase em `public/script/firebase.js`.
 
-1. O usuário acessa a página de detalhes de um pet.
-2. Preenche o formulário de avistamento.
-3. O sistema cria um documento na subcoleção avistamentos do pet.
-4. O tutor, ao acessar a área “Meus Pets”, consegue visualizar esses registros.
+## 4. Inicialização centralizada do Firebase
 
-## 5. Estrutura de dados sugerida
+A aplicação passou a usar um módulo único para inicializar e exportar:
 
-### Coleção pets
+- `app`
+- `db`
+- `auth`
+- `storage`
+- `buildPetsQuery()`
 
-Cada documento representa um pet. Campos comuns:
+Esse padrão evita múltiplas instâncias do SDK e reduz risco de listeners duplicados, falhas de estado e overhead de rede.
+
+## 5. Fluxo de listagem e renderização
+
+A listagem de pets usa `onSnapshot` sobre uma query base constrída com:
+
+- `where` quando necessário;
+- `orderBy("data", "desc")`;
+- `limit(maxItems)` para controlar o volume de leitura;
+
+A renderização é feita em blocos, geralmente com criação de elementos do DOM e atualização controlada para evitar re-render completo da interface em cada mudança.
+
+## 6. Fluxo de cadastro de pet
+
+1. o usuário acessa a página de publicação;
+2. preenche nome, tipo, status, localização e dados de contato;
+3. a imagem é enviada para o Firebase Storage;
+4. os metadados do pet são gravados no Firestore;
+5. a listagem e a página de detalhes passam a refletir esse registro automaticamente.
+
+## 7. Fluxo de autenticação e retorno de usuário
+
+1. o usuário acessa a página de cadastro/login;
+2. em caso de primeiro cadastro, o fluxo envia para publicação do pet;
+3. em caso de usuário já autenticado, o sistema devolve para a página inicial;
+4. a autenticação continua sendo validada pelo Firebase Authentication e pelas regras do banco.
+
+## 8. Proteção de contato e dados sensíveis
+
+O projeto passou a tratar dados de contato como informação sensível. A listagem pública não expõe diretamente e-mail e WhatsApp. O bloco de detalhes do pet apresenta um aviso e um botão de confirmação antes de revelar os dados do anunciante.
+
+Esse padrão reduz o risco de coleta automatizada, spam e exposição indevida, preservando a utilidade do contato para quem realmente deseja ajudar na localização do pet.
+
+## 9. Fluxo de avistamento e confirmação
+
+1. o usuário acessa a página de detalhes ou a ocorrência relacionada;
+2. registra um avistamento com descrição e contato;
+3. esses dados são persistidos e ficam acessíveis à área do tutor;
+4. o processo é validado via regras de segurança e autenticação.
+
+## 10. Estrutura de dados
+
+### Coleção `pets`
+
+Campos comumente usados:
 
 - nome
 - descricao
 - status
 - imagem
-- lat
-- lng
+- localiza ou localizacao
 - usuarioCriador
-- dataCadastro
+- data
+- contato
+- whatsapp
+- raca
 
-### Subcoleção avistamentos
+### Coleção de ocorrências / avistamentos
 
-Cada documento representa um relato de avistamento. Campos comuns:
+A estrutura varia conforme o fluxo, mas normalmente contém:
 
+- petId
+- petNome
 - localAvistado
 - descricao
 - contatoReportador
 - reportadoPor
-- petId
-- petNome
-- petOwnerEmail
 - dataRegistro
 
-## 6. Páginas principais
+## 11. Páginas principais
 
-- index.html: página inicial e mapa principal
-- publicar.html: formulário de cadastro
-- detalhes.html: detalhes do pet e formulário de avistamento
-- cadastrados.html: pets do usuário autenticado e avistamentos associados
+- `public/index.html`: página inicial, mapa e listagem principal;
+- `public/publicar.html`: formulário de cadastro;
+- `public/detalhes.html`: detalhes do pet e registro de ocorrência, com proteção para contato privado;
+- `public/cadastrados.html`: pets do usuário autenticado;
+- `public/criar-conta.html`: autenticação e fluxo de login/cadastro;
+- `public/animais_encontra.html`: listagem e mapa de ocorrências encontradas.
 
-## 7. Pontos de integração
+## 12. Considerações de desempenho
 
-- integração com Firestore via SDK JavaScript do Firebase
-- integração com Authentication para reconhecer usuário logado
-- uso de scripts modulares para evitar duplicação de lógica
+Os pontos de atenção na arquitetura atual incluem:
 
-## 8. Considerações de desempenho
+- evitar polling contínuo do mapa;
+- manter apenas um listener por coleção por página;
+- limitar a quantidade de itens carregados por bloco;
+- utilizar lazy loading em imagens quando necessário;
+- atualizar a interface de forma incremental em vez de reconstruir todo o DOM a cada alteração.
 
-- consultas pontuais são preferíveis a listeners contínuos;
-- carregamento sob demanda reduz a quantidade de leituras no Firestore;
-- o uso de limite em consultas ajuda a manter o site escalável.
+## 13. Segurança e produção
 
-## 9. Riscos e manutenção
+A aplicação foi ajustada para um cenário mais próximo de produção:
 
-- mudanças na estrutura dos documentos exigem atualização em todas as páginas dependentes;
-- regras do Firestore precisam ser revisadas ao incluir novos acessos;
-- validação de formulário e mensagens de erro devem ser mantidas consistentes.
+- regras de segurança no Firestore revisadas;
+- regras de Storage com validação de tipo e tamanho;
+- Auth como base de autorização;
+- App Check preparado para uso com reCAPTCHA v3;
+- remoção de padrões frágeis como renderização indiscriminada de HTML com dados do usuário;
+- proteção de contato para reduzir a exposição pública de e-mail e WhatsApp;
+- fluxo de autenticação ajustado para respeitar primeiro cadastro e retorno de usuários já ativos.
 
-## 10. Próximos passos recomendados
+## 14. Riscos e manutenção
 
-- implementar paginação real para listas grandes;
-- criar cache local para reduzir consultas repetidas;
-- adicionar painel administrativo para moderar cadastros;
-- melhorar a experiência mobile em telas pequenas.
+- qualquer mudança em campos do documento exige revisão das páginas que leem e exibem esses dados;
+- a estrutura do Firestore precisa ser documentada ao incluir novos fluxos;
+- validações no cliente ajudam na UX, mas não substituem regras do servidor/banco;
+- a chave real do App Check precisa ser configurada no ambiente de produção;
+- a revisão de regras e renderização deve continuar em qualquer nova funcionalidade.
+
+## 15. Próximos passos recomendados
+
+- configurar a chave real do App Check em produção;
+- revisar acesso de leitura se houver necessidade de reduzir exposição pública de dados sensíveis;
+- separar ainda mais dados públicos e dados privados no Firestore quando houver necessidade de maior proteção;
+- observar o crescimento de registros e aplicar paginação ou filtros mais agressivos conforme volume;
+- manter a padronização de validação e renderização segura em novas telas.

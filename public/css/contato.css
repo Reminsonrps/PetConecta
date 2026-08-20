@@ -244,10 +244,207 @@ main {
   text-align: center;
 }
 
+.parceiro-destaque {
+  max-width: 900px;
+  margin: 1.2rem auto 1.4rem;
+  padding: 1.25rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 117, 26, 0.3);
+  background: linear-gradient(135deg, #fff7ef 0%, #fff1e5 100%);
+  box-shadow: 0 8px 22px rgba(255, 117, 26, 0.12);
+}
+
+.parceiro-destaque h3 {
+  margin: 0 0 0.5rem;
+  color: #d65d10;
+  font-family: "Fredoka One", cursive;
+  font-size: 1.35rem;
+}
+
+.parceiro-destaque p {
+  margin: 0 auto 0.9rem;
+  max-width: 760px;
+  color: #4a3b33;
+  line-height: 1.65;
+}
+
+.destaque-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.destaque-tags span {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 117, 26, 0.14);
+  color: #b64f0e;
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+.btn-parceiro {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.acoes-parceiros {
+  max-width: 980px;
+  margin: 1rem auto 1.3rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.acao-card {
+  text-align: left;
+  background: #ffffff;
+  border: 1px solid rgba(255, 117, 26, 0.25);
+  border-radius: 14px;
+  padding: 1rem;
+  box-shadow: 0 5px 16px rgba(255, 117, 26, 0.09);
+}
+
+.acao-card h3 {
+  margin: 0 0 0.45rem;
+  color: #d65d10;
+  font-family: "Fredoka One", cursive;
+  font-size: 1.05rem;
+}
+
+.acao-card p {
+  margin: 0 0 0.65rem;
+  line-height: 1.55;
+  color: #4e3f37;
+}
+
+.acao-link {
+  color: #b84f10;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.acao-link:hover {
+  text-decoration: underline;
+}
+
+.partner-card {
+  position: relative;
+}
+
+.partner-card.partner-card--destaque {
+  border-color: rgba(46, 139, 87, 0.55);
+  box-shadow: 0 6px 18px rgba(46, 139, 87, 0.2);
+}
+
+.partner-badge {
+  position: absolute;
+  top: -10px;
+  right: -8px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2e8b57 0%, #43b77a 100%);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  box-shadow: 0 4px 12px rgba(46, 139, 87, 0.35);
+  pointer-events: none;
+}
+
 .partners-section ul {
   list-style: none;
   padding: 0;
   margin-top: 20px;
+}
+
+.partners-section ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+@media (min-width: 375px) and (max-width: 600px) {
+  .parceiros {
+    justify-content: center;
+  }
+
+  .partner-card {
+    width: 110px;
+    min-height: 110px;
+  }
+
+  .parceiro-destaque {
+    padding: 1rem;
+  }
+
+  .parceiro-destaque h3 {
+    font-size: 1.12rem;
+  }
+
+  .destaque-tags {
+    gap: 0.4rem;
+  }
+
+  .destaque-tags span {
+    font-size: 0.8rem;
+  }
+
+  .acoes-parceiros {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .acao-card {
+    padding: 0.9rem;
+  }
+}
+
+.parceiros {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.partner-card {
+  width: 160px;
+  min-height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 117, 26, 0.25);
+  background-color: #fff;
+}
+
+.partner-card img,
+.pelegrinos-vet,
+.anjosDajuda,
+.paulo-ventura,
+.dogsbalsa {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.25s ease;
+}
+
+.pelegrinos-vet:hover,
+.anjosDajuda:hover,
+.paulo-ventura:hover,
+.dogsbalsa:hover {
+  transform: scale(1.05);
+  cursor: pointer;
 }
 
 footer {

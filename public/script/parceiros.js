@@ -4,10 +4,15 @@
 /* Arquivo JS: parceiros.js
    Responsável por comportamentos e regras da página/fluxo correspondente. */
 
+/*
+  Script da área de parceiros.
+  Cria os cards com imagens e links externos para as instituições apoiadoras.
+*/
 document.addEventListener("DOMContentLoaded", () => {
   const galeria = document.querySelector(".parceiros");
   if (!galeria) return;
 
+  // Lista dirigida por dados para incluir parceiros sem duplicar a estrutura dos cards.
   const parceiros = [
     {
       href: "https://www.instagram.com/peregrinosvet/",
@@ -18,14 +23,29 @@ document.addEventListener("DOMContentLoaded", () => {
       destaque: true,
     },
     {
+      href: "https://www.instagram.com/dogsdabalsa_oficial_/",
+      src: "assets/img/dogsbalsa.jpg",
+      alt: "Dogs da Balsa",
+      className: "dogsbalsa",
+      title: "Dogs da Balsa",
+    },
+    {
       href: "https://www.anjosdajuda.org/nossos-pets",
       src: "assets/img/AnjosDajuda.jpg",
       alt: "ONG Anjos D'Ajuda",
       className: "anjosDajuda",
       title: "ONG Anjos D'Ajuda",
     },
+    {
+      href: "https://wa.me/5573998248286",
+      src: "assets/img/paulo_ventura.jpeg",
+      alt: "Paulo Ventura - Adestrador",
+      className: "paulo-ventura",
+      title: "Paulo Ventura - Adestrador | (73) 99824-8286",
+    },
   ];
 
+  // Cria links externos com relacao segura e insere as imagens na galeria.
   parceiros.forEach((parceiro) => {
     const link = document.createElement("a");
     link.href = parceiro.href;

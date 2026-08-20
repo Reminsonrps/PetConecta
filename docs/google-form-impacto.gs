@@ -17,7 +17,7 @@ function createPetConectaImpactForm() {
     "Este formulario registra entrevistas com ONGs parceiras e usuarios do PetConecta,",
     "com objetivo de comprovar aplicacao real do projeto na comunidade, uso efetivo",
     "da plataforma e alinhamento com os Objetivos de Desenvolvimento Sustentavel (ODS).",
-    "As respostas serao usadas exclusivamente para fins academicos e avaliacao extensionista.",
+    "As respostas serao usadas exclusivamente para fins acadêmicos e avaliacao extensionista.",
     `Antes de responder, acesse o site: ${siteUrl}`,
   ].join(" ");
 

@@ -4,9 +4,10 @@
 /* Arquivo JS: anima.js
    Responsável por comportamentos e regras da página/fluxo correspondente. */
 
-const menuLinks = document.querySelectorAll("#menu a");
+// Intercepta apenas links internos para rolagem suave e atualiza o item ativo.
+const sectionLinks = document.querySelectorAll("#menu a");
 
-menuLinks.forEach((link) => {
+sectionLinks.forEach((link) => {
   const targetId = link.getAttribute("href");
 
   if (!targetId || !targetId.startsWith("#")) {
@@ -27,7 +28,7 @@ menuLinks.forEach((link) => {
       block: "start",
     });
 
-    menuLinks.forEach((item) => item.classList.remove("active"));
+    sectionLinks.forEach((item) => item.classList.remove("active"));
     link.classList.add("active");
   });
 });

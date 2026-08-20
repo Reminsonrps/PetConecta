@@ -3,15 +3,44 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /pets/{petId} {
       allow read: if true;
+
       allow create: if request.auth != null
         && request.auth.token.email != null
-        && request.resource.data.usuarioCriador == request.auth.token.email;
-      allow update, delete: if request.auth != null
+        && request.resource.data.usuarioCriador == request.auth.token.email
+        && request.resource.data.nome is string
+        && request.resource.data.nome.size() > 0
+        && request.resource.data.localiza is string
+        && request.resource.data.localiza.size() > 0
+        && request.resource.data.descricao is string
+        && request.resource.data.contato is string
+        && request.resource.data.contato.size() > 0
+        && request.resource.data.status in ['desaparecido', 'encontrado']
+        && request.resource.data.data is string
+        && request.resource.data.data.size() > 0
+        && request.resource.data.tipo is string
+        && request.resource.data.raca is string
+        && request.resource.data.porte is string
+        && request.resource.data.whatsapp is string
+        && request.resource.data.imagem is string
+        && request.resource.data.lat is number
+        && request.resource.data.lng is number;
+
+      allow update: if request.auth != null
+        && resource.data.usuarioCriador == request.auth.token.email
+        && request.resource.data.usuarioCriador == resource.data.usuarioCriador
+        && request.resource.data.status in ['desaparecido', 'encontrado']
+        && request.resource.data.nome is string
+        && request.resource.data.localiza is string
+        && request.resource.data.contato is string
+        && request.resource.data.data is string;
+
+      allow delete: if request.auth != null
         && resource.data.usuarioCriador == request.auth.token.email;
 
       match /avistamentos/{avistamentoId} {
         allow read: if true;
-        allow create: if request.resource.data.petId is string
+        allow create: if request.auth != null
+          && request.resource.data.petId is string
           && request.resource.data.petNome is string
           && request.resource.data.localAvistado is string
           && request.resource.data.descricao is string

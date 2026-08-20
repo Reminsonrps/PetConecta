@@ -1,6 +1,7 @@
-/* Carrossel dinamico de informativos com links clicaveis.
-   Use apenas imagens locais com permissao de uso para evitar risco autoral. */
+/* Carrossel dinâmico de informativos com links clicáveis.
+  Use apenas imagens locais com permissão de uso para evitar risco autoral. */
 (function () {
+  // Os itens ficam separados da montagem para permitir atualizar o conteudo sem duplicar HTML.
   const itensInformativos = [
     {
       titulo: "Parceiro em destaque: Peregrinos Vet",
@@ -9,39 +10,39 @@
       url: "https://www.instagram.com/peregrinosvet/",
     },
     {
-      titulo: "Leishmaniose: prevencao",
+      titulo: "Leishmaniose: prevenção",
       imagem: "assets/img/carousel/zoonoses-alerta.svg",
-      alt: "Prevencao da leishmaniose em pets",
+      alt: "Prevenção da leishmaniose em pets",
       url: "informativos.html#zoonoses",
     },
     {
-      titulo: "Vacinacao em dia",
+      titulo: "Vacinação em dia",
       imagem: "assets/img/carousel/vacinacao-calendario.svg",
-      alt: "Importancia da vacinacao para caes e gatos",
+      alt: "Importância da vacinação para cães e gatos",
       url: "informativos.html#vacinacao",
     },
     {
-      titulo: "Alimentacao segura",
+      titulo: "Alimentação segura",
       imagem: "assets/img/carousel/alimentacao-inteligente.svg",
-      alt: "Boas praticas de alimentacao para pets",
+      alt: "Boas práticas de alimentação para pets",
       url: "informativos.html#alimentacao",
     },
     {
-      titulo: "Bem-estar e exercicios",
+      titulo: "Bem-estar e exercícios",
       imagem: "assets/img/carousel/bem-estar-ativo.svg",
-      alt: "Exercicio e estimulo para o bem-estar dos pets",
+      alt: "Exercício e estímulo para o bem-estar dos pets",
       url: "informativos.html#comportamento",
     },
     {
-      titulo: "Viagens com seguranca",
+      titulo: "Viagens com segurança",
       imagem: "assets/img/carousel/viagens-seguras.svg",
       alt: "Cuidados para viagens com pets",
       url: "informativos.html#viagens",
     },
     {
-      titulo: "Sinais de emergencia",
+      titulo: "Sinais de emergência",
       imagem: "assets/img/carousel/emergencia-24h.svg",
-      alt: "Sinais de emergencia veterinaria",
+      alt: "Sinais de emergência veterinária",
       url: "informativos.html#emergencia",
     },
   ];
@@ -66,6 +67,7 @@
   track.innerHTML = "";
   dotsContainer.innerHTML = "";
 
+  // Cria slides e controles somente para itens que possuem imagem e destino validos.
   itensValidos.forEach((item, index) => {
     const slide = document.createElement("div");
     slide.className = "carousel-slide";
@@ -103,6 +105,7 @@
   let timer = null;
 
   function goTo(index) {
+    // Mantem o indice circular e sincroniza slide, transformacao e indicador ativo.
     current = (index + total) % total;
     track.style.transform = `translateX(-${current * 100}%)`;
     dots.forEach((dot, dotIndex) => {

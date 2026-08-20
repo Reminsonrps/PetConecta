@@ -4,6 +4,11 @@
 /* Arquivo JS: mobile-navbar.js
    Responsável por comportamentos e regras da página/fluxo correspondente. */
 
+/*
+  Script do menu mobile.
+  Controla abertura/fechamento do menu em telas menores e ajustes de acessibilidade.
+*/
+// Encapsula abertura, fechamento, animacao e atributos de acessibilidade do menu mobile.
 class MobileNavbar {
   constructor(mobileMenu, navList, navLinks) {
     this.mobileMenu = document.querySelector(mobileMenu);
@@ -27,6 +32,7 @@ class MobileNavbar {
   }
 
   handleClick() {
+    // Mantem estado visual e atributos ARIA sincronizados para mouse, teclado e leitores de tela.
     this.navList.classList.toggle(this.activeClass);
     this.mobileMenu.classList.toggle(this.activeClass);
     this.animateLinks();
