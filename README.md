@@ -15,6 +15,7 @@ A versão atual do projeto foi reforçada para produção com:
 - preparação para App Check com reCAPTCHA v3;
 - carregamento de imagens com atenção ao peso e performance;
 - proteção de dados sensíveis de contato, ocultando e-mail e WhatsApp na listagem pública;
+- fluxo de cadastro de pets encontrados por terceiros, com status intermediário e confirmação de devolução pelo cadastrador;
 - fluxo de autenticação com distinção entre primeiro cadastro e retorno de usuário já cadastrado.
 
 ## Objetivo do projeto
@@ -41,11 +42,19 @@ O projeto é composto por:
 ## Estrutura de pastas
 
 - `public/`: páginas públicas do site e recursos estáticos
-- `public/css/`: estilos do frontend
-- `public/script/`: lógica do frontend e integrações com Firebase
+- `public/css/`: estilos das páginas, formulários, cards e mapas
+- `public/script/`: autenticação, consultas Firestore, cards, filtros, mapas e validações
+- `public/index.html`: página inicial, mapa de ocorrências e listagem de pets
+- `public/publicar.html`: cadastro de pet desaparecido
+- `public/publicar_achado.html`: cadastro de pet encontrado por terceiros
+- `public/animais_encontra.html`: listagem pública de achados e devolvidos
+- `public/cadastrados.html`: área privada de gerenciamento do criador
+- `public/editar.html`: edição autorizada do anúncio
 - `src/`: arquivos auxiliares e configuração de serviços
 - `docs/`: documentação de arquitetura, riscos, modelagem e roteiros
-- `build/`: artefatos de publicação
+- `firebase.json`: configuração de Hosting, Firestore e Storage
+- `firestore.rules`: regras de leitura e escrita dos documentos `pets`
+- `storage.rules`: regras de upload e acesso às imagens
 
 ## Estado atual do sistema
 
@@ -58,7 +67,7 @@ Principais pontos do estado atual:
 - listagens com `onSnapshot` usam filtros por página e bloco de itens, evitando carga massiva em um único render.
 - o mapa e a lista não fazem polling contínuo; a atualização é acionada por eventos e mudança de dados relevantes.
 - a saída DOM é tratada com criação de elementos e `DocumentFragment` sempre que possível, reduzindo risco de re-render completo.
-- o contato do anunciante fica oculto na listagem pública e só é revelado no detalhe do pet após confirmação do visitante.
+- o contato do anunciante fica oculto nas listagens públicas, nos cards de encontrados e nos detalhes; WhatsApp e e-mail só são liberados após confirmação do visitante;
 - o fluxo de acesso foi ajustado: primeiro cadastro segue para publicação e usuário já autenticado volta para a home.
 
 ## Funcionalidades principais
@@ -67,9 +76,21 @@ Principais pontos do estado atual:
 
 A página de publicação coleta dados do pet, valida campos obrigatórios e salva a imagem no Firebase Storage e os metadados no Firestore.
 
+`publicar_achado.html` usa o mesmo modelo de dados, mas cria o anúncio com status `achado`. Esse status significa que uma terceira pessoa encontrou o animal e ainda aguarda a confirmação do tutor. O usuário que criou esse anúncio pode acionar **Devolvido ao Tutor**, alterando o status para `encontrado`.
+
+Anúncios `achado` recebem o campo `expiresAt` com vencimento em 40 dias. A interface deixa de exibi-los quando vencidos. Para a exclusão física automática no Firestore, habilite uma política TTL para o campo `expiresAt` no grupo de coleção `pets`:
+
+```bash
+gcloud firestore fields ttls update expiresAt --collection-group=pets --enable-ttl --project=petconecta-db068
+```
+
+O TTL é executado pelo Firestore em processamento assíncrono; por isso, a aplicação também filtra o vencimento no cliente.
+
 ### 2. Visualização e filtros
 
 A página inicial e as listagens de pets exibem dados diretamente do Firestore, com filtros e paginação por blocos para manter a interface responsiva.
+
+`animais_encontra.html` é pública e lista anúncios com status `achado` ou `encontrado`; anúncios `desaparecido` permanecem na busca principal. Achados por terceiros usam identificação visual laranja no mapa, enquanto devolvidos usam identificação verde. Os cards liberam WhatsApp e e-mail somente após a confirmação do visitante.
 
 ### 3. Registro de avistamentos
 
@@ -116,11 +137,14 @@ firebase deploy
 ## Regras de negócio e segurança
 
 - o cadastro de pets está associado ao usuário autenticado;
+- a leitura dos anúncios e do mapa é pública;
+- somente `usuarioCriador` pode editar, excluir ou alterar o status do próprio anúncio;
+- o status `achado` só pode passar para `encontrado` pela ação de devolução do criador;
 - regras no Firestore e Storage devem continuar sendo revisadas conforme o projeto cresce;
 - leitura pública pode continuar sendo usada para lista de pets e busca de ocorrências;
 - ações sensíveis precisam depender da autenticação real e das regras do banco como camada principal de segurança;
 - App Check deve ser configurado em produção com a chave real do reCAPTCHA v3;
-- dados de contato permanecem protegidos em listagens públicas e só são revelados em fluxo específico de confirmação;
+- dados de contato permanecem protegidos em listagens públicas e só são revelados em fluxo específico de confirmação, inclusive nos cards de encontrados;
 - primeiro cadastro segue para publicação e usuário já cadastrado retorna para a página inicial.
 
 ## Fluxo técnico de cadastro de pet
@@ -147,6 +171,7 @@ Campos esperados em um documento de pet:
 - contato
 - whatsapp
 - raca
+- expiresAt (Timestamp, usado nos achados por terceiros)
 
 ### Uso de limites na consulta
 
@@ -167,6 +192,10 @@ Página inicial e interface de mapa, com carregamento e atualização de pet por
 
 Formulário de publicação com validação e persistência no Storage + Firestore.
 
+### `public/publicar_achado.html`
+
+Formulário para cadastrar um animal encontrado por terceiros, iniciando o anúncio com status `achado`.
+
 ### `public/detalhes.html`
 
 Detalhes do pet, com nova camada de proteção para contato e confirmação do visitante antes da revelação pública do e-mail/WhatsApp.
@@ -174,6 +203,10 @@ Detalhes do pet, com nova camada de proteção para contato e confirmação do v
 ### `public/cadastrados.html`
 
 Área do usuário autenticado com seus pets e ações de gerenciamento.
+
+### `public/animais_encontra.html`
+
+Consulta pública dos pets encontrados por terceiros e dos anúncios já devolvidos ao tutor.
 
 ### `public/criar-conta.html`
 

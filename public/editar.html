@@ -27,7 +27,7 @@
           <span id="hamburguer"></span>
         </button>
         <ul id="menu">
-          <li><a href="#home">Página Inicial</a></li>
+          <li><a href="index.html">Página Inicial</a></li>
           <li><a href="animais_encontra.html">Encontrados</a></li>
           <li>
             <a
@@ -37,8 +37,8 @@
               >Adoção</a
             >
           </li>
-          <li><a href="#dicas">Cuidados</a></li>
-          <li><a href="#contatos">Contato</a></li>
+          <li><a href="dicas.html">Cuidados</a></li>
+          <li><a href="contato.html">Contato</a></li>
         </ul>
       </nav>
     </header>
@@ -224,7 +224,10 @@
         uploadBytes,
         getDownloadURL,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
-      import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
       let usuarioLogado = null;
       let urlImagemAtual = "";
@@ -263,13 +266,13 @@
         if (!menu) return;
 
         const linksBase = `
-          <li><a href="#home">Página Inicial</a></li>
+          <li><a href="index.html">Página Inicial</a></li>
           <li><a href="animais_encontra.html">Encontrados</a></li>
           <li>
             <a href="https://www.anjosdajuda.org/adote" target="_blank" rel="noopener noreferrer">Adoção</a>
           </li>
-          <li><a href="#dicas">Cuidados</a></li>
-          <li><a href="#contatos">Contato</a></li>
+          <li><a href="dicas.html">Cuidados</a></li>
+          <li><a href="contato.html">Contato</a></li>
         `;
 
         if (user) {
@@ -303,7 +306,7 @@
 
       const btnMobile = document.querySelector("#btn-mobile");
       const navMenu = document.querySelector("#nav-menu");
-      const menuLinks = document.querySelectorAll("#menu a");
+      const menuContainer = document.querySelector("#menu");
 
       function toggleMenu() {
         navMenu.classList.toggle("active");
@@ -315,11 +318,10 @@
         btnMobile.addEventListener("click", toggleMenu);
       }
 
-      menuLinks.forEach((link) => {
-        link.addEventListener("click", () => {
-          navMenu.classList.remove("active");
-          btnMobile?.setAttribute("aria-expanded", "false");
-        });
+      menuContainer?.addEventListener("click", (event) => {
+        if (!event.target.closest("a")) return;
+        navMenu.classList.remove("active");
+        btnMobile?.setAttribute("aria-expanded", "false");
       });
 
       // Função para recuperar os dados reais do Firestore e mover o pin do mapa

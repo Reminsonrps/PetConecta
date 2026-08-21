@@ -63,6 +63,22 @@ A renderização é feita em blocos, geralmente com criação de elementos do DO
 4. os metadados do pet são gravados no Firestore;
 5. a listagem e a página de detalhes passam a refletir esse registro automaticamente.
 
+### 6.1 Cadastro de pet encontrado por terceiros
+
+O fluxo de `publicar_achado.html` cria um documento em `pets` com `status: "achado"`. Esse estado identifica um animal localizado por uma terceira pessoa, mas ainda não devolvido ao tutor. A página pública `animais_encontra.html` lista registros `achado` e `encontrado`; registros `desaparecido` ficam na busca principal.
+
+Quando o tutor confirma a devolução, somente o usuário identificado por `usuarioCriador` pode acionar **Devolvido ao Tutor**. A operação atualiza o documento para `status: "encontrado"`. A interface orienta essa permissão e as regras do Firestore impedem alterações indevidas.
+
+### 6.2 Retenção de achados por terceiros
+
+Todo anúncio criado por `publicar_achado.html` recebe `expiresAt`, um Timestamp 40 dias após a publicação. As páginas de encontrados, lista principal e mapa filtram anúncios `achado` vencidos imediatamente. A exclusão definitiva do documento é responsabilidade da política TTL do Firestore, configurada no campo `expiresAt` do grupo de coleção `pets`:
+
+```bash
+gcloud firestore fields ttls update expiresAt --collection-group=pets --enable-ttl --project=petconecta-db068
+```
+
+Como o TTL é assíncrono, pode existir um intervalo entre o vencimento e a remoção física; durante esse intervalo o anúncio já permanece oculto na aplicação.
+
 ## 7. Fluxo de autenticação e retorno de usuário
 
 1. o usuário acessa a página de cadastro/login;
@@ -73,6 +89,8 @@ A renderização é feita em blocos, geralmente com criação de elementos do DO
 ## 8. Proteção de contato e dados sensíveis
 
 O projeto passou a tratar dados de contato como informação sensível. A listagem pública não expõe diretamente e-mail e WhatsApp. O bloco de detalhes do pet apresenta um aviso e um botão de confirmação antes de revelar os dados do anunciante.
+
+O mesmo controle é aplicado em `animais_encontra.html`: os cards exibem apenas o aviso de contato protegido e o botão **Revelar contato**. Depois da confirmação do visitante, são apresentados os canais disponíveis. O e-mail usa a lógica de seleção de provedor do formulário de contato, com Gmail, Outlook, Yahoo ou `mailto:` como fallback; o WhatsApp abre o canal correspondente em nova aba.
 
 Esse padrão reduz o risco de coleta automatizada, spam e exposição indevida, preservando a utilidade do contato para quem realmente deseja ajudar na localização do pet.
 
@@ -99,6 +117,13 @@ Campos comumente usados:
 - contato
 - whatsapp
 - raca
+- expiresAt (Timestamp de expiração dos achados por terceiros)
+
+#### Estados do campo `pets.status`
+
+- `desaparecido`: pet procurado pelo tutor;
+- `achado`: pet encontrado por terceiros e aguardando devolução;
+- `encontrado`: devolução ou reencontro confirmado pelo criador do anúncio.
 
 ### Coleção de ocorrências / avistamentos
 
@@ -120,6 +145,7 @@ A estrutura varia conforme o fluxo, mas normalmente contém:
 - `public/cadastrados.html`: pets do usuário autenticado;
 - `public/criar-conta.html`: autenticação e fluxo de login/cadastro;
 - `public/animais_encontra.html`: listagem e mapa de ocorrências encontradas.
+- `public/publicar_achado.html`: cadastro de animais encontrados por terceiros.
 
 ## 12. Considerações de desempenho
 
@@ -140,13 +166,14 @@ A aplicação foi ajustada para um cenário mais próximo de produção:
 - Auth como base de autorização;
 - App Check preparado para uso com reCAPTCHA v3;
 - remoção de padrões frágeis como renderização indiscriminada de HTML com dados do usuário;
-- proteção de contato para reduzir a exposição pública de e-mail e WhatsApp;
+- proteção de contato nos detalhes e cards para reduzir a exposição pública de e-mail e WhatsApp;
 - fluxo de autenticação ajustado para respeitar primeiro cadastro e retorno de usuários já ativos.
 
 ## 14. Riscos e manutenção
 
 - qualquer mudança em campos do documento exige revisão das páginas que leem e exibem esses dados;
 - a estrutura do Firestore precisa ser documentada ao incluir novos fluxos;
+- alterações de status devem preservar `desaparecido`, `achado` e `encontrado`, sem permitir transição pública;
 - validações no cliente ajudam na UX, mas não substituem regras do servidor/banco;
 - a chave real do App Check precisa ser configurada no ambiente de produção;
 - a revisão de regras e renderização deve continuar em qualquer nova funcionalidade.

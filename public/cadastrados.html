@@ -114,7 +114,7 @@
      <!-- Script Modular Firebase -->
      <script type="module">
        import { auth, db } from "./script/firebase.js";
-       import { collection, query, where, getDocs, limit, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+       import { collection, query, where, getDocs, limit, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
        import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
        let meusPets = []; // Armazena a lista de pets em memória para filtragem rápida local
@@ -278,6 +278,7 @@
              <p style="font-size:13px; margin: 3px 0;"><strong>Sexo:</strong> ${pet.sexo}</p>
              <p style="font-size:13px; margin: 3px 0;"><strong>Porte:</strong> ${pet.porte}</p>
              <p style="font-size:13px; margin: 3px 0;"><strong>Local:</strong> ${pet.localiza || pet.localizacao}</p>
+             <p style="font-size:13px; margin: 3px 0; color: ${pet.status === 'resolvido' ? '#4CAF50' : '#ff914d'};"><strong>Status:</strong> ${pet.status === 'resolvido' ? 'Resolvido (Devolvido/Concluído)' : pet.status}</p>
              
              <!-- 🚀 ADICIONADO: Painel de visualização de avistamentos em tempo real -->
              <div class="avistamentos-container">
@@ -288,9 +289,10 @@
                </div>
              </div>
 
-             <div style="display:flex; justify-content:space-between; margin-top:12px;">
-               <button class="btn-editar" style="padding: 6px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">✏️ Editar</button>
-               <button class="btn-excluir" style="padding: 6px 12px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Excluir</button>
+             <div style="display:flex; justify-content:space-between; flex-wrap: wrap; gap: 5px; margin-top:12px;">
+               ${pet.status !== 'resolvido' ? `<button class="btn-resolver" style="flex: 1; padding: 6px 12px; background-color: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer;">✅ Resolvido</button>` : ''}
+               <button class="btn-editar" style="flex: 1; padding: 6px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer;">✏️ Editar</button>
+               <button class="btn-excluir" style="flex: 1; padding: 6px 12px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer;">🗑️ Excluir</button>
              </div>
            `;
 
@@ -298,6 +300,28 @@
            card.querySelector(".btn-editar").addEventListener("click", () => {
              window.location.href = `editar.html?id=${pet.id}`;
            });
+
+           // Atribui funcionalidade de resolução (Devolvido ao dono)
+           const btnResolver = card.querySelector(".btn-resolver");
+           if (btnResolver) {
+             btnResolver.addEventListener("click", async () => {
+               if (confirm(`Deseja marcar a situação de ${pet.nome} como RESOLVIDA (ex: devolvido ao dono)?\nO pet não aparecerá mais nas buscas públicas, mas ficará salvo nas suas métricas.`)) {
+                 try {
+                   await updateDoc(doc(db, "pets", pet.id), { 
+                     status: "resolvido",
+                     dataResolucao: new Date().toISOString()
+                   });
+                   alert("Situação marcada como resolvida com sucesso!");
+                   if (usuarioAtual) {
+                     await carregarMeusPets(usuarioAtual.email);
+                   }
+                 } catch (error) {
+                   console.error("Erro ao resolver caso do pet: ", error);
+                   alert("Erro ao atualizar o pet. Tente novamente.");
+                 }
+               }
+             });
+           }
 
            // Atribui funcionalidade de exclusão direta e reativa
            card.querySelector(".btn-excluir").addEventListener("click", async () => {
