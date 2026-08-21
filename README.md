@@ -215,7 +215,6 @@ Fluxo de cadastro/login com diferenciação entre primeiro acesso e retorno de u
 ## Documentação complementar
 
 - `docs/arquitetura.md`: visão técnica e arquitetura do projeto;
-- `docs/riscos-e-mitigacoes.md`: análise de riscos, causas e mitigação aplicada;
 - `docs/modelagem-site.md`: modelagem do fluxo do site e organização visual.
 
 ## Recomendações para manutenção
