@@ -13,7 +13,7 @@
 | Data       | 2026-08-19                                                 |
 | Situação   | Modelagem baseada na implementação existente               |
 
-> **Nota de leitura:** este documento registra o sistema que existe hoje e identifica evoluções propostas. A arquitetura atualmente implantada é um frontend estático com serviços Firebase; o backend Node.js + Express descrito em [modelagem-node-express-firebase.md](modelagem-node-express-firebase.md) é uma alternativa de evolução, não uma dependência do fluxo atual.
+> **Nota de leitura:** este documento registra o sistema que existe hoje e identifica evoluções propostas. A arquitetura atualmente implantada é um frontend estático com serviços Firebase. O backend Node.js + Express é uma alternativa de evolução, não uma dependência do fluxo atual.
 
 ## 1. Apresentação
 
@@ -81,14 +81,14 @@ Desenvolver e modelar uma aplicação web que facilite a divulgação e a locali
 - integração oficial com abrigos, prefeituras ou serviços veterinários;
 - cálculo automático de rota ou busca por distância real.
 
-### 4.3 Premissas e restricoes
+### 4.3 Premissas e restrições
 
 - o usuário precisa de acesso à internet e navegador moderno;
 - a autenticação é feita pelo Firebase Authentication;
 - as regras do Firestore são a autoridade para acesso aos dados;
 - os campos existentes usam nomes históricos, como `localiza` e `usuarioCriador`;
 - a leitura pública de anúncios é necessária para a finalidade do site;
-- a modelagem deve respeitar a implementacao atual sem apresentar funcionalidades futuras como prontas.
+- a modelagem deve respeitar a implementação atual sem apresentar funcionalidades futuras como prontas.
 
 ## 5. Stakeholders e atores
 
@@ -125,7 +125,7 @@ Observação: visitante, colaborador e encontrador representam perfis de uso. No
 | RF15 | Cadastrar pet encontrado por terceiro | Alta       | Anúncio é criado com status `achado`, prazo de 40 dias e aparece na consulta pública |
 | RF16 | Expirar anúncio achado                | Alta       | Anúncio vencido deixa de aparecer e é removido pelo TTL do Firestore                 |
 | RF12 | Exibir conteúdo informativo           | Média      | Visitante acessa dicas e informativos sem login                                      |
-| RF13 | Enviar mensagem de contato            | Média      | Formulário registra uma mensagem válida                                              |
+| RF13 | Enviar mensagem de contato            | Média      | Formulário abre o canal de e-mail com uma mensagem válida                            |
 | RF14 | Proteger contato do anunciante        | Alta       | Cards e detalhes não mostram contato sem o fluxo de confirmação                      |
 
 ### 6.2 Requisitos não funcionais
@@ -170,7 +170,7 @@ flowchart LR
     UC12 -. inclui .-> UC13
 ```
 
-### 7.2 Especificacao dos casos de uso
+### 7.2 Especificação dos casos de uso
 
 | ID   | Caso de uso                       | Pre-condicao                        | Fluxo principal                                                      | Excecoes                                        |
 | ---- | --------------------------------- | ----------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
@@ -188,7 +188,7 @@ flowchart LR
 | UC12 | Publicar pet achado               | Usuário autenticado                 | Sistema cria anúncio com status `achado`                             | Upload ou gravação pode falhar                  |
 | UC14 | Revelar contato                   | Visitante                           | Sistema solicita confirmação e libera os canais disponíveis          | Visitante cancela a confirmação                 |
 
-### 7.3 Fluxo alternativo de publicacao
+### 7.3 Fluxo alternativo de publicação
 
 1. Usuario acessa `publicar.html`.
 2. Sistema verifica a sessao do Firebase Authentication.
@@ -575,7 +575,7 @@ erDiagram
 ```text
 pets/{petId}
 pets/{petId}/avistamentos/{avistamentoId}
-contatos/{contatoId}                 (fluxo de contato)
+contatos/{contatoId}                 (estrutura prevista; não usada pelo frontend atual)
 usuarios/{uid}                       (estrutura prevista)
 ```
 
@@ -603,20 +603,20 @@ usuarios/{uid}                       (estrutura prevista)
 | `avistamentos.contatoReportador` | string    |         Sim | Meio de retorno do colaborador              |
 | `avistamentos.petOwnerEmail`     | string    |         Sim | Responsavel que pode consultar a ocorrencia |
 
-A padronizacao futura deve preferir `localizacao`, `imagemUrl`, `usuarioCriadorUid`, `criadoEm` e `atualizadoEm`. Essa mudanca exige migracao coordenada entre telas e regras.
+A padronização futura deve preferir `localizacao`, `imagemUrl`, `usuarioCriadorUid`, `criadoEm` e `atualizadoEm`. Essa mudança exige migração coordenada entre telas e regras.
 
-### 11.5 Matriz CRUD por ator
+### 11.4 Matriz CRUD por ator
 
 | Entidade    | Visitante | Colaborador autenticado | Encontrador dono           | Tutor dono                 |
 | ----------- | --------- | ----------------------- | -------------------------- | -------------------------- |
 | Pet         | R         | R                       | C, R, U, D                 | C, R, U, D                 |
-| Avistamento | R         | C, R conforme regra     | R, U, D conforme ownership | R, U, D conforme ownership |
+| Avistamento | R         | C                       | R, U, D conforme ownership | R, U, D conforme ownership |
 | Contato     | C         | C                       | C                          | C                          |
 | Usuário     | -         | R próprio via Auth      | R próprio via Auth         | R próprio via Auth         |
 
 Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz representa a regra atual e deve ser revisada caso o sistema passe a separar dados publicos e privados.
 
-### 11.4 Integridade e indices
+### 11.5 Integridade e índices
 
 - todo avistamento deve apontar para um pet existente;
 - `usuarioCriador` deve corresponder ao e-mail autenticado no cadastro;
@@ -849,6 +849,4 @@ A modelagem apresenta o PetConecta sob as perspectivas de negocio, requisitos, c
 Os documentos complementares sao:
 
 - [arquitetura.md](arquitetura.md): decisoes tecnicas e operacionais;
-- [riscos-e-mitigacoes.md](riscos-e-mitigacoes.md): riscos observados e mitigacoes;
-- [modelagem-node-express-firebase.md](modelagem-node-express-firebase.md): alternativa de backend futuro;
 - [README.md](../README.md): visao geral e instrucoes de execucao.
