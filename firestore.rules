@@ -14,7 +14,7 @@ service cloud.firestore {
         && request.resource.data.descricao is string
         && request.resource.data.contato is string
         && request.resource.data.contato.size() > 0
-        && request.resource.data.status in ['desaparecido', 'encontrado']
+        && request.resource.data.status in ['desaparecido', 'achado', 'encontrado']
         && request.resource.data.data is string
         && request.resource.data.data.size() > 0
         && request.resource.data.tipo is string
@@ -28,7 +28,7 @@ service cloud.firestore {
       allow update: if request.auth != null
         && resource.data.usuarioCriador == request.auth.token.email
         && request.resource.data.usuarioCriador == resource.data.usuarioCriador
-        && request.resource.data.status in ['desaparecido', 'encontrado']
+        && request.resource.data.status in ['desaparecido', 'achado', 'encontrado']
         && request.resource.data.nome is string
         && request.resource.data.localiza is string
         && request.resource.data.contato is string

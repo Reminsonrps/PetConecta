@@ -979,7 +979,9 @@ h2 {
   width: 100%;
   height: auto; /* A foto mantém a proporção original */
   max-height: 280px; /* Limite máximo para não exagerar na altura */
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center;
+  background-color: #f3f4f6;
   border-radius: var(--radius-md);
   margin-bottom: 12px;
 }

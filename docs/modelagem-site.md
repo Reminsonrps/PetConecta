@@ -108,22 +108,24 @@ Observacao: visitante e colaborador representam perfis de uso. No sistema atual,
 
 ### 6.1 Requisitos funcionais
 
-| ID   | Requisito                           | Prioridade | Criterio de aceite                                                     |
-| ---- | ----------------------------------- | ---------- | ---------------------------------------------------------------------- |
-| RF01 | Cadastrar e autenticar usuario      | Alta       | Usuario valido consegue entrar e permanecer identificado               |
-| RF02 | Publicar pet com dados obrigatorios | Alta       | Registro e criado somente com autenticacao e campos validos            |
-| RF03 | Enviar imagem do pet                | Alta       | Imagem e armazenada e sua referencia e salva no pet                    |
-| RF04 | Listar pets por status              | Alta       | Lista exibe registros do Firestore em ordem definida                   |
-| RF05 | Exibir pets em mapa                 | Alta       | Registros com latitude e longitude aparecem no mapa                    |
-| RF06 | Consultar detalhes de um pet        | Alta       | Identificador abre os dados do anuncio selecionado                     |
-| RF07 | Registrar avistamento               | Alta       | Avistamento fica vinculado ao `petId` correto                          |
-| RF08 | Consultar Meus Pets                 | Alta       | Usuario visualiza apenas seus anuncios                                 |
-| RF09 | Editar pet proprio                  | Alta       | Dono consegue atualizar dados permitidos                               |
-| RF10 | Excluir pet proprio                 | Alta       | Dono consegue remover o anuncio autorizado                             |
-| RF11 | Marcar pet como encontrado          | Alta       | Status muda para `encontrado` e deixa de ser tratado como desaparecido |
-| RF12 | Exibir conteudo informativo         | Media      | Visitante acessa dicas e informativos sem login                        |
-| RF13 | Enviar mensagem de contato          | Media      | Formulario registra uma mensagem valida                                |
-| RF14 | Proteger contato do anunciante      | Alta       | Listagem nao mostra contato sem o fluxo de confirmacao                 |
+| ID   | Requisito                             | Prioridade | Criterio de aceite                                                                   |
+| ---- | ------------------------------------- | ---------- | ------------------------------------------------------------------------------------ |
+| RF01 | Cadastrar e autenticar usuario        | Alta       | Usuario valido consegue entrar e permanecer identificado                             |
+| RF02 | Publicar pet com dados obrigatorios   | Alta       | Registro e criado somente com autenticacao e campos validos                          |
+| RF03 | Enviar imagem do pet                  | Alta       | Imagem e armazenada e sua referencia e salva no pet                                  |
+| RF04 | Listar pets por status                | Alta       | Lista exibe registros do Firestore em ordem definida                                 |
+| RF05 | Exibir pets em mapa                   | Alta       | Registros com latitude e longitude aparecem no mapa                                  |
+| RF06 | Consultar detalhes de um pet          | Alta       | Identificador abre os dados do anuncio selecionado                                   |
+| RF07 | Registrar avistamento                 | Alta       | Avistamento fica vinculado ao `petId` correto                                        |
+| RF08 | Consultar Meus Pets                   | Alta       | Usuario visualiza apenas seus anuncios                                               |
+| RF09 | Editar pet proprio                    | Alta       | Dono consegue atualizar dados permitidos                                             |
+| RF10 | Excluir pet proprio                   | Alta       | Dono consegue remover o anuncio autorizado                                           |
+| RF11 | Confirmar devolução ou reencontro     | Alta       | Criador altera o status permitido para `encontrado`                                  |
+| RF15 | Cadastrar pet encontrado por terceiro | Alta       | Anúncio é criado com status `achado`, prazo de 40 dias e aparece na consulta pública |
+| RF16 | Expirar anúncio achado                | Alta       | Anúncio vencido deixa de aparecer e é removido pelo TTL do Firestore                 |
+| RF12 | Exibir conteudo informativo           | Media      | Visitante acessa dicas e informativos sem login                                      |
+| RF13 | Enviar mensagem de contato            | Media      | Formulario registra uma mensagem valida                                              |
+| RF14 | Proteger contato do anunciante        | Alta       | Cards e detalhes nao mostram contato sem o fluxo de confirmacao                      |
 
 ### 6.2 Requisitos nao funcionais
 
@@ -153,31 +155,34 @@ flowchart LR
     V --> UC05[Enviar contato]
 
     C[Colaborador autenticado] --> UC06[Registrar avistamento]
-    T[Tutor autenticado] --> UC07[Publicar pet]
+    T[Tutor autenticado] --> UC07[Publicar pet desaparecido]
+    C2[Encontrador autenticado] --> UC12[Publicar pet achado]
     T --> UC08[Consultar Meus Pets]
     T --> UC09[Editar pet proprio]
     T --> UC10[Excluir pet proprio]
-    T --> UC11[Marcar como encontrado]
+    T --> UC11[Confirmar devolução ou reencontro]
 
     UC03 -. permite .-> UC06
-    UC07 -. inclui .-> UC12[Enviar imagem]
+    UC07 -. inclui .-> UC13[Enviar imagem]
+    UC12 -. inclui .-> UC13
 ```
 
 ### 7.2 Especificacao dos casos de uso
 
-| ID   | Caso de uso            | Pre-condicao                        | Fluxo principal                                                      | Excecoes                                        |
-| ---- | ---------------------- | ----------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
-| UC01 | Consultar anuncios     | Site acessivel                      | Sistema busca pets, aplica filtro e renderiza cards                  | Falha de rede mostra estado de erro             |
-| UC02 | Visualizar mapa        | Pet possuir coordenadas             | Sistema cria marcadores e associa detalhes                           | Coordenada invalida e ignorada                  |
-| UC03 | Consultar detalhes     | Pet existir                         | Usuario abre anuncio e consulta dados                                | ID inexistente retorna ausencia do registro     |
-| UC04 | Consumir informativos  | Nenhuma                             | Usuario navega por dicas e informativos                              | Pagina indisponivel mostra erro de carregamento |
-| UC05 | Enviar contato         | Formulario aberto                   | Usuario preenche e envia mensagem valida                             | Campos invalidos impedem envio                  |
-| UC06 | Registrar avistamento  | Usuario autenticado e pet existente | Usuario informa local, descricao e contato; sistema grava subcolecao | Regra de seguranca rejeita dados invalidos      |
-| UC07 | Publicar pet           | Usuario autenticado                 | Preenche formulario, envia imagem e salva pet                        | Upload ou gravacao pode falhar                  |
-| UC08 | Consultar Meus Pets    | Usuario autenticado                 | Sistema filtra anuncios pelo responsavel                             | Sessao expirada redireciona para login          |
-| UC09 | Editar pet proprio     | Usuario ser dono                    | Sistema valida alteracao e atualiza documento                        | Dono diferente recebe negacao                   |
-| UC10 | Excluir pet proprio    | Usuario ser dono                    | Sistema exclui pet e recursos associados conforme fluxo              | Operacao nao autorizada e bloqueada             |
-| UC11 | Marcar como encontrado | Usuario ser dono                    | Sistema altera status do pet                                         | Status invalido e rejeitado                     |
+| ID   | Caso de uso                       | Pre-condicao                        | Fluxo principal                                                      | Excecoes                                        |
+| ---- | --------------------------------- | ----------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
+| UC01 | Consultar anuncios                | Site acessivel                      | Sistema busca pets, aplica filtro e renderiza cards                  | Falha de rede mostra estado de erro             |
+| UC02 | Visualizar mapa                   | Pet possuir coordenadas             | Sistema cria marcadores e associa detalhes                           | Coordenada invalida e ignorada                  |
+| UC03 | Consultar detalhes                | Pet existir                         | Usuario abre anuncio e consulta dados                                | ID inexistente retorna ausencia do registro     |
+| UC04 | Consumir informativos             | Nenhuma                             | Usuario navega por dicas e informativos                              | Pagina indisponivel mostra erro de carregamento |
+| UC05 | Enviar contato                    | Formulario aberto                   | Usuario preenche e envia mensagem valida                             | Campos invalidos impedem envio                  |
+| UC06 | Registrar avistamento             | Usuario autenticado e pet existente | Usuario informa local, descricao e contato; sistema grava subcolecao | Regra de seguranca rejeita dados invalidos      |
+| UC07 | Publicar pet                      | Usuario autenticado                 | Preenche formulario, envia imagem e salva pet                        | Upload ou gravacao pode falhar                  |
+| UC08 | Consultar Meus Pets               | Usuario autenticado                 | Sistema filtra anuncios pelo responsavel                             | Sessao expirada redireciona para login          |
+| UC09 | Editar pet proprio                | Usuario ser dono                    | Sistema valida alteracao e atualiza documento                        | Dono diferente recebe negacao                   |
+| UC10 | Excluir pet proprio               | Usuario ser dono                    | Sistema exclui pet e recursos associados conforme fluxo              | Operacao nao autorizada e bloqueada             |
+| UC11 | Confirmar devolução ou reencontro | Usuario ser dono                    | Sistema altera status do pet                                         | Status invalido e rejeitado                     |
+| UC12 | Publicar pet achado               | Usuario autenticado                 | Sistema cria anúncio com status `achado`                             | Upload ou gravação pode falhar                  |
 
 ### 7.3 Fluxo alternativo de publicacao
 
@@ -220,14 +225,22 @@ Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao
 - **Fluxos alternativos:** outro usuario tenta editar; campo invalido; documento removido durante a edicao.
 - **Regras relacionadas:** RN02, RN03 e RN08.
 
-#### UC11 - Marcar como encontrado
+#### UC11 - Confirmar devolução ou reencontro
 
 - **Ator principal:** tutor autenticado.
-- **Pre-condicoes:** pet existente com status `desaparecido`; usuario e responsavel.
+- **Pre-condicoes:** pet existente com status `desaparecido` ou `achado`; usuario e responsavel.
 - **Pos-condicao de sucesso:** status alterado para `encontrado`.
-- **Fluxo principal:** abrir anuncio proprio; selecionar a acao; confirmar; atualizar status; informar resultado.
+- **Fluxo principal:** abrir anuncio proprio; selecionar a acao compativel com o status; confirmar; atualizar para `encontrado`; informar resultado.
 - **Fluxos alternativos:** usuario sem permissao; status invalido; falha de conexao.
 - **Regras relacionadas:** RN03, RN04 e RN05.
+
+#### UC12 - Publicar pet achado
+
+- **Ator principal:** pessoa autenticada que encontrou o animal.
+- **Pre-condicoes:** sessao valida; localizacao, imagem e dados obrigatorios disponiveis.
+- **Pos-condicao de sucesso:** documento criado em `pets` com `status: "achado"` e visivel na consulta publica.
+- **Fluxo principal:** abrir `publicar_achado.html`; preencher dados; selecionar localizacao; enviar imagem; gravar anuncio.
+- **Fluxos alternativos:** autenticacao, validacao, upload ou gravacao podem falhar.
 
 ### 7.5 Diagramas de sequencia dos fluxos principais
 
@@ -318,15 +331,18 @@ flowchart TD
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Desaparecido: publicar pet
+    [*] --> Desaparecido: publicar pet desaparecido
+    [*] --> Achado: publicar pet encontrado por terceiro
     Desaparecido --> Desaparecido: editar dados
+    Achado --> Achado: aguardar contato do tutor
     Desaparecido --> Encontrado: tutor confirma reencontro
-    Encontrado --> Desaparecido: tutor reabre o caso
+    Achado --> Encontrado: criador confirma devolucao
+    Encontrado --> Desaparecido: criador reabre o caso
     Desaparecido --> [*]: excluir anuncio
     Encontrado --> [*]: excluir anuncio
 ```
 
-Estados permitidos na regra atual: `desaparecido` e `encontrado`. O estado `adocao` aparece em documentos de evolucao, mas ainda nao deve ser tratado como permitido pelas regras atuais sem alteracao previa.
+Estados permitidos na regra atual: `desaparecido`, `achado` e `encontrado`. O estado `adocao` aparece em documentos de evolucao, mas ainda nao deve ser tratado como permitido pelas regras atuais sem alteracao previa.
 
 ## 9. Arquitetura do sistema
 
@@ -420,6 +436,7 @@ O modelo de componentes mostra responsabilidades logicas, sem afirmar que todos 
 flowchart TD
     HOME[index.html]
     HOME --> PUBLICAR[publicar.html]
+    HOME --> PUBLICAR_ACHADO[publicar_achado.html]
     HOME --> DETALHES[detalhes.html]
     HOME --> CADASTRADOS[cadastrados.html]
     HOME --> ENCONTRADOS[animais_encontra.html]
@@ -500,26 +517,27 @@ usuarios/{uid}                       (estrutura prevista)
 
 ### 11.3 Dicionario de dados principal
 
-| Entidade/campo                   | Tipo   | Obrigatorio | Descricao                                   |
-| -------------------------------- | ------ | ----------: | ------------------------------------------- |
-| `pets.id`                        | string |         Sim | Identificador do documento                  |
-| `pets.nome`                      | string |         Sim | Nome ou identificacao do animal             |
-| `pets.tipo`                      | string |         Sim | Especie ou categoria do animal              |
-| `pets.raca`                      | string |         Sim | Raca informada pelo tutor                   |
-| `pets.porte`                     | string |         Sim | Porte do animal                             |
-| `pets.status`                    | string |         Sim | `desaparecido` ou `encontrado`              |
-| `pets.localiza`                  | string |         Sim | Local textual do anuncio                    |
-| `pets.lat` / `pets.lng`          | number |         Sim | Coordenadas para o mapa                     |
-| `pets.descricao`                 | string |         Sim | Caracteristicas e informacoes adicionais    |
-| `pets.imagem`                    | string |         Sim | URL ou referencia da imagem                 |
-| `pets.usuarioCriador`            | string |         Sim | E-mail associado ao usuario autenticado     |
-| `pets.contato`                   | string |         Sim | Meio de contato do tutor                    |
-| `pets.whatsapp`                  | string |         Sim | Contato adicional do tutor                  |
-| `avistamentos.petId`             | string |         Sim | Pet relacionado                             |
-| `avistamentos.localAvistado`     | string |         Sim | Local do avistamento                        |
-| `avistamentos.descricao`         | string |         Sim | Relato do colaborador                       |
-| `avistamentos.contatoReportador` | string |         Sim | Meio de retorno do colaborador              |
-| `avistamentos.petOwnerEmail`     | string |         Sim | Responsavel que pode consultar a ocorrencia |
+| Entidade/campo                   | Tipo      | Obrigatorio | Descricao                                   |
+| -------------------------------- | --------- | ----------: | ------------------------------------------- |
+| `pets.id`                        | string    |         Sim | Identificador do documento                  |
+| `pets.nome`                      | string    |         Sim | Nome ou identificacao do animal             |
+| `pets.tipo`                      | string    |         Sim | Especie ou categoria do animal              |
+| `pets.raca`                      | string    |         Sim | Raca informada pelo tutor                   |
+| `pets.porte`                     | string    |         Sim | Porte do animal                             |
+| `pets.status`                    | string    |         Sim | `desaparecido`, `achado` ou `encontrado`    |
+| `pets.expiresAt`                 | timestamp |         Não | Data de expiração dos anúncios `achado`     |
+| `pets.localiza`                  | string    |         Sim | Local textual do anuncio                    |
+| `pets.lat` / `pets.lng`          | number    |         Sim | Coordenadas para o mapa                     |
+| `pets.descricao`                 | string    |         Sim | Caracteristicas e informacoes adicionais    |
+| `pets.imagem`                    | string    |         Sim | URL ou referencia da imagem                 |
+| `pets.usuarioCriador`            | string    |         Sim | E-mail associado ao usuario autenticado     |
+| `pets.contato`                   | string    |         Sim | Meio de contato do tutor                    |
+| `pets.whatsapp`                  | string    |         Sim | Contato adicional do tutor                  |
+| `avistamentos.petId`             | string    |         Sim | Pet relacionado                             |
+| `avistamentos.localAvistado`     | string    |         Sim | Local do avistamento                        |
+| `avistamentos.descricao`         | string    |         Sim | Relato do colaborador                       |
+| `avistamentos.contatoReportador` | string    |         Sim | Meio de retorno do colaborador              |
+| `avistamentos.petOwnerEmail`     | string    |         Sim | Responsavel que pode consultar a ocorrencia |
 
 A padronizacao futura deve preferir `localizacao`, `imagemUrl`, `usuarioCriadorUid`, `criadoEm` e `atualizadoEm`. Essa mudanca exige migracao coordenada entre telas e regras.
 
@@ -547,8 +565,10 @@ Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz 
 - RN01: somente usuario autenticado pode criar pet.
 - RN02: o criador do pet e identificado pelo campo `usuarioCriador`.
 - RN03: somente o criador pode atualizar ou excluir seu pet.
-- RN04: o status inicial deve ser `desaparecido` ou outro status aceito pela regra vigente.
-- RN05: o tutor pode marcar o proprio pet como `encontrado`.
+- RN04: o status inicial deve ser `desaparecido` ou `achado`, conforme o formulario usado.
+- RN05: somente o criador pode alterar o status; `achado` passa para `encontrado` apos confirmacao da devolucao.
+- RN11: anúncio `achado` recebe `expiresAt` 40 dias após a publicação e é ocultado após o vencimento.
+- RN12: o Firestore deve usar TTL em `expiresAt` para excluir fisicamente os anúncios vencidos.
 - RN06: avistamento deve informar o `petId` e os campos obrigatorios.
 - RN07: avistamentos podem ser lidos publicamente conforme regra atual, mas a aplicacao deve evitar exposicao desnecessaria de contatos.
 - RN08: validacao no navegador melhora a experiencia, mas a regra do Firestore e a protecao efetiva contra escrita indevida.
@@ -572,19 +592,20 @@ No estado atual, os termos e a protecao de contato oferecem uma camada inicial, 
 
 ## 13. Interfaces e experiencia do usuario
 
-| Tela                    | Funcao                      | Acesso                         |
-| ----------------------- | --------------------------- | ------------------------------ |
-| `index.html`            | Home, lista, filtros e mapa | Publico                        |
-| `criar-conta.html`      | Login e cadastro            | Publico                        |
-| `publicar.html`         | Formulario de publicacao    | Autenticado                    |
-| `detalhes.html`         | Detalhes e avistamento      | Publico/autenticado para envio |
-| `cadastrados.html`      | Meus Pets                   | Autenticado                    |
-| `editar.html`           | Edicao de anuncio           | Dono autenticado               |
-| `animais_encontra.html` | Consulta de encontrados     | Publico                        |
-| `dicas.html`            | Cuidados com animais        | Publico                        |
-| `informativos.html`     | Conteudo informativo        | Publico                        |
-| `contato.html`          | Mensagem para o projeto     | Publico                        |
-| `termos.html`           | Termos de uso               | Publico                        |
+| Tela                    | Funcao                           | Acesso                         |
+| ----------------------- | -------------------------------- | ------------------------------ |
+| `index.html`            | Home, lista, filtros e mapa      | Publico                        |
+| `criar-conta.html`      | Login e cadastro                 | Publico                        |
+| `publicar.html`         | Formulario de publicacao         | Autenticado                    |
+| `detalhes.html`         | Detalhes e avistamento           | Publico/autenticado para envio |
+| `cadastrados.html`      | Meus Pets                        | Autenticado                    |
+| `editar.html`           | Edicao de anuncio                | Dono autenticado               |
+| `animais_encontra.html` | Consulta de achados e devolvidos | Publico                        |
+| `publicar_achado.html`  | Cadastro de pet achado           | Autenticado                    |
+| `dicas.html`            | Cuidados com animais             | Publico                        |
+| `informativos.html`     | Conteudo informativo             | Publico                        |
+| `contato.html`          | Mensagem para o projeto          | Publico                        |
+| `termos.html`           | Termos de uso                    | Publico                        |
 
 Diretrizes de interface:
 
@@ -636,8 +657,8 @@ DETALHES DO PET
 MEUS PETS
 +----------------------------------------------------------+
 | Usuario | Sair                                           |
-| Pet 1: status | [Editar] [Encontrado] [Excluir]         |
-| Pet 2: status | [Editar] [Encontrado] [Excluir]         |
+| Pet 1: status | [Editar] [Devolvido ao Tutor] [Excluir] |
+| Pet 2: status | [Editar] [Devolvido ao Tutor] [Excluir] |
 +----------------------------------------------------------+
 ```
 
@@ -653,47 +674,52 @@ Os criterios abaixo complementam os requisitos e podem ser usados na demonstraca
 | RF07      | Pet existente e sessao valida | enviar avistamento completo   | sistema grava a ocorrencia vinculada ao pet |
 | RF09      | Pet do usuario atual          | salvar alteracao valida       | sistema atualiza o documento                |
 | RF10      | Pet de outro usuario          | tentar excluir                | regra rejeita a operacao                    |
-| RF11      | Pet desaparecido do usuario   | confirmar reencontro          | sistema altera o status para encontrado     |
+| RF11      | Pet achado do usuario         | confirmar devolucao           | sistema altera o status para encontrado     |
 | RNF02     | Tela em viewport mobile       | navegar e abrir formularios   | conteudo permanece legivel e utilizavel     |
 | RNF04     | Listagem publica              | carregar cards                | contato nao e exibido diretamente           |
 
 ## 14. Plano de testes e validacao
 
-| ID  | Cenario                                 | Resultado esperado                                       |
-| --- | --------------------------------------- | -------------------------------------------------------- |
-| T01 | Visitante abre a home                   | Lista e mapa carregam ou exibem estado vazio/erro        |
-| T02 | Usuario tenta publicar sem login        | Acesso e bloqueado ou redirecionado                      |
-| T03 | Publicacao com campo obrigatorio vazio  | Formulario informa o campo e nao grava                   |
-| T04 | Publicacao com coordenada invalida      | Operacao e rejeitada                                     |
-| T05 | Publicacao valida com imagem            | Imagem sobe e pet aparece na lista                       |
-| T06 | Usuario tenta editar pet de outro       | Firestore rejeita a operacao                             |
-| T07 | Tutor edita o proprio pet               | Alteracoes aparecem nos detalhes                         |
-| T08 | Tutor marca pet como encontrado         | Status e atualizado                                      |
-| T09 | Colaborador registra avistamento valido | Ocorrencia e criada no pet correto                       |
-| T10 | Avistamento sem autenticacao            | Operacao e bloqueada pela regra vigente                  |
-| T11 | Contato na listagem publica             | Contato nao aparece diretamente                          |
-| T12 | Navegacao em celular                    | Conteudo nao sobrepoe e controles permanecem utilizaveis |
-| T13 | Dado com caracteres especiais           | Texto aparece sem executar HTML                          |
-| T14 | Imagem inexistente ou pesada            | Sistema trata erro e preserva o layout                   |
+| ID  | Cenario                                  | Resultado esperado                                       |
+| --- | ---------------------------------------- | -------------------------------------------------------- |
+| T01 | Visitante abre a home                    | Lista e mapa carregam ou exibem estado vazio/erro        |
+| T02 | Usuario tenta publicar sem login         | Acesso e bloqueado ou redirecionado                      |
+| T03 | Publicacao com campo obrigatorio vazio   | Formulario informa o campo e nao grava                   |
+| T04 | Publicacao com coordenada invalida       | Operacao e rejeitada                                     |
+| T05 | Publicacao valida com imagem             | Imagem sobe e pet aparece na lista                       |
+| T06 | Usuario tenta editar pet de outro        | Firestore rejeita a operacao                             |
+| T07 | Tutor edita o proprio pet                | Alteracoes aparecem nos detalhes                         |
+| T08 | Criador confirma devolucao ou reencontro | Status muda para `encontrado`                            |
+| T15 | Pessoa autenticada publica pet achado    | Anuncio surge na lista e no mapa com distincao visual    |
+| T16 | Visitante tenta alterar status           | Nenhum botao de alteracao e disponibilizado              |
+| T17 | Achado ultrapassa 40 dias                | Anuncio deixa de aparecer e aguarda exclusao por TTL     |
+| T09 | Colaborador registra avistamento valido  | Ocorrencia e criada no pet correto                       |
+| T10 | Avistamento sem autenticacao             | Operacao e bloqueada pela regra vigente                  |
+| T11 | Contato na listagem publica              | Contato nao aparece diretamente                          |
+| T12 | Navegacao em celular                     | Conteudo nao sobrepoe e controles permanecem utilizaveis |
+| T13 | Dado com caracteres especiais            | Texto aparece sem executar HTML                          |
+| T14 | Imagem inexistente ou pesada             | Sistema trata erro e preserva o layout                   |
 
 A validacao academica deve combinar testes funcionais, verificacao visual responsiva, inspecao das regras do Firebase e conferencia dos criterios de aceite.
 
 ## 15. Matriz de rastreabilidade
 
-| Requisito | Caso de uso | Tela/componente      | Persistencia ou regra   | Teste    |
-| --------- | ----------- | -------------------- | ----------------------- | -------- |
-| RF01      | UC07, UC08  | `criar-conta.html`   | Firebase Authentication | T02      |
-| RF02      | UC07        | `publicar.html`      | `pets`, regra `create`  | T03, T05 |
-| RF03      | UC07        | Formulario de imagem | Firebase Storage        | T05, T14 |
-| RF04      | UC01        | `index.html`         | Query Firestore         | T01      |
-| RF05      | UC02        | Home/mapa            | `lat`, `lng`, Leaflet   | T01, T04 |
-| RF06      | UC03        | `detalhes.html`      | `pets/{petId}`          | T01      |
-| RF07      | UC06        | Detalhes             | `avistamentos`          | T09, T10 |
-| RF08      | UC08        | `cadastrados.html`   | Filtro por responsavel  | T06      |
-| RF09      | UC09        | `editar.html`        | Regra `update`          | T07      |
-| RF10      | UC10        | `cadastrados.html`   | Regra `delete`          | T06      |
-| RF11      | UC11        | `editar.html`        | Campo `status`          | T08      |
-| RF14      | UC03        | Detalhes/lista       | Fluxo de confirmacao    | T11      |
+| Requisito | Caso de uso | Tela/componente         | Persistencia ou regra      | Teste    |
+| --------- | ----------- | ----------------------- | -------------------------- | -------- |
+| RF01      | UC07, UC08  | `criar-conta.html`      | Firebase Authentication    | T02      |
+| RF02      | UC07        | `publicar.html`         | `pets`, regra `create`     | T03, T05 |
+| RF03      | UC07        | Formulario de imagem    | Firebase Storage           | T05, T14 |
+| RF04      | UC01        | `index.html`            | Query Firestore            | T01      |
+| RF05      | UC02        | Home/mapa               | `lat`, `lng`, Leaflet      | T01, T04 |
+| RF06      | UC03        | `detalhes.html`         | `pets/{petId}`             | T01      |
+| RF07      | UC06        | Detalhes                | `avistamentos`             | T09, T10 |
+| RF08      | UC08        | `cadastrados.html`      | Filtro por responsavel     | T06      |
+| RF09      | UC09        | `editar.html`           | Regra `update`             | T07      |
+| RF10      | UC10        | `cadastrados.html`      | Regra `delete`             | T06      |
+| RF11      | UC11        | `animais_encontra.html` | Acao do criador e `status` | T08      |
+| RF15      | UC12        | `publicar_achado.html`  | `pets.status = achado`     | T15      |
+| RF16      | UC12        | Listas e mapa           | `pets.expiresAt` + TTL     | T17      |
+| RF14      | UC03        | Detalhes e encontrados  | Fluxo de confirmacao       | T11      |
 
 ## 16. Riscos e mitigacoes
 

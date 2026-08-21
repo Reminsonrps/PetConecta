@@ -300,9 +300,12 @@
               usuarioCriador: pet.usuarioCriador || "",
               ...pet,
             };
-            const statusTexto = pet.status?.toUpperCase() || "DESAPARECIDO";
+            const statusTexto =
+              pet.status === "achado"
+                ? "ENCONTRADO POR TERCEIROS - AGUARDANDO DEVOLUÇÃO"
+                : pet.status?.toUpperCase() || "DESAPARECIDO";
             const statusColor =
-              pet.status === "encontrado" ? "#4CAF50" : "#ff6600";
+              pet.status === "encontrado" ? "#4CAF50" : "#d97706";
 
             if (pet.status === "desaparecido") {
               secaoAvistamentos.style.display = "block";
@@ -461,4 +464,3 @@
     </script>
   </body>
 </html>
-

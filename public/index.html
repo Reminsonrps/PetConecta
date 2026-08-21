@@ -87,12 +87,30 @@
           <div class="interno"></div>
         </div>
         <h1>Bem-vindo ao PetConecta!</h1>
-        <h2>Cadastre seu pet desaparecido aqui!</h2>
+        <h2>Cadastre seu pet desaparecido ou encontrado aqui!</h2>
         <!-- 🚀 ATIVADO: Agora este botão redireciona para a página de publicação -->
-        <button id="action-btn" class="btn">Cadastrar</button>
-        <button id="guide-btn" class="btn btn-secondary" type="button">
-          Guia rápido
-        </button>
+        <div
+          style="
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+          "
+        >
+          <button id="action-btn" class="btn">Cadastrar Perdido</button>
+          <button
+            id="achado-btn"
+            class="btn"
+            style="background-color: #004085; color: white"
+            onclick="window.location.href = 'publicar_achado.html'"
+          >
+            Cadastrar Achado
+          </button>
+          <button id="guide-btn" class="btn btn-secondary" type="button">
+            Guia rápido
+          </button>
+        </div>
       </section>
 
       <section class="highlights">
@@ -435,8 +453,11 @@
         <h1>🗺️ Mapa de Ocorrências</h1>
         <p class="legenda-mapa">
           <span class="mapa-label-desaparecido">🔴 Desaparecidos</span>
-          &nbsp;&nbsp;|&nbsp;&nbsp;
-          <span class="mapa-label-encontrado">🟢 Encontrados</span>
+          <span class="mapa-label-achado"
+            >🟠 Desaparecidos: encontrados por terceiros - aguardando
+            devolução</span
+          >
+          <span class="mapa-label-encontrado">🟢 Devolvidos / Encontrados</span>
         </p>
         <div class="mapa-toolbar">
           <button type="button" id="btnCentralizarMapa" class="btn-geo">
@@ -472,7 +493,7 @@
       </section>
 
       <section class="desaparecidos">
-        <h1>Desaparecidos</h1>
+        <h1>Desaparecidos e Achados Ativos</h1>
         <div class="filtros">
           <h4>🔍 Filtrar pets</h4>
           <select id="filtroTipoDesaparecido" title="Filtrar por tipo">
@@ -729,7 +750,7 @@
     <script src="script/anima.js?v=20260818-2" defer></script>
     <script src="script/carrossel-informativo.js" defer></script>
     <script src="script/parceiros.js"></script>
-    <script type="module" src="script/exibir_pets.js?v=20260818-2"></script>
+    <script type="module" src="script/exibir_pets.js?v=20260821-2"></script>
     <script type="module" src="script/main.js"></script>
     <script type="module" src="script/contatoAPI.js"></script>
 
@@ -864,7 +885,7 @@
                 "Coordenadas obtidas! Identificando cidade...";
               status2.textContent =
                 "Coordenadas obtidas! Identificando cidade...";
-                
+
               <!-- Definindo o raio de proximidade em quilômetros -->
               const raioProximidadeKm = 10;
               window.filtrarPetsPorRaio?.(lat, lng, raioProximidadeKm);
@@ -1002,6 +1023,13 @@
           iconAnchor: [7, 7],
         });
 
+        const iconeAchado = L.divIcon({
+          className: "custom-pin-achado",
+          html: `<div style="background-color: #d97706; width: 14px; height: 14px; border-radius: 50%; border: 2px solid white; box-shadow: 0 0 5px rgba(0,0,0,0.4);"></div>`,
+          iconSize: [14, 14],
+          iconAnchor: [7, 7],
+        });
+
         let ultimoEstadoMapa = "";
 
         function limparMarcadores() {
@@ -1028,16 +1056,19 @@
 
             if (!latitude || !longitude) return;
 
-            const iconeMarcador =
-              pet.status === "desaparecido"
-                ? iconeDesaparecido
-                : iconeEncontrado;
-            const corTextoPopup =
-              pet.status === "desaparecido" ? "#ff3333" : "#2beb31";
-            const tagStatus =
-              pet.status === "desaparecido"
-                ? "🚨 Desaparecido"
-                : "✅ Encontrado";
+            let iconeMarcador = iconeDesaparecido;
+            let corTextoPopup = "#ff3333";
+            let tagStatus = "🚨 Desaparecido";
+
+            if (pet.status === "encontrado") {
+              iconeMarcador = iconeEncontrado;
+              corTextoPopup = "#2beb31";
+              tagStatus = "✅ Devolvido / Encontrado";
+            } else if (pet.status === "achado") {
+              iconeMarcador = iconeAchado;
+              corTextoPopup = "#d97706";
+              tagStatus = "⚠️ Encontrado por terceiros - aguardando devolução";
+            }
 
             const conteudoPopup = `
               <strong style="color: ${corTextoPopup}; font-size: 1rem;">${tagStatus}</strong><br>
@@ -1117,6 +1148,10 @@
 
         carregarOcorrenciasMapa();
         window.addEventListener("storage", carregarOcorrenciasMapa);
+        window.addEventListener(
+          "ocorrenciasAtualizadas",
+          carregarOcorrenciasMapa,
+        );
       });
     </script>
     <!-- Script modular integrado com o Firestore e o Authentication em tempo real -->
@@ -1192,6 +1227,16 @@
 
           snapshot.forEach((doc) => {
             const pet = doc.data();
+            const expiracao = pet.expiresAt?.toDate
+              ? pet.expiresAt.toDate().getTime()
+              : new Date(pet.expiresAt).getTime();
+            if (
+              pet.status === "achado" &&
+              Number.isFinite(expiracao) &&
+              expiracao <= Date.now()
+            ) {
+              return;
+            }
             ocorrencias.push({
               id: doc.id,
               nome: pet.nome || pet.nomePet || "Sem nome",
@@ -1205,6 +1250,7 @@
 
           // Armazena os dados já carregados para o script nativo do Leaflet consumir sem novas consultas.
           localStorage.setItem("ocorrenciasPets", JSON.stringify(ocorrencias));
+          window.dispatchEvent(new Event("ocorrenciasAtualizadas"));
         } catch (error) {
           console.error(
             "Erro ao carregar pets para o mapa (Firestore):",

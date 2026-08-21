@@ -47,6 +47,14 @@ function normalizeText(value) {
     .toLowerCase();
 }
 
+function anuncioAchadoExpirou(pet) {
+  if (pet.status !== "achado" || !pet.expiresAt) return false;
+  const expiracao = pet.expiresAt.toDate
+    ? pet.expiresAt.toDate().getTime()
+    : new Date(pet.expiresAt).getTime();
+  return Number.isFinite(expiracao) && expiracao <= Date.now();
+}
+
 // Reconstroi o seletor de localidades com os valores atualmente existentes no Firestore.
 function atualizarOpcoesFiltroCidade(listaPets) {
   const campoCidade = document.getElementById("filtroCidadeDesaparecido");
@@ -130,6 +138,7 @@ onSnapshot(
         imagem: pet.imagem || pet.fotoPet || "",
         status: pet.status || "desaparecido",
         usuarioCriador: pet.usuarioCriador || null,
+        expiresAt: pet.expiresAt || null,
         lat: Number(pet.lat),
         lng: Number(pet.lng),
       };
@@ -240,14 +249,21 @@ window.autenticarAcao = async function (acao, petId, usuarioCriador) {
       alert("Houve um erro ao excluir o cadastro ou a foto do pet.");
     }
   } else if (acao === "encontrei") {
-    if (!confirm(`Deseja alterar o status de ${pet.nome} para "Encontrado"?`))
-      return;
+    const isAchado = pet.status === "achado";
+    const msgConfirm = isAchado
+      ? `Deseja marcar ${pet.nome} como devolvido ao tutor?`
+      : `Deseja alterar o status de ${pet.nome} para "Encontrado"?`;
+
+    if (!confirm(msgConfirm)) return;
 
     try {
       await updateDoc(firestoreDoc(db, "pets", petId), {
         status: "encontrado",
       });
-      alert("Status atualizado com sucesso! Parabéns por encontrar seu pet.");
+      const msgAlert = isAchado
+        ? "Status atualizado! Parabéns por devolver o pet ao tutor."
+        : "Status atualizado com sucesso! Parabéns por encontrar seu pet.";
+      alert(msgAlert);
     } catch (error) {
       console.error("Erro ao atualizar status:", error);
       alert("Erro ao atualizar status.");
@@ -262,7 +278,12 @@ window.exibirPets = function exibirPets() {
   if (!galeria) return;
 
   const fragment = document.createDocumentFragment();
-  const listaPets = listaPetsFirestore;
+  // A seção principal reúne casos ainda ativos: desaparecidos e achados por terceiros.
+  const listaPets = listaPetsFirestore.filter(
+    (pet) =>
+      (pet.status === "desaparecido" || pet.status === "achado") &&
+      !anuncioAchadoExpirou(pet),
+  );
 
   // Le os filtros de texto usados pelas paginas que compartilham este modulo.
   const campoNome = document.getElementById("filtro-nome");
@@ -308,7 +329,7 @@ window.exibirPets = function exibirPets() {
         tipoMatch = petTipo.includes(filtroTipo);
       }
     }
-     // Filtro de sexo é aplicado apenas se o campo estiver preenchido.
+    // Filtro de sexo é aplicado apenas se o campo estiver preenchido.
     let sexoMatch = true;
     if (filtroSexo) {
       const petSexo = (pet.sexo || "").toLowerCase();
@@ -326,7 +347,7 @@ window.exibirPets = function exibirPets() {
       const localPet = normalizeText(pet.localiza || pet.localizacao || "");
       cidadeMatch = localPet.includes(filtroCidade);
     }
-     // Filtro de proximidade geográfica é aplicado apenas se o filtro estiver ativo.
+    // Filtro de proximidade geográfica é aplicado apenas se o filtro estiver ativo.
     let proximidadeMatch = true;
     if (filtroProximidade) {
       const possuiCoordenadas =
@@ -340,7 +361,7 @@ window.exibirPets = function exibirPets() {
           pet.lng,
         ) <= filtroProximidade.raioKm;
     }
-   // Retorna true apenas se todos os filtros forem satisfeitos.
+    // Retorna true apenas se todos os filtros forem satisfeitos.
     return (
       nomeMatch &&
       localMatch &&
@@ -393,11 +414,19 @@ window.exibirPets = function exibirPets() {
     const statusLabel = document.createElement("strong");
     statusLabel.textContent = "Status: ";
     const statusValue = document.createElement("span");
-    statusValue.style.color = pet.status === "encontrado" ? "green" : "#ff6600";
+    let corStatus = "#ff3333";
+    let textoStatus = "DESAPARECIDO";
+    if (pet.status === "encontrado") {
+      corStatus = "#2beb31"; // Verde para resolvido/devolvido
+      textoStatus = "DEVOLVIDO / ENCONTRADO";
+    } else if (pet.status === "achado") {
+      corStatus = "#d97706"; // Laranja de alerta para achado por terceiros
+      textoStatus = "ENCONTRADO POR TERCEIROS - AGUARDANDO DEVOLUÇÃO";
+    }
+
+    statusValue.style.color = corStatus;
     statusValue.style.fontWeight = "700";
-    statusValue.textContent = pet.status
-      ? pet.status.toUpperCase()
-      : "DESAPARECIDO";
+    statusValue.textContent = textoStatus;
     statusWrap.appendChild(statusLabel);
     statusWrap.appendChild(statusValue);
     bloco.appendChild(statusWrap);
@@ -497,7 +526,8 @@ window.exibirPets = function exibirPets() {
 
     if (ehCriador && pet.status !== "encontrado") {
       const encontrouBtn = document.createElement("button");
-      encontrouBtn.textContent = "Encontrei";
+      encontrouBtn.textContent =
+        pet.status === "achado" ? "Devolvido ao Tutor" : "Encontrei";
       encontrouBtn.className = "btn btn-encontrou";
       encontrouBtn.style.backgroundColor = "#4CAF50";
       encontrouBtn.style.color = "#fff";
@@ -557,7 +587,7 @@ function configurarFiltrosDesaparecidos() {
       exibirPets();
     });
   }
-}// Inicializa a pagina atual, ligando os eventos e filtros.
+} // Inicializa a pagina atual, ligando os eventos e filtros.
 function inicializar() {
   // Inicializa apenas os controles presentes na pagina atual.
   configurarBotaoCadastro();

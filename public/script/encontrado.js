@@ -1,13 +1,21 @@
 import { auth, db, buildPetsQuery } from "./firebase.js?v=20260818-3";
-import { onSnapshot } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import {
+  onSnapshot,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 import {
   onAuthStateChanged,
   signOut,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
+let usuarioAtual = null;
+
 // --- MENU DE NAVEGACAO DINAMICO COM AUTH ---
 // Reconstroi o menu conforme o estado de autenticacao sem inserir dados do usuario como HTML bruto.
 onAuthStateChanged(auth, (user) => {
+  usuarioAtual = user;
   const menu = document.getElementById("menu");
   if (!menu) return;
 
@@ -65,10 +73,21 @@ onAuthStateChanged(auth, (user) => {
   } else {
     menu.appendChild(createLinkItem("criar-conta.html", "Entrar / Cadastrar"));
   }
+
+  // Atualiza os cards quando a sessão termina de carregar para exibir as ações do criador.
+  scheduleRender();
 });
 
 let encontradosFirestore = [];
 let renderQueued = false;
+
+function anuncioAchadoExpirou(pet) {
+  if (pet.status !== "achado" || !pet.expiresAt) return false;
+  const expiracao = pet.expiresAt.toDate
+    ? pet.expiresAt.toDate().getTime()
+    : new Date(pet.expiresAt).getTime();
+  return Number.isFinite(expiracao) && expiracao <= Date.now();
+}
 
 // Agrupa atualizacoes do Firestore e dos filtros em um unico frame de renderizacao.
 function scheduleRender() {
@@ -80,27 +99,71 @@ function scheduleRender() {
   });
 }
 
-// Escuta somente documentos marcados como encontrados; a ordenacao ocorre no cliente para evitar indice composto.
-onSnapshot(
-  buildPetsQuery({ status: "encontrado", maxItems: null, orderByData: false }),
-  (snapshot) => {
-    encontradosFirestore = snapshot.docs.map((doc) => {
-      const pet = doc.data();
-      const idCurto = doc.id.slice(0, 4);
+function dispositivoMovel() {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent || "",
+  );
+}
 
-      return {
-        id: idCurto,
-        idCompleto: doc.id,
-        nome: pet.nome || pet.nomePet || "Sem nome",
-        raca: pet.raca || pet.tipoPet || "Não informada",
-        sexo: pet.sexo || pet.sexoPet || "Indefinido",
-        idade: pet.idade || pet.idadePet || "Não informada",
-        localiza: pet.localiza || pet.localizacao || "Não informada",
-        data: pet.data || "Não informada",
-        descricao: pet.descricao || pet.descricaoPet || "Não informada",
-        imagem: pet.imagem || pet.fotoPet || "",
-      };
-    });
+function montarURLContatoEmail(destinatario, assunto, corpo) {
+  const emailOrigem = usuarioAtual?.email || "";
+  const dominio = (emailOrigem.split("@")[1] || "").toLowerCase();
+  const to = encodeURIComponent(destinatario);
+  const su = encodeURIComponent(assunto);
+  const body = encodeURIComponent(corpo);
+
+  if (!dispositivoMovel() && dominio.includes("gmail.com")) {
+    return `https://mail.google.com/mail/u/0/?view=cm&fs=1&tf=1&to=${to}&su=${su}&body=${body}`;
+  }
+
+  if (
+    !dispositivoMovel() &&
+    ["hotmail.com", "outlook.com", "live.com", "msn.com"].some((dominioEmail) =>
+      dominio.includes(dominioEmail),
+    )
+  ) {
+    return `https://outlook.live.com/mail/0/?path=/mail/action/compose&to=${to}&subject=${su}&body=${body}`;
+  }
+
+  if (!dispositivoMovel() && dominio.includes("yahoo.com")) {
+    return `https://compose.mail.yahoo.com/?to=${to}&subject=${su}&body=${body}`;
+  }
+
+  return `mailto:${destinatario}?subject=${su}&body=${body}`;
+}
+
+// Escuta todos os documentos e mantém nesta página somente os que não estão desaparecidos.
+onSnapshot(
+  buildPetsQuery({ maxItems: null, orderByData: false }),
+  (snapshot) => {
+    encontradosFirestore = snapshot.docs
+      .map((doc) => {
+        const pet = doc.data();
+        const idCurto = doc.id.slice(0, 4);
+
+        return {
+          id: idCurto,
+          idCompleto: doc.id,
+          nome: pet.nome || pet.nomePet || "Sem nome",
+          raca: pet.raca || pet.tipoPet || "Não informada",
+          sexo: pet.sexo || pet.sexoPet || "Indefinido",
+          idade: pet.idade || pet.idadePet || "Não informada",
+          localiza: pet.localiza || pet.localizacao || "Não informada",
+          data: pet.data || "Não informada",
+          descricao: pet.descricao || pet.descricaoPet || "Não informada",
+          imagem: pet.imagem || pet.fotoPet || "",
+          whatsapp: pet.whatsapp || "",
+          contato: pet.contato || "",
+          status: pet.status || "desaparecido",
+          usuarioCriador: pet.usuarioCriador || "",
+          expiresAt: pet.expiresAt || null,
+        };
+      })
+      .filter(
+        (pet) =>
+          ["achado", "encontrado"].includes(pet.status) &&
+          !anuncioAchadoExpirou(pet),
+      );
 
     encontradosFirestore.sort((petA, petB) => {
       const dataA = new Date(petA.data).getTime() || 0;
@@ -153,7 +216,7 @@ export function exibirPets() {
     outro: ["coelho", "pássaro", "tartaruga", "outro"],
   };
 
-  // Os pets abaixo ja chegam com status "encontrado" garantido pela consulta do Firestore.
+  // A página mostra achados de terceiros e pets já devolvidos ao tutor.
   const petsFiltrados = encontradosFirestore.filter((pet) => {
     const idMatch =
       !filtroId ||
@@ -225,12 +288,177 @@ export function exibirPets() {
     const statusStrong = document.createElement("strong");
     statusStrong.textContent = "Status: ";
     const statusValue = document.createElement("span");
-    statusValue.style.color = "green";
+    statusValue.style.color =
+      pet.status === "encontrado" ? "#2e8b57" : "#d97706";
     statusValue.style.fontWeight = "700";
-    statusValue.textContent = "ENCONTRADO";
+    statusValue.textContent =
+      pet.status === "encontrado"
+        ? "DEVOLVIDO / ENCONTRADO"
+        : "ENCONTRADO POR TERCEIROS - AGUARDANDO DEVOLUÇÃO";
     status.appendChild(statusStrong);
     status.appendChild(statusValue);
     card.appendChild(status);
+
+    const ehCriador =
+      pet.usuarioCriador &&
+      usuarioAtual?.email?.toLowerCase() === pet.usuarioCriador.toLowerCase();
+
+    if (ehCriador) {
+      const btnEditar = document.createElement("button");
+      btnEditar.type = "button";
+      btnEditar.textContent = "Editar";
+      btnEditar.style.marginTop = "12px";
+      btnEditar.style.marginRight = "8px";
+      btnEditar.style.padding = "8px 12px";
+      btnEditar.style.backgroundColor = "#2563eb";
+      btnEditar.style.color = "white";
+      btnEditar.style.border = "0";
+      btnEditar.style.borderRadius = "4px";
+      btnEditar.style.fontWeight = "bold";
+      btnEditar.addEventListener("click", () => {
+        window.location.href = `editar.html?id=${encodeURIComponent(pet.idCompleto)}`;
+      });
+      card.appendChild(btnEditar);
+
+      const btnExcluir = document.createElement("button");
+      btnExcluir.type = "button";
+      btnExcluir.textContent = "Excluir";
+      btnExcluir.style.marginTop = "12px";
+      btnExcluir.style.padding = "8px 12px";
+      btnExcluir.style.backgroundColor = "#dc2626";
+      btnExcluir.style.color = "white";
+      btnExcluir.style.border = "0";
+      btnExcluir.style.borderRadius = "4px";
+      btnExcluir.style.fontWeight = "bold";
+      btnExcluir.addEventListener("click", async () => {
+        if (!confirm(`Excluir o cadastro de ${pet.nome}?`)) return;
+
+        try {
+          await deleteDoc(doc(db, "pets", pet.idCompleto));
+          alert("Cadastro excluído com sucesso.");
+        } catch (error) {
+          console.error("Erro ao excluir o pet encontrado:", error);
+          alert("Não foi possível excluir o cadastro. Tente novamente.");
+        }
+      });
+      card.appendChild(btnExcluir);
+    }
+
+    if (ehCriador && pet.status === "achado") {
+      const btnDevolvido = document.createElement("button");
+      btnDevolvido.type = "button";
+      btnDevolvido.textContent = "Devolvido ao Tutor";
+      btnDevolvido.style.marginTop = "12px";
+      btnDevolvido.style.padding = "8px 12px";
+      btnDevolvido.style.backgroundColor = "#4caf50";
+      btnDevolvido.style.color = "white";
+      btnDevolvido.style.border = "0";
+      btnDevolvido.style.borderRadius = "4px";
+      btnDevolvido.style.fontWeight = "bold";
+      btnDevolvido.addEventListener("click", async () => {
+        if (!confirm(`Marcar ${pet.nome} como devolvido ao tutor?`)) return;
+
+        try {
+          await updateDoc(doc(db, "pets", pet.idCompleto), {
+            status: "encontrado",
+            dataResolucao: new Date().toISOString(),
+          });
+          alert("Status atualizado para devolvido ao tutor.");
+        } catch (error) {
+          console.error("Erro ao atualizar o status do pet encontrado:", error);
+          alert("Não foi possível atualizar o status. Tente novamente.");
+        }
+      });
+      card.appendChild(btnDevolvido);
+    }
+
+    if (pet.whatsapp || pet.contato) {
+      const contatoWrapper = document.createElement("div");
+      contatoWrapper.style.display = "flex";
+      contatoWrapper.style.flexDirection = "column";
+      contatoWrapper.style.gap = "8px";
+      contatoWrapper.style.marginTop = "12px";
+
+      const avisoContato = document.createElement("p");
+      avisoContato.textContent =
+        "Contato protegido. Revele apenas se pretende ajudar na devolução.";
+      avisoContato.style.margin = "0";
+      avisoContato.style.fontSize = "0.9rem";
+      avisoContato.style.color = "#6b7280";
+      contatoWrapper.appendChild(avisoContato);
+
+      const btnRevelarContato = document.createElement("button");
+      btnRevelarContato.type = "button";
+      btnRevelarContato.textContent = "Revelar contato";
+      btnRevelarContato.style.padding = "8px 12px";
+      btnRevelarContato.style.backgroundColor = "#d97706";
+      btnRevelarContato.style.color = "white";
+      btnRevelarContato.style.border = "0";
+      btnRevelarContato.style.borderRadius = "4px";
+      btnRevelarContato.style.fontWeight = "bold";
+      btnRevelarContato.style.cursor = "pointer";
+      contatoWrapper.appendChild(btnRevelarContato);
+
+      const canaisContato = document.createElement("div");
+      canaisContato.style.display = "none";
+      canaisContato.style.flexDirection = "column";
+      canaisContato.style.gap = "8px";
+
+      const btnContato = document.createElement("a");
+      btnContato.style.display = "block";
+      btnContato.style.padding = "8px 12px";
+      btnContato.style.backgroundColor = "#28a745";
+      btnContato.style.color = "white";
+      btnContato.style.textAlign = "center";
+      btnContato.style.borderRadius = "4px";
+      btnContato.style.textDecoration = "none";
+      btnContato.style.fontWeight = "bold";
+      btnContato.style.cursor = "pointer";
+      btnContato.textContent = "📲 Entrar em contato pelo WhatsApp";
+
+      if (pet.whatsapp) {
+        const numeroLimpo = String(pet.whatsapp).replace(/\D/g, "");
+        const mensagem = encodeURIComponent(
+          `Olá! Vi seu anúncio no PetConecta sobre o pet encontrado (${pet.nome}).`,
+        );
+        btnContato.href = `https://wa.me/55${numeroLimpo}?text=${mensagem}`;
+        btnContato.target = "_blank";
+        canaisContato.appendChild(btnContato);
+      }
+
+      if (pet.contato) {
+        const btnEmail = document.createElement("a");
+        btnEmail.style.display = "block";
+        btnEmail.style.padding = "8px 12px";
+        btnEmail.style.backgroundColor = "#2563eb";
+        btnEmail.style.color = "white";
+        btnEmail.style.textAlign = "center";
+        btnEmail.style.borderRadius = "4px";
+        btnEmail.style.textDecoration = "none";
+        btnEmail.style.fontWeight = "bold";
+        btnEmail.style.cursor = "pointer";
+        btnEmail.textContent = "✉️ Entrar em contato por e-mail";
+        const assunto = `Sobre o pet encontrado no PetConecta - ${pet.nome}`;
+        const corpo = `Olá! Vi o anúncio de ${pet.nome} no PetConecta e gostaria de ajudar.`;
+        btnEmail.href = montarURLContatoEmail(pet.contato, assunto, corpo);
+        if (!btnEmail.href.startsWith("mailto:")) btnEmail.target = "_blank";
+        canaisContato.appendChild(btnEmail);
+      }
+
+      btnRevelarContato.addEventListener("click", () => {
+        const confirmar = window.confirm(
+          "Você está prestes a visualizar os dados de contato do anunciante. Use com responsabilidade e apenas para ajudar na devolução do pet.",
+        );
+        if (!confirmar) return;
+
+        canaisContato.style.display = "flex";
+        btnRevelarContato.textContent = "Contato revelado";
+        btnRevelarContato.disabled = true;
+      });
+
+      contatoWrapper.appendChild(canaisContato);
+      card.appendChild(contatoWrapper);
+    }
 
     container.appendChild(card);
   });
