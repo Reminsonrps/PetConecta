@@ -96,13 +96,14 @@ Desenvolver e modelar uma aplicação web que facilite a divulgação e a locali
 | ----------------------- | ---------------------------- | ------------------------------------------------- |
 | Visitante               | Pessoa sem login             | Consultar anúncios, mapa, detalhes e informativos |
 | Colaborador             | Pessoa que avistou um animal | Enviar avistamento com local, descrição e contato |
+| Encontrador autenticado | Pessoa que encontrou um pet  | Publicar achado e acompanhar a devolução          |
 | Tutor autenticado       | Responsável pelo anúncio     | Publicar, acompanhar e administrar seus pets      |
 | Firebase Authentication | Serviço externo              | Identificar usuários e emitir autenticação        |
 | Firestore               | Serviço externo              | Persistir pets e avistamentos                     |
 | Firebase Storage        | Serviço externo              | Armazenar imagens dos pets                        |
 | Administrador futuro    | Papel proposto               | Moderar conteúdo e consultar indicadores          |
 
-Observação: visitante e colaborador representam perfis de uso. No sistema atual, o envio de avistamento exige autenticação conforme as regras do Firestore.
+Observação: visitante, colaborador e encontrador representam perfis de uso. No sistema atual, o envio de avistamento e o cadastro de achado exigem autenticação conforme as regras do Firestore.
 
 ## 6. Requisitos
 
@@ -153,6 +154,7 @@ flowchart LR
     V --> UC03[Consultar detalhes]
     V --> UC04[Consumir informativos]
     V --> UC05[Enviar contato]
+    V --> UC14[Revelar contato após confirmação]
 
     C[Colaborador autenticado] --> UC06[Registrar avistamento]
     T[Tutor autenticado] --> UC07[Publicar pet desaparecido]
@@ -163,6 +165,7 @@ flowchart LR
     T --> UC11[Confirmar devolução ou reencontro]
 
     UC03 -. permite .-> UC06
+    UC03 -. inclui .-> UC14
     UC07 -. inclui .-> UC13[Enviar imagem]
     UC12 -. inclui .-> UC13
 ```
@@ -182,7 +185,8 @@ flowchart LR
 | UC09 | Editar pet proprio                | Usuario ser dono                    | Sistema valida alteracao e atualiza documento                        | Dono diferente recebe negacao                   |
 | UC10 | Excluir pet proprio               | Usuario ser dono                    | Sistema exclui pet e recursos associados conforme fluxo              | Operacao nao autorizada e bloqueada             |
 | UC11 | Confirmar devolução ou reencontro | Usuario ser dono                    | Sistema altera status do pet                                         | Status invalido e rejeitado                     |
-| UC12 | Publicar pet achado               | Usuario autenticado                 | Sistema cria anúncio com status `achado`                             | Upload ou gravação pode falhar                  |
+| UC12 | Publicar pet achado               | Usuário autenticado                 | Sistema cria anúncio com status `achado`                             | Upload ou gravação pode falhar                  |
+| UC14 | Revelar contato                   | Visitante                           | Sistema solicita confirmação e libera os canais disponíveis          | Visitante cancela a confirmação                 |
 
 ### 7.3 Fluxo alternativo de publicacao
 
@@ -242,6 +246,14 @@ Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao
 - **Fluxo principal:** abrir `publicar_achado.html`; preencher dados; selecionar localizacao; enviar imagem; gravar anuncio.
 - **Fluxos alternativos:** autenticacao, validacao, upload ou gravacao podem falhar.
 
+#### UC14 - Revelar contato
+
+- **Ator principal:** visitante.
+- **Pré-condições:** anúncio público possui e-mail ou WhatsApp cadastrado.
+- **Pós-condição de sucesso:** visitante confirma a intenção de ajudar e acessa os canais disponíveis.
+- **Fluxo principal:** abrir card ou detalhe; selecionar **Revelar contato**; confirmar; abrir WhatsApp ou aplicativo/provedor de e-mail.
+- **Fluxo alternativo:** visitante cancela a confirmação e os dados permanecem ocultos.
+
 ### 7.5 Diagramas de sequencia dos fluxos principais
 
 #### Publicacao de pet
@@ -262,6 +274,26 @@ sequenceDiagram
     Tela->>Firestore: Cria documento em pets
     Firestore-->>Tela: Confirma petId
     Tela-->>Tutor: Exibe sucesso
+```
+
+#### Publicação de pet achado por terceiros
+
+```mermaid
+sequenceDiagram
+    actor Encontrador
+    participant Tela as publicar_achado.html
+    participant Auth as Firebase Auth
+    participant Storage as Firebase Storage
+    participant Firestore as Cloud Firestore
+
+    Encontrador->>Tela: Preenche formulário do pet encontrado
+    Tela->>Auth: Verifica sessão
+    Auth-->>Tela: Usuário autenticado
+    Tela->>Storage: Envia imagem
+    Storage-->>Tela: Retorna referência da imagem
+    Tela->>Firestore: Cria documento com status achado e expiresAt
+    Firestore-->>Tela: Confirma petId
+    Tela-->>Encontrador: Exibe sucesso e prazo de 40 dias
 ```
 
 #### Registro de avistamento
@@ -300,6 +332,35 @@ sequenceDiagram
     Tela-->>Tutor: Atualiza a interface
 ```
 
+#### Expiração do anúncio achado
+
+```mermaid
+sequenceDiagram
+    participant Firestore as Cloud Firestore
+    participant TTL as Política TTL
+    participant Telas as Listas e mapa
+
+    Firestore->>Telas: Consulta anúncio achado
+    Telas->>Telas: Verifica expiresAt
+    Telas-->>Firestore: Oculta anúncio vencido na interface
+    TTL->>Firestore: Remove documento vencido
+```
+
+#### Revelação protegida de contato
+
+```mermaid
+sequenceDiagram
+    actor Visitante
+    participant Card as Card ou detalhes
+    participant Contato as Canais de contato
+
+    Visitante->>Card: Seleciona Revelar contato
+    Card-->>Visitante: Solicita confirmação de uso responsável
+    Visitante->>Card: Confirma
+    Card->>Contato: Exibe WhatsApp e e-mail disponíveis
+    Contato-->>Visitante: Abre canal escolhido
+```
+
 ## 8. Modelagem de processos
 
 ### 8.1 Atividade: localizar e registrar um avistamento
@@ -335,9 +396,11 @@ stateDiagram-v2
     [*] --> Achado: publicar pet encontrado por terceiro
     Desaparecido --> Desaparecido: editar dados
     Achado --> Achado: aguardar contato do tutor
+    Achado --> Expirado: atingir expiresAt em 40 dias
     Desaparecido --> Encontrado: tutor confirma reencontro
     Achado --> Encontrado: criador confirma devolucao
     Encontrado --> Desaparecido: criador reabre o caso
+    Expirado --> [*]: TTL remove anúncio
     Desaparecido --> [*]: excluir anuncio
     Encontrado --> [*]: excluir anuncio
 ```
@@ -482,6 +545,7 @@ erDiagram
         string descricao
         string imagem
         string status
+        timestamp expiresAt
         string usuarioCriador
         string contato
         string whatsapp
@@ -543,12 +607,12 @@ A padronizacao futura deve preferir `localizacao`, `imagemUrl`, `usuarioCriadorU
 
 ### 11.5 Matriz CRUD por ator
 
-| Entidade    | Visitante | Colaborador autenticado | Tutor dono                 |
-| ----------- | --------- | ----------------------- | -------------------------- |
-| Pet         | R         | R                       | C, R, U, D                 |
-| Avistamento | R         | C, R conforme regra     | R, U, D conforme ownership |
-| Contato     | C         | C                       | C                          |
-| Usuario     | -         | R proprio via Auth      | R proprio via Auth         |
+| Entidade    | Visitante | Colaborador autenticado | Encontrador dono           | Tutor dono                 |
+| ----------- | --------- | ----------------------- | -------------------------- | -------------------------- |
+| Pet         | R         | R                       | C, R, U, D                 | C, R, U, D                 |
+| Avistamento | R         | C, R conforme regra     | R, U, D conforme ownership | R, U, D conforme ownership |
+| Contato     | C         | C                       | C                          | C                          |
+| Usuário     | -         | R próprio via Auth      | R próprio via Auth         | R próprio via Auth         |
 
 Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz representa a regra atual e deve ser revisada caso o sistema passe a separar dados publicos e privados.
 
