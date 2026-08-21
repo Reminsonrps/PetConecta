@@ -47,7 +47,7 @@ Esse padrão evita múltiplas instâncias do SDK e reduz risco de listeners dupl
 
 ## 5. Fluxo de listagem e renderização
 
-A listagem de pets usa `onSnapshot` sobre uma query base constrída com:
+A listagem de pets usa `onSnapshot` sobre uma consulta base construída com:
 
 - `where` quando necessário;
 - `orderBy("data", "desc")`;
