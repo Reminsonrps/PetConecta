@@ -13,17 +13,13 @@
 | Data       | 2026-08-19                                                 |
 | Situação   | Modelagem baseada na implementação existente               |
 
-> **Nota de leitura:** este documento registra o sistema que existe hoje e identifica evolucoes propostas. A arquitetura atualmente implantada e frontend estatico com servicos Firebase; o backend Node.js + Express descrito em [modelagem-node-express-firebase.md](modelagem-node-express-firebase.md) e uma alternativa de evolucao, nao uma dependencia do fluxo atual.
+> **Nota de leitura:** este documento registra o sistema que existe hoje e identifica evoluções propostas. A arquitetura atualmente implantada é um frontend estático com serviços Firebase; o backend Node.js + Express descrito em [modelagem-node-express-firebase.md](modelagem-node-express-firebase.md) é uma alternativa de evolução, não uma dependência do fluxo atual.
 
 ## 1. Apresentação
 
 O PetConecta é um site para aproximar tutores, pessoas que encontram animais e interessados em adoção. A plataforma permite publicar informações de pets, consultar anúncios em lista e mapa, registrar avistamentos e acompanhar os animais cadastrados pelo usuário.
 A modelagem foi elaborada por engenharia reversa do código existente. Por isso, ela serve simultaneamente como documento de Análise e Projeto de Sistemas, especificação funcional e referência para manutenção do site.
 Quando um animal desaparece, a divulgação costuma ficar espalhada em redes sociais e grupos de mensagem. Isso dificulta a busca por localização, a atualização do status e o acompanhamento de informações enviadas pela comunidade.
-
-O PetConecta é um site para aproximar tutores, pessoas que encontram animais e interessados em adoção. A plataforma permite publicar informações de pets, consultar anúncios em lista e mapa, registrar avistamentos e acompanhar os animais cadastrados pelo usuário.
-
-A modelagem foi elaborada por engenharia reversa do codigo existente. Por isso, ela serve simultaneamente como documento de Analise e Projeto de Sistemas, especificacao funcional e referencia para manutencao do site.
 
 ## 2. Problema e justificativa
 
@@ -45,9 +41,9 @@ Um ponto centralizado de consulta permite organizar anúncios, tornar a busca ma
 
 ## 3. Objetivos
 
-Desenvolver e modelar uma aplicação web que facilite a divulgação e a localização de animais desaparecidos, encontrados ou disponíveis para adoção.
-
 ### 3.1 Objetivo geral
+
+Desenvolver e modelar uma aplicação web que facilite a divulgação e a localização de animais desaparecidos, encontrados ou disponíveis para adoção.
 
 ### 3.2 Objetivos específicos
 
@@ -77,13 +73,13 @@ Desenvolver e modelar uma aplicação web que facilite a divulgação e a locali
 ### 4.2 Fora do escopo atual
 
 - aplicativo mobile nativo;
-- moderacao automatica por inteligencia artificial;
-- chat em tempo real entre usuarios;
-- notificacoes push;
-- pagamento ou doacao dentro do site;
+- moderação automática por inteligência artificial;
+- chat em tempo real entre usuários;
+- notificações push;
+- pagamento ou doação dentro do site;
 - painel administrativo completo;
-- integracao oficial com abrigos, prefeituras ou servicos veterinarios;
-- calculo automatico de rota ou busca por distancia real.
+- integração oficial com abrigos, prefeituras ou serviços veterinários;
+- cálculo automático de rota ou busca por distância real.
 
 ### 4.3 Premissas e restricoes
 
@@ -104,7 +100,7 @@ Desenvolver e modelar uma aplicação web que facilite a divulgação e a locali
 | Firebase Authentication | Serviço externo              | Identificar usuários e emitir autenticação        |
 | Firestore               | Serviço externo              | Persistir pets e avistamentos                     |
 | Firebase Storage        | Serviço externo              | Armazenar imagens dos pets                        |
-| Administrador futuro    | Papel proposto               | Moderar conteudo e consultar indicadores          |
+| Administrador futuro    | Papel proposto               | Moderar conteúdo e consultar indicadores          |
 
 Observação: visitante e colaborador representam perfis de uso. No sistema atual, o envio de avistamento exige autenticação conforme as regras do Firestore.
 
@@ -131,20 +127,20 @@ Observação: visitante e colaborador representam perfis de uso. No sistema atua
 | RF13 | Enviar mensagem de contato            | Média      | Formulário registra uma mensagem válida                                              |
 | RF14 | Proteger contato do anunciante        | Alta       | Cards e detalhes não mostram contato sem o fluxo de confirmação                      |
 
-### 6.2 Requisitos nao funcionais
+### 6.2 Requisitos não funcionais
 
 | ID    | Categoria        | Requisito verificavel                                                     |
 | ----- | ---------------- | ------------------------------------------------------------------------- |
-| RNF01 | Usabilidade      | Fluxos principais devem ser compreensiveis em desktop e celular           |
-| RNF02 | Responsividade   | Layout deve se adaptar a larguras moveis sem sobreposicao                 |
+| RNF01 | Usabilidade      | Fluxos principais devem ser compreensíveis em desktop e celular           |
+| RNF02 | Responsividade   | Layout deve se adaptar a larguras móveis sem sobreposição                 |
 | RNF03 | Segurança        | Escritas devem ser autorizadas por autenticação e regras do Firestore     |
 | RNF04 | Privacidade      | Contatos não devem aparecer diretamente nos cards públicos                |
-| RNF05 | Desempenho       | Consultas devem usar ordenacao, limite e carregamento por blocos          |
+| RNF05 | Desempenho       | Consultas devem usar ordenação, limite e carregamento por blocos          |
 | RNF06 | Disponibilidade  | Site deve ser publicado pelo Firebase Hosting                             |
-| RNF07 | Manutenibilidade | Integracao Firebase deve permanecer centralizada em modulo proprio        |
+| RNF07 | Manutenibilidade | Integração Firebase deve permanecer centralizada em módulo próprio        |
 | RNF08 | Compatibilidade  | Site deve funcionar em navegadores modernos com ES Modules                |
-| RNF09 | Acessibilidade   | Imagens, formularios, foco e contrastes devem ser revisados conforme WCAG |
-| RNF10 | Integridade      | Pet deve possuir localizacao numerica valida para uso no mapa             |
+| RNF09 | Acessibilidade   | Imagens, formulários, foco e contrastes devem ser revisados conforme WCAG |
+| RNF10 | Integridade      | Pet deve possuir localização numérica válida para uso no mapa             |
 
 ## 7. Casos de uso
 
