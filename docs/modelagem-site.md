@@ -1,23 +1,27 @@
 # Modelagem do Site PetConecta
 
-## Folha de identificacao
+## Folha de identificação
 
-| Campo      | Informacao                                                 |
+| Campo      | Informação                                                 |
 | ---------- | ---------------------------------------------------------- |
 | Projeto    | PetConecta                                                 |
-| Tipo       | Aplicacao web responsiva                                   |
-| Finalidade | Divulgacao, localizacao e reencontro de animais            |
-| Contexto   | Projeto academico de Analise e Desenvolvimento de Sistemas |
+| Tipo       | Aplicação web responsiva                                   |
+| Finalidade | Divulgação, localização e reencontro de animais            |
+| Contexto   | Projeto acadêmico de Análise e Desenvolvimento de Sistemas |
 | Documento  | Modelagem do site e do sistema                             |
-| Versao     | 1.0                                                        |
+| Versão     | 1.0                                                        |
 | Data       | 2026-08-19                                                 |
-| Situacao   | Modelagem baseada na implementacao existente               |
+| Situação   | Modelagem baseada na implementação existente               |
 
 > **Nota de leitura:** este documento registra o sistema que existe hoje e identifica evolucoes propostas. A arquitetura atualmente implantada e frontend estatico com servicos Firebase; o backend Node.js + Express descrito em [modelagem-node-express-firebase.md](modelagem-node-express-firebase.md) e uma alternativa de evolucao, nao uma dependencia do fluxo atual.
 
-## 1. Apresentacao
+## 1. Apresentação
 
-O PetConecta e um site para aproximar tutores, pessoas que encontram animais e interessados em adocao. A plataforma permite publicar informacoes de pets, consultar anuncios em lista e mapa, registrar avistamentos e acompanhar os animais cadastrados pelo usuario.
+O PetConecta é um site para aproximar tutores, pessoas que encontram animais e interessados em adoção. A plataforma permite publicar informações de pets, consultar anúncios em lista e mapa, registrar avistamentos e acompanhar os animais cadastrados pelo usuário.
+A modelagem foi elaborada por engenharia reversa do código existente. Por isso, ela serve simultaneamente como documento de Análise e Projeto de Sistemas, especificação funcional e referência para manutenção do site.
+Quando um animal desaparece, a divulgação costuma ficar espalhada em redes sociais e grupos de mensagem. Isso dificulta a busca por localização, a atualização do status e o acompanhamento de informações enviadas pela comunidade.
+
+O PetConecta é um site para aproximar tutores, pessoas que encontram animais e interessados em adoção. A plataforma permite publicar informações de pets, consultar anúncios em lista e mapa, registrar avistamentos e acompanhar os animais cadastrados pelo usuário.
 
 A modelagem foi elaborada por engenharia reversa do codigo existente. Por isso, ela serve simultaneamente como documento de Analise e Projeto de Sistemas, especificacao funcional e referencia para manutencao do site.
 
@@ -25,50 +29,50 @@ A modelagem foi elaborada por engenharia reversa do codigo existente. Por isso, 
 
 ### 2.1 Problema
 
-Quando um animal desaparece, a divulgacao costuma ficar espalhada em redes sociais e grupos de mensagem. Isso dificulta a busca por localizacao, a atualizacao do status e o acompanhamento de informacoes enviadas pela comunidade.
+Quando um animal desaparece, a divulgação costuma ficar espalhada em redes sociais e grupos de mensagem. Isso dificulta a busca por localização, a atualização do status e o acompanhamento de informações enviadas pela comunidade.
 
 ### 2.2 Justificativa
 
-Um ponto centralizado de consulta permite organizar anuncios, tornar a busca mais objetiva e oferecer um canal para que avistamentos cheguem ao tutor. O projeto tambem contribui para a conscientizacao sobre cuidados, animais encontrados e adocao responsavel.
+Um ponto centralizado de consulta permite organizar anúncios, tornar a busca mais objetiva e oferecer um canal para que avistamentos cheguem ao tutor. O projeto também contribui para a conscientização sobre cuidados, animais encontrados e adoção responsável.
 
-### 2.3 Beneficiarios
+### 2.3 Beneficiários
 
 - tutores que precisam divulgar e acompanhar um animal;
 - pessoas que encontram ou avistam um pet;
-- interessados em adocao;
-- organizacoes e projetos de protecao animal;
-- comunidade academica, como estudo de uma aplicacao web com dados em nuvem.
+- interessados em adoção;
+- organizações e projetos de proteção animal;
+- comunidade acadêmica, como estudo de uma aplicação web com dados em nuvem.
 
 ## 3. Objetivos
 
+Desenvolver e modelar uma aplicação web que facilite a divulgação e a localização de animais desaparecidos, encontrados ou disponíveis para adoção.
+
 ### 3.1 Objetivo geral
 
-Desenvolver e modelar uma aplicacao web que facilite a divulgacao e a localizacao de animais desaparecidos, encontrados ou disponiveis para adocao.
+### 3.2 Objetivos específicos
 
-### 3.2 Objetivos especificos
-
-- permitir autenticacao e identificacao do responsavel pelo anuncio;
-- cadastrar pet com imagem, descricao, contato e localizacao;
+- permitir autenticação e identificação do responsável pelo anúncio;
+- cadastrar pet com imagem, descrição, contato e localização;
 - disponibilizar consulta por lista, mapa e detalhes;
 - receber avistamentos associados ao pet publicado;
-- permitir ao tutor editar, excluir e atualizar o status do anuncio;
-- proteger dados de contato de exposicao desnecessaria;
-- oferecer conteudo informativo sobre cuidados e bem-estar animal.
+- permitir ao tutor editar, excluir e atualizar o status do anúncio;
+- proteger dados de contato de exposição desnecessária;
+- oferecer conteúdo informativo sobre cuidados e bem-estar animal.
 
 ## 4. Escopo do sistema
 
 ### 4.1 Dentro do escopo
 
-- pagina inicial com listagem e mapa;
-- cadastro e login de usuario;
-- publicacao de pet;
+- página inicial com listagem e mapa;
+- cadastro e login de usuário;
+- publicação de pet;
 - upload de imagem;
 - consulta de detalhes;
 - registro de avistamento;
-- area Meus Pets;
-- edicao, exclusao e marcacao como encontrado;
-- paginas de dicas, informativos, contato e termos;
-- persistencia no Firestore e imagens no Storage.
+- área Meus Pets;
+- edição, exclusão e marcação como encontrado;
+- páginas de dicas, informativos, contato e termos;
+- persistência no Firestore e imagens no Storage.
 
 ### 4.2 Fora do escopo atual
 
@@ -83,26 +87,26 @@ Desenvolver e modelar uma aplicacao web que facilite a divulgacao e a localizaca
 
 ### 4.3 Premissas e restricoes
 
-- o usuario precisa de acesso a internet e navegador moderno;
-- a autenticacao e feita pelo Firebase Authentication;
-- as regras do Firestore sao a autoridade para acesso aos dados;
-- os campos existentes usam nomes historicos, como `localiza` e `usuarioCriador`;
-- a leitura publica de anuncios e necessaria para a finalidade do site;
+- o usuário precisa de acesso à internet e navegador moderno;
+- a autenticação é feita pelo Firebase Authentication;
+- as regras do Firestore são a autoridade para acesso aos dados;
+- os campos existentes usam nomes históricos, como `localiza` e `usuarioCriador`;
+- a leitura pública de anúncios é necessária para a finalidade do site;
 - a modelagem deve respeitar a implementacao atual sem apresentar funcionalidades futuras como prontas.
 
 ## 5. Stakeholders e atores
 
 | Ator                    | Perfil                       | Necessidades                                      |
 | ----------------------- | ---------------------------- | ------------------------------------------------- |
-| Visitante               | Pessoa sem login             | Consultar anuncios, mapa, detalhes e informativos |
-| Colaborador             | Pessoa que avistou um animal | Enviar avistamento com local, descricao e contato |
-| Tutor autenticado       | Responsavel pelo anuncio     | Publicar, acompanhar e administrar seus pets      |
-| Firebase Authentication | Servico externo              | Identificar usuarios e emitir autenticacao        |
-| Firestore               | Servico externo              | Persistir pets e avistamentos                     |
-| Firebase Storage        | Servico externo              | Armazenar imagens dos pets                        |
+| Visitante               | Pessoa sem login             | Consultar anúncios, mapa, detalhes e informativos |
+| Colaborador             | Pessoa que avistou um animal | Enviar avistamento com local, descrição e contato |
+| Tutor autenticado       | Responsável pelo anúncio     | Publicar, acompanhar e administrar seus pets      |
+| Firebase Authentication | Serviço externo              | Identificar usuários e emitir autenticação        |
+| Firestore               | Serviço externo              | Persistir pets e avistamentos                     |
+| Firebase Storage        | Serviço externo              | Armazenar imagens dos pets                        |
 | Administrador futuro    | Papel proposto               | Moderar conteudo e consultar indicadores          |
 
-Observacao: visitante e colaborador representam perfis de uso. No sistema atual, o envio de avistamento exige autenticacao conforme as regras do Firestore.
+Observação: visitante e colaborador representam perfis de uso. No sistema atual, o envio de avistamento exige autenticação conforme as regras do Firestore.
 
 ## 6. Requisitos
 
@@ -110,22 +114,22 @@ Observacao: visitante e colaborador representam perfis de uso. No sistema atual,
 
 | ID   | Requisito                             | Prioridade | Criterio de aceite                                                                   |
 | ---- | ------------------------------------- | ---------- | ------------------------------------------------------------------------------------ |
-| RF01 | Cadastrar e autenticar usuario        | Alta       | Usuario valido consegue entrar e permanecer identificado                             |
-| RF02 | Publicar pet com dados obrigatorios   | Alta       | Registro e criado somente com autenticacao e campos validos                          |
+| RF01 | Cadastrar e autenticar usuário        | Alta       | Usuário válido consegue entrar e permanecer identificado                             |
+| RF02 | Publicar pet com dados obrigatórios   | Alta       | Registro é criado somente com autenticação e campos válidos                          |
 | RF03 | Enviar imagem do pet                  | Alta       | Imagem e armazenada e sua referencia e salva no pet                                  |
 | RF04 | Listar pets por status                | Alta       | Lista exibe registros do Firestore em ordem definida                                 |
 | RF05 | Exibir pets em mapa                   | Alta       | Registros com latitude e longitude aparecem no mapa                                  |
-| RF06 | Consultar detalhes de um pet          | Alta       | Identificador abre os dados do anuncio selecionado                                   |
+| RF06 | Consultar detalhes de um pet          | Alta       | Identificador abre os dados do anúncio selecionado                                   |
 | RF07 | Registrar avistamento                 | Alta       | Avistamento fica vinculado ao `petId` correto                                        |
-| RF08 | Consultar Meus Pets                   | Alta       | Usuario visualiza apenas seus anuncios                                               |
-| RF09 | Editar pet proprio                    | Alta       | Dono consegue atualizar dados permitidos                                             |
-| RF10 | Excluir pet proprio                   | Alta       | Dono consegue remover o anuncio autorizado                                           |
+| RF08 | Consultar Meus Pets                   | Alta       | Usuário visualiza apenas seus anúncios                                               |
+| RF09 | Editar pet próprio                    | Alta       | Dono consegue atualizar dados permitidos                                             |
+| RF10 | Excluir pet próprio                   | Alta       | Dono consegue remover o anúncio autorizado                                           |
 | RF11 | Confirmar devolução ou reencontro     | Alta       | Criador altera o status permitido para `encontrado`                                  |
 | RF15 | Cadastrar pet encontrado por terceiro | Alta       | Anúncio é criado com status `achado`, prazo de 40 dias e aparece na consulta pública |
 | RF16 | Expirar anúncio achado                | Alta       | Anúncio vencido deixa de aparecer e é removido pelo TTL do Firestore                 |
-| RF12 | Exibir conteudo informativo           | Media      | Visitante acessa dicas e informativos sem login                                      |
-| RF13 | Enviar mensagem de contato            | Media      | Formulario registra uma mensagem valida                                              |
-| RF14 | Proteger contato do anunciante        | Alta       | Cards e detalhes nao mostram contato sem o fluxo de confirmacao                      |
+| RF12 | Exibir conteúdo informativo           | Média      | Visitante acessa dicas e informativos sem login                                      |
+| RF13 | Enviar mensagem de contato            | Média      | Formulário registra uma mensagem válida                                              |
+| RF14 | Proteger contato do anunciante        | Alta       | Cards e detalhes não mostram contato sem o fluxo de confirmação                      |
 
 ### 6.2 Requisitos nao funcionais
 
@@ -133,8 +137,8 @@ Observacao: visitante e colaborador representam perfis de uso. No sistema atual,
 | ----- | ---------------- | ------------------------------------------------------------------------- |
 | RNF01 | Usabilidade      | Fluxos principais devem ser compreensiveis em desktop e celular           |
 | RNF02 | Responsividade   | Layout deve se adaptar a larguras moveis sem sobreposicao                 |
-| RNF03 | Seguranca        | Escritas devem ser autorizadas por autenticacao e regras do Firestore     |
-| RNF04 | Privacidade      | Contatos nao devem aparecer diretamente nos cards publicos                |
+| RNF03 | Segurança        | Escritas devem ser autorizadas por autenticação e regras do Firestore     |
+| RNF04 | Privacidade      | Contatos não devem aparecer diretamente nos cards públicos                |
 | RNF05 | Desempenho       | Consultas devem usar ordenacao, limite e carregamento por blocos          |
 | RNF06 | Disponibilidade  | Site deve ser publicado pelo Firebase Hosting                             |
 | RNF07 | Manutenibilidade | Integracao Firebase deve permanecer centralizada em modulo proprio        |
