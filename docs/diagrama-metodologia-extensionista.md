@@ -2,7 +2,7 @@
 
 ```mermaid
 flowchart TD
-    A[Diagnostico do problema na comunidade] --> B[Definicao de objetivos e escopo]
+    A[Diagnostico do problema na comunidade 20 dias] --> B[Definicao de objetivos e escopo]
     B --> C[Planejamento incremental por ciclos]
     C --> D[Implementacao tecnica do PetConecta]
     D --> E[Testes funcionais e ajustes internos]
