@@ -271,7 +271,8 @@
             const isNovoUsuario =
               resultado.additionalUserInfo?.isNewUser ?? false;
             alert(`Bem-vindo ao PetConecta, ${usuario.displayName}!`);
-            localStorage.setItem(
+            storageSet(
+              localStorage,
               "usuarioLogado",
               JSON.stringify({ usuario: usuario.email }),
             );
