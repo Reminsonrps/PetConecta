@@ -9,7 +9,7 @@
   Responsável por fazer login no Firebase usando e-mail e senha.
 */
 import { auth } from "./firebase.js";
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 // Autenticacao experimental por e-mail e senha; o fluxo ativo deve reutilizar o formulario da pagina.
 async function login(email, senha) {

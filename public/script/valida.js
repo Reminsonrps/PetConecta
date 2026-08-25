@@ -10,7 +10,7 @@
 */
 // Usa a mesma chave de sessao do fluxo de login para decidir o destino do usuario.
 document.getElementById("action-btn").addEventListener("click", () => {
-  const usuarioLogado = sessionStorage.getItem("usuarioLogado");
+  const usuarioLogado = localStorage.getItem("usuarioLogado");
 
   if (!usuarioLogado) {
     window.location.href = "criar-conta.html"; // Página para criar usuário e senha
