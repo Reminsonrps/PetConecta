@@ -1,23 +1,25 @@
 {
-  "name": "petfinder",
+  "name": "petconecta",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Plataforma web para localização e reencontro de pets",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node --test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Reminson-uninter/petfinder.git"
+    "url": "git+https://github.com/Reminsonrps/PetConecta.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Reminson-uninter/petfinder/issues"
+    "url": "https://github.com/Reminsonrps/PetConecta/issues"
   },
-  "homepage": "https://github.com/Reminson-uninter/petfinder#readme",
+  "homepage": "https://github.com/Reminsonrps/PetConecta#readme",
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",

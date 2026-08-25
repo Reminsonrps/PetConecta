@@ -223,13 +223,38 @@
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({ prompt: "select_account" });
 
+      function storageGet(storage, key) {
+        try {
+          return storage.getItem(key);
+        } catch (error) {
+          console.warn("Armazenamento do navegador indisponível:", error);
+          return null;
+        }
+      }
+
+      function storageSet(storage, key, value) {
+        try {
+          storage.setItem(key, value);
+        } catch (error) {
+          console.warn("Não foi possível salvar o estado local:", error);
+        }
+      }
+
+      function storageRemove(storage, key) {
+        try {
+          storage.removeItem(key);
+        } catch (error) {
+          console.warn("Não foi possível limpar o estado local:", error);
+        }
+      }
+
       // Função de tratamento de redirecionamento após autenticação.
       // Primeiro cadastro segue para publicação; usuário existente volta para a home.
       function redirecionarUsuario(destinoPadrao) {
         const destino =
-          localStorage.getItem("destinoAposLogin") || destinoPadrao;
-        localStorage.removeItem("destinoAposLogin");
-        sessionStorage.removeItem("petconectaAuthInProgress");
+          storageGet(localStorage, "destinoAposLogin") || destinoPadrao;
+        storageRemove(localStorage, "destinoAposLogin");
+        storageRemove(sessionStorage, "petconectaAuthInProgress");
         window.location.href = destino;
       }
 
@@ -254,7 +279,7 @@
           }
         })
         .catch((error) => {
-          sessionStorage.removeItem("petconectaAuthInProgress");
+          storageRemove(sessionStorage, "petconectaAuthInProgress");
           console.error("Erro ao recuperar login do Google:", error);
           alert("Erro ao concluir login: " + error.message);
         });
@@ -295,12 +320,13 @@
           }
 
           try {
-            sessionStorage.setItem("petconectaAuthInProgress", "true");
+            storageSet(sessionStorage, "petconectaAuthInProgress", "true");
 
             if (isLoginMode) {
               await signInWithEmailAndPassword(auth, email, senha);
               alert("Login realizado com sucesso!");
-              localStorage.setItem(
+              storageSet(
+                localStorage,
                 "usuarioLogado",
                 JSON.stringify({ usuario: email }),
               );
@@ -308,7 +334,8 @@
             } else {
               await createUserWithEmailAndPassword(auth, email, senha);
               alert("Conta criada com sucesso!");
-              localStorage.setItem(
+              storageSet(
+                localStorage,
                 "usuarioLogado",
                 JSON.stringify({ usuario: email }),
               );
@@ -320,6 +347,10 @@
               alert("Este e-mail já está em uso. Tente fazer login.");
             } else if (error.code === "auth/invalid-credential") {
               alert("E-mail ou senha inválidos.");
+            } else if (error.code === "auth/network-request-failed") {
+              alert(
+                "Não foi possível conectar ao servidor. Verifique sua internet e tente novamente.",
+              );
             } else {
               alert("Erro: " + error.message);
             }
@@ -340,24 +371,25 @@
 
             if (isMobile) {
               // No celular, redireciona (evita pop-up bloqueado)
-              sessionStorage.setItem("petconectaAuthInProgress", "true");
+              storageSet(sessionStorage, "petconectaAuthInProgress", "true");
               await signInWithRedirect(auth, provider);
             } else {
               // No computador, abre o pop-up nativo normalmente
-              sessionStorage.setItem("petconectaAuthInProgress", "true");
+              storageSet(sessionStorage, "petconectaAuthInProgress", "true");
               const resultado = await signInWithPopup(auth, provider);
               const usuario = resultado.user;
               const isNovoUsuario =
                 resultado.additionalUserInfo?.isNewUser ?? false;
               alert(`Bem-vindo ao PetConecta, ${usuario.displayName}!`);
-              localStorage.setItem(
+              storageSet(
+                localStorage,
                 "usuarioLogado",
                 JSON.stringify({ usuario: usuario.email }),
               );
               redirecionarUsuario(destinoDepoisDoLogin(isNovoUsuario));
             }
           } catch (error) {
-            sessionStorage.removeItem("petconectaAuthInProgress");
+            storageRemove(sessionStorage, "petconectaAuthInProgress");
             console.error("Erro no login com Google:", error);
             alert("Erro ao fazer login com o Google: " + error.message);
           }
