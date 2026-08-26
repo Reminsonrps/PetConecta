@@ -1152,17 +1152,12 @@
           "ocorrenciasAtualizadas",
           carregarOcorrenciasMapa,
         );
+        window.addEventListener("petsAtualizados", carregarOcorrenciasMapa);
       });
     </script>
     <!-- Script modular integrado com o Firestore e o Authentication em tempo real -->
     <script type="module">
-      import { auth, db } from "./script/firebase.js";
-      import {
-        collection,
-        query,
-        getDocs,
-        limit,
-      } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+      import { auth } from "./script/firebase.js";
       import {
         onAuthStateChanged,
         signOut,
@@ -1217,55 +1212,11 @@
         }
       });
 
-      // --- MAPA COM LEITURA SOB DEMANDA ---
-      // ⚡ Carrega os pets uma única vez com limite, reduzindo leituras e mantendo o mapa responsivo.
-      async function carregarOcorrenciasMapa() {
-        try {
-          const consultaPetsMapa = query(collection(db, "pets"), limit(100));
-          const snapshot = await getDocs(consultaPetsMapa);
-          const ocorrencias = [];
-
-          snapshot.forEach((doc) => {
-            const pet = doc.data();
-            const expiracao = pet.expiresAt?.toDate
-              ? pet.expiresAt.toDate().getTime()
-              : new Date(pet.expiresAt).getTime();
-            if (
-              pet.status === "achado" &&
-              Number.isFinite(expiracao) &&
-              expiracao <= Date.now()
-            ) {
-              return;
-            }
-            ocorrencias.push({
-              id: doc.id,
-              nome: pet.nome || pet.nomePet || "Sem nome",
-              status: pet.status || "desaparecido",
-              lat: pet.lat || pet.latitude,
-              lng: pet.lng || pet.longitude,
-              imagem: pet.imagem || pet.fotoPet || "",
-              descricao: pet.descricao || pet.descricaoPet || "",
-            });
-          });
-
-          // Armazena os dados já carregados para o script nativo do Leaflet consumir sem novas consultas.
-          localStorage.setItem("ocorrenciasPets", JSON.stringify(ocorrencias));
-          window.dispatchEvent(new Event("ocorrenciasAtualizadas"));
-        } catch (error) {
-          console.error(
-            "Erro ao carregar pets para o mapa (Firestore):",
-            error,
-          );
-          const statusMapa = document.getElementById("mapa-status");
-          if (statusMapa) {
-            statusMapa.textContent =
-              "Erro de autorização nas regras do banco de dados.";
-            statusMapa.style.color = "red";
-          }
-        }
-      }
-
-      carregarOcorrenciasMapa();
+      window.addEventListener("petsAtualizados", () => {
+        const ocorrencias = window.petConectaPets || [];
+        localStorage.setItem("ocorrenciasPets", JSON.stringify(ocorrencias));
+        window.dispatchEvent(new Event("ocorrenciasAtualizadas"));
+      });
     </script>
   </body>
 </html>

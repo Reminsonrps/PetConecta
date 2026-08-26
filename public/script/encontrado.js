@@ -134,7 +134,7 @@ function montarURLContatoEmail(destinatario, assunto, corpo) {
 
 // Escuta todos os documentos e mantém nesta página somente os que não estão desaparecidos.
 onSnapshot(
-  buildPetsQuery({ maxItems: null, orderByData: false }),
+  buildPetsQuery({ maxItems: 100, orderByData: false }),
   (snapshot) => {
     encontradosFirestore = snapshot.docs
       .map((doc) => {
