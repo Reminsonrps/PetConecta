@@ -23,7 +23,11 @@ service cloud.firestore {
         && request.resource.data.whatsapp is string
         && request.resource.data.imagem is string
         && request.resource.data.lat is number
-        && request.resource.data.lng is number;
+        && request.resource.data.lng is number
+        && request.resource.data.lat >= -33.9
+        && request.resource.data.lat <= 5.4
+        && request.resource.data.lng >= -74.0
+        && request.resource.data.lng <= -34.7;
 
       allow update: if request.auth != null
         && resource.data.usuarioCriador == request.auth.token.email
@@ -32,7 +36,13 @@ service cloud.firestore {
         && request.resource.data.nome is string
         && request.resource.data.localiza is string
         && request.resource.data.contato is string
-        && request.resource.data.data is string;
+        && request.resource.data.data is string
+        && request.resource.data.lat is number
+        && request.resource.data.lng is number
+        && request.resource.data.lat >= -33.9
+        && request.resource.data.lat <= 5.4
+        && request.resource.data.lng >= -74.0
+        && request.resource.data.lng <= -34.7;
 
       allow delete: if request.auth != null
         && resource.data.usuarioCriador == request.auth.token.email;
