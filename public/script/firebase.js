@@ -15,7 +15,11 @@ import {
   orderBy,
   limit,
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+import {
+  browserLocalPersistence,
+  getAuth,
+  setPersistence,
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
 // Configuração do projeto Firebase.
@@ -43,6 +47,15 @@ export const app =
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
+
+// Garante que a sessão sobreviva à troca de páginas e ao fechamento do navegador.
+// Se o navegador bloquear a persistência, o Firebase continua usando a sessão atual.
+export const authPersistenceReady = setPersistence(
+  auth,
+  browserLocalPersistence,
+).catch((error) => {
+  console.warn("Persistência local do login indisponível:", error);
+});
 
 if (
   APP_CHECK_SITE_KEY &&
