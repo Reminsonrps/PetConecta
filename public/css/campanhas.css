@@ -1,15 +1,18 @@
 /* Arquivo de estilos: campanhas.css
    Define a apresentação visual da página correspondente e mantém padronização de layout. */
 
-:root{
-  --foot-header:#ff751a;
+:root {
+  --foot-header: #ff751a;
 }
-body,ul{
+body,
+ul {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
 }
-header, main, section {
+header,
+main,
+section {
   margin: 0;
   padding: 0;
 }
@@ -18,7 +21,7 @@ header, main, section {
   box-sizing: border-box;
   height: 70px;
   display: flex;
-  justify-content: space-between;/*justifica e coloca espaçamento entre os itens*/
+  justify-content: space-between; /*justifica e coloca espaçamento entre os itens*/
   align-items: center;
   padding: 10px 20px;
   background-color: var(--foot-header);
@@ -44,61 +47,54 @@ header, main, section {
 }
 
 #menu li a:hover {
-
   background-color: rgba(0, 0, 0, 0.1);
-
 }
-#btn-mobile{
+#btn-mobile {
   display: none;
-  
 }
 
-
-@media (min-width: 375px) and (max-width: 932px){
-  #btn-mobile{
-     display: flex;
-     padding: .5rem 1rem;
-     font-size: 1rem;
-     background: none; /*sem cor de fundo*/
-     border: none;
-     cursor: pointer;
-     color: white;
-      gap:.7rem ;
+@media (min-width: 375px) and (max-width: 932px) {
+  #btn-mobile {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: none; /*sem cor de fundo*/
+    border: none;
+    cursor: pointer;
+    color: white;
+    gap: 0.7rem;
   }
   #hamburguer {
-   display: block;
-   border-top: 2px solid white;
-   width: 20px;
+    display: block;
+    border-top: 2px solid white;
+    width: 20px;
   }
-   /*Quando menu estiver ativo,vai alterar o menu  */
-    #nav-menu.active #hamburguer{
-   border-top-color: transparent;/*Deixa primeiro bloco do menu oculto*/
-   
-
-   }
-    #nav-menu.active #hamburguer::after{
-          transform: rotate(135deg);
-           top:-7px;
-    }
-     #nav-menu.active #hamburguer::before{
-         transform: rotate(-135deg);
-        
-     }
+  /*Quando menu estiver ativo,vai alterar o menu  */
+  #nav-menu.active #hamburguer {
+    border-top-color: transparent; /*Deixa primeiro bloco do menu oculto*/
+  }
+  #nav-menu.active #hamburguer::after {
+    transform: rotate(135deg);
+    top: -7px;
+  }
+  #nav-menu.active #hamburguer::before {
+    transform: rotate(-135deg);
+  }
 
   /*criando um novo traço abaixo do primeiro*/
-    #hamburguer::after, #hamburguer::before { 
-      content: '';
-      width:20px ;
-      display: block;
-      height: 2px;
-      background: currentColor;
-      margin-top: 5px; /*Dando um espaçamento entre os traços*/
-      transition: .3s;
-      position: relative; /*relativo em relação a linha acima*/
-    
-   }
-  
-  #menu{
+  #hamburguer::after,
+  #hamburguer::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px; /*Dando um espaçamento entre os traços*/
+    transition: 0.3s;
+    position: relative; /*relativo em relação a linha acima*/
+  }
+
+  #menu {
     display: block;
     position: absolute;
     top: 70px;
@@ -107,68 +103,63 @@ header, main, section {
     z-index: 999;
     overflow: auto;
     left: 0;
-    height:0 ;
-    transition: .6s;
-    
+    height: 0;
+    transition: 0.6s;
   }
-  #menu a{
+  #menu a {
     padding: 1rem;
     margin: 0 1rem;
     border-bottom: 2px solid rgb(228, 214, 214);
   }
-  #nav-menu.active #menu{
+  #nav-menu.active #menu {
     display: flex;
     flex-direction: column;
-    height:calc(100vh - 70px) ;
-
- }
+    height: calc(100vh - 70px);
+  }
 }
 
-@media (max-width: 896px){
-  #btn-mobile{
-     display: flex;
-     padding: .5rem 1rem;
-     font-size: 1rem;
-     background: none; /*sem cor de fundo*/
-     border: none;
-     cursor: pointer;
-     color: white;
-      gap:.7rem ;
+@media (max-width: 896px) {
+  #btn-mobile {
+    display: flex;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background: none; /*sem cor de fundo*/
+    border: none;
+    cursor: pointer;
+    color: white;
+    gap: 0.7rem;
   }
   #hamburguer {
-   display: block;
-   border-top: 2px solid white;
-   width: 20px;
+    display: block;
+    border-top: 2px solid white;
+    width: 20px;
   }
-   /*Quando menu estiver ativo,vai alterar o menu  */
-    #nav-menu.active #hamburguer{
-   border-top-color: transparent;/*Deixa primeiro bloco do menu oculto*/
-   
-
-   }
-    #nav-menu.active #hamburguer::after{
-          transform: rotate(135deg);
-           top:-7px;
-    }
-     #nav-menu.active #hamburguer::before{
-         transform: rotate(-135deg);
-        
-     }
+  /*Quando menu estiver ativo,vai alterar o menu  */
+  #nav-menu.active #hamburguer {
+    border-top-color: transparent; /*Deixa primeiro bloco do menu oculto*/
+  }
+  #nav-menu.active #hamburguer::after {
+    transform: rotate(135deg);
+    top: -7px;
+  }
+  #nav-menu.active #hamburguer::before {
+    transform: rotate(-135deg);
+  }
 
   /*criando um novo traço abaixo do primeiro*/
-    #hamburguer::after, #hamburguer::before { 
-      content: '';
-      width:20px ;
-      display: block;
-      height: 2px;
-      background: currentColor;
-      margin-top: 5px; /*Dando um espaçamento entre os traços*/
-      transition: .3s;
-      position: relative; /*relativo em relação a linha acima*/
-    
-   }
-  
-  #menu{
+  #hamburguer::after,
+  #hamburguer::before {
+    content: "";
+    width: 20px;
+    display: block;
+    height: 2px;
+    background: currentColor;
+    margin-top: 5px; /*Dando um espaçamento entre os traços*/
+    transition: 0.3s;
+    position: relative; /*relativo em relação a linha acima*/
+  }
+
+  #menu {
     display: block;
     position: absolute;
     top: 70px;
@@ -177,70 +168,102 @@ header, main, section {
     z-index: 999;
     overflow: auto;
     left: 0;
-    height:0 ;
-    transition: .6s;
-    
+    height: 0;
+    transition: 0.6s;
   }
-  #menu a{
+  #menu a {
     padding: 1rem;
     margin: 0 1rem;
     border-bottom: 2px solid rgb(228, 214, 214);
   }
-  #nav-menu.active #menu{
+  #nav-menu.active #menu {
     display: flex;
     flex-direction: column;
-    height:calc(100vh - 70px) ;
-
- }
+    height: calc(100vh - 70px);
+  }
 }
 
+section {
+  padding: 20px;
+}
 
- 
+h2 {
+  color: #4caf50;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
 
+.card {
+  background: white;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
+.campanha-container {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
 
+.campanha-container h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
 
-  section {
-    padding: 20px;
-  }
+.campanha-container .card {
+  max-width: 920px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 1rem 1.5rem;
+  padding: 1.25rem;
+}
 
-  h2 {
-    color: #4CAF50;
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
+.campanha-container .card p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
 
-  .card {
-    background: white;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  .adocoes-container {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .animal-card {
-    display: flex;
+.campanha-container .card img {
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  margin: 0;
+  background-color: #fff;
+}
+
+.adocoes-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.animal-card {
+  display: flex;
   flex-direction: column;
   background-color: #fff;
   border: 2px solid #29cf19;
   border-radius: 12px;
   width: 300px;
   height: auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease;
   margin: 10px;
   padding: 10px;
   justify-content: space-between;
-  }
-  .animal-card:hover {
+}
+.animal-card:hover {
   transform: scale(1.05);
 }
 
@@ -249,7 +272,7 @@ header, main, section {
   height: 200px;
   object-fit: cover;
 }
-#foto-pet{
+#foto-pet {
   width: 150px;
   height: 150px;
   border-radius: 10%;
@@ -262,95 +285,97 @@ header, main, section {
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
-} 
+}
 
-  .btn {
-    background: #4CAF50;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+.btn {
+  background: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background: #45a049;
+}
+
+/* Responsividade geral */
+@media (max-width: 1024px) {
+  .card {
+    padding: 12px;
   }
 
-  .btn:hover {
-    background: #45a049;
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    font-size: 0.95rem;
   }
 
-
-
-  /* Responsividade geral */
-  @media (max-width: 1024px) {
- 
-
-    .card {
-      padding: 12px;
-    }
-
-    h2 {
-      font-size: 1.3rem;
-    }
+  h2 {
+    font-size: 1.2rem;
   }
 
-  @media (max-width: 768px) {
-  
-
-    .card {
-      font-size: 0.95rem;
-    }
-
-    h2 {
-      font-size: 1.2rem;
-    }
+  .campanha-container .card {
+    grid-template-columns: 1fr;
+    max-width: 760px;
+    gap: 1rem;
   }
 
-  /* Telas horizontais (ex: 896x414) */
-  @media screen and (max-height: 500px) and (min-width: 600px) {
-    section {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: space-between;
-    }
+  .campanha-container .card p {
+    text-align: center;
+  }
+}
 
-    .card {
-      flex: 1 1 45%;
-      min-width: 280px;
-    }
+/* Telas horizontais (ex: 896x414) */
+@media screen and (max-height: 500px) and (min-width: 600px) {
+  section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+  }
 
-    h2 {
-      width: 100%;
-    }
+  .card {
+    flex: 1 1 45%;
+    min-width: 280px;
   }
-  .btn a {
-    color: white;
-    text-decoration: none;
+
+  h2 {
+    width: 100%;
   }
-  .descricao {
-    text-align: left;
-    margin-top: 10px;
-    font-weight: bold;
-  }
-     nav li:not(:last-child) {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-  }
-  button:disabled {
+}
+.btn a {
+  color: white;
+  text-decoration: none;
+}
+.descricao {
+  text-align: left;
+  margin-top: 10px;
+  font-weight: bold;
+}
+nav li:not(:last-child) {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+button:disabled {
   background-color: #ccc;
   color: #666;
   cursor: not-allowed;
   opacity: 0.6;
   border: none;
-
 }
-
 
 footer {
   background-color: var(--foot-header);
   color: white;
   padding: 2rem 1rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
   text-align: center;
 }
 
@@ -366,7 +391,7 @@ footer p {
 
 footer nav {
   display: flex;
- 
+
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
@@ -393,7 +418,7 @@ footer div a img:hover {
   transform: scale(1.1);
 }
 
-@media (min-width:375px), (max-width: 600px) {
+@media (min-width: 375px), (max-width: 600px) {
   footer nav {
     flex-direction: row;
     gap: 0.3rem;
