@@ -223,6 +223,7 @@
         ref as storageRef,
         uploadBytes,
         getDownloadURL,
+        deleteObject,
       } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
       import {
         onAuthStateChanged,
@@ -597,6 +598,7 @@
 
           try {
             let linkImagemFinal = urlImagemAtual;
+            const imagemAnterior = urlImagemAtual;
             const imagemInput = document.getElementById("imagem");
             const novaImagem = imagemInput.files[0];
 
@@ -628,6 +630,21 @@
             // Atualização dos dados no Firestore [2]
             console.log("Atualizando registro do Firestore...");
             await updateDoc(doc(db, "pets", id), petAtualizado);
+
+            if (
+              novaImagem &&
+              imagemAnterior &&
+              imagemAnterior !== linkImagemFinal
+            ) {
+              try {
+                await deleteObject(storageRef(storage, imagemAnterior));
+              } catch (error) {
+                console.warn(
+                  "Não foi possível remover a imagem anterior:",
+                  error,
+                );
+              }
+            }
 
             alert("Pet atualizado com sucesso!");
             window.location.href = "cadastrados.html"; // Retorna para Meus Pets após a edição segura

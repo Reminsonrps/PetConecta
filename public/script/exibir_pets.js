@@ -119,7 +119,7 @@ function renderizarBotaoCarregarMais(totalFiltrado) {
 
 // Mantem a lista sincronizada com o Firestore e adapta documentos antigos ao formato usado pelos cards.
 onSnapshot(
-  buildPetsQuery({ maxItems: null }),
+  buildPetsQuery({ maxItems: 100 }),
   (snapshot) => {
     listaPetsFirestore = snapshot.docs.map((doc) => {
       const pet = doc.data();
@@ -151,6 +151,9 @@ onSnapshot(
     });
 
     atualizarOpcoesFiltroCidade(listaPetsFirestore);
+    window.petConectaPets = listaPetsFirestore;
+    localStorage.setItem("ocorrenciasPets", JSON.stringify(listaPetsFirestore));
+    window.dispatchEvent(new Event("petsAtualizados"));
 
     scheduleRender();
   },
