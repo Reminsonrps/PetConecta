@@ -210,7 +210,7 @@
 
     <!-- Firebase Script Modificado -->
     <script type="module">
-      import { auth } from "./script/firebase.js";
+      import { auth, authPersistenceReady } from "./script/firebase.js";
       import {
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
@@ -264,7 +264,8 @@
 
       // --- TRATAR RETORNO DO REDIRECIONAMENTO (MOBILE) ---
       // Executa ao carregar a página para verificar se o usuário voltou do login do Google no celular
-      getRedirectResult(auth)
+      authPersistenceReady
+        .then(() => getRedirectResult(auth))
         .then((resultado) => {
           if (resultado) {
             const usuario = resultado.user;
@@ -321,6 +322,8 @@
           }
 
           try {
+            btnSubmit.disabled = true;
+            await authPersistenceReady;
             storageSet(sessionStorage, "petconectaAuthInProgress", "true");
 
             if (isLoginMode) {
@@ -355,6 +358,8 @@
             } else {
               alert("Erro: " + error.message);
             }
+          } finally {
+            btnSubmit.disabled = false;
           }
         });
       }
@@ -364,6 +369,8 @@
       if (btnGoogle) {
         btnGoogle.addEventListener("click", async function () {
           try {
+            btnGoogle.disabled = true;
+            await authPersistenceReady;
             // Detecta se o usuário está em um dispositivo móvel
             const isMobile =
               /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -393,6 +400,8 @@
             storageRemove(sessionStorage, "petconectaAuthInProgress");
             console.error("Erro no login com Google:", error);
             alert("Erro ao fazer login com o Google: " + error.message);
+          } finally {
+            btnGoogle.disabled = false;
           }
         });
       }
