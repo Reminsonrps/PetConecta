@@ -12,6 +12,7 @@ docs/**
 *.log
 *.xlsx
 *.xls
+*.pdf
 src/routers/serviceAccountKey.json
 # Arquivo com chaves reais do Firebase
 js/firebase-config.js

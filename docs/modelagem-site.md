@@ -105,6 +105,18 @@ Desenvolver e modelar uma aplicação web que facilite a divulgação e a locali
 
 Observação: visitante, colaborador e encontrador representam perfis de uso. No sistema atual, o envio de avistamento e o cadastro de achado exigem autenticação conforme as regras do Firestore.
 
+### 5.1 Personas
+
+| Persona                         | Contexto e necessidade                                                                            | Objetivo no PetConecta                                                  |
+| ------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Ana, tutora de pet              | Precisa divulgar rapidamente o desaparecimento e acompanhar informações recebidas.                | Publicar o anúncio, consultar avistamentos e atualizar o status do pet. |
+| João, colaborador da comunidade | Viu um animal em determinado local e quer ajudar, mesmo tendo pouca familiaridade com tecnologia. | Encontrar o anúncio e registrar um avistamento de forma simples.        |
+| Carla, encontradora             | Encontrou um pet sem saber quem é o tutor e possui foto e localização do animal.                  | Publicar o achado para aumentar as chances de devolução.                |
+| Marina, voluntária de ONG       | Atua na causa animal e precisa consultar ocorrências e divulgar informações.                      | Acompanhar anúncios, orientar tutores e compartilhar a plataforma.      |
+| Visitante interessado em adoção | Busca informações sobre animais e conteúdos de cuidado e bem-estar.                               | Consultar anúncios, informativos e canais de contato disponíveis.       |
+
+As personas representam situações de uso do projeto e não significam que todos os perfis tenham uma conta ou permissões iguais. As operações de publicação, edição, exclusão e registro de avistamento dependem da autenticação prevista nas regras atuais.
+
 ## 6. Requisitos
 
 ### 6.1 Requisitos funcionais
@@ -143,9 +155,84 @@ Observação: visitante, colaborador e encontrador representam perfis de uso. No
 | RNF09 | Acessibilidade   | Imagens, formulários, foco e contrastes devem ser revisados conforme WCAG |
 | RNF10 | Integridade      | Pet deve possuir localização numérica válida para uso no mapa             |
 
+### 6.3 Histórias de usuário
+
+| ID   | História de usuário                                                                                                          | Critério de aceite                                                          | Prioridade |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------- |
+| HU01 | Como tutora, quero cadastrar meu pet desaparecido com foto, localização e descrição para aumentar as chances de localizá-lo. | O anúncio é criado com os dados obrigatórios e aparece na consulta pública. | Alta       |
+| HU02 | Como visitante, quero consultar anúncios em lista e mapa para identificar ocorrências próximas ou relevantes.                | A lista e o mapa exibem os anúncios disponíveis com filtros e localização.  | Alta       |
+| HU03 | Como colaborador, quero registrar um avistamento relacionado a um pet para informar o tutor sobre uma possível localização.  | O relato é salvo vinculado ao `petId` correto.                              | Alta       |
+| HU04 | Como tutora, quero acessar a área Meus Pets para acompanhar e administrar meus anúncios.                                     | O usuário autenticado visualiza somente os anúncios associados à sua conta. | Alta       |
+| HU05 | Como tutora, quero editar ou excluir meu anúncio para manter as informações atualizadas.                                     | Somente o responsável consegue executar a alteração autorizada.             | Alta       |
+| HU06 | Como encontradora, quero publicar um animal encontrado para que o tutor possa reconhecê-lo e entrar em contato.              | O anúncio é criado com status `achado`, localização e imagem.               | Alta       |
+| HU07 | Como criadora de um anúncio de animal encontrado, quero confirmar a devolução para indicar que o caso foi resolvido.         | O status passa de `achado` para `encontrado` após a confirmação autorizada. | Média      |
+| HU08 | Como visitante, quero ter acesso protegido aos dados de contato para poder ajudar sem expor informações desnecessariamente.  | O contato permanece oculto até a confirmação prevista no fluxo.             | Alta       |
+| HU09 | Como pessoa interessada em cuidados animais, quero consultar dicas e informativos para ampliar meu conhecimento.             | As páginas informativas ficam acessíveis sem login.                         | Média      |
+
+As histórias de usuário complementam os requisitos e casos de uso. Elas descrevem o valor esperado por cada perfil sem afirmar que a plataforma já produziu reencontros ou impacto comunitário comprovado.
+
+### 6.4 Backlog Kanban
+
+O backlog organiza as histórias e atividades que percorrem as colunas **Backlog**, **Planejado**, **Em andamento**, **Em validação** e **Concluído**. Novas tarefas podem ser adicionadas após o feedback da comunidade.
+
+| ID   | Cartão do backlog                                           | Relacionamento               | Prioridade | Estado       |
+| ---- | ----------------------------------------------------------- | ---------------------------- | ---------- | ------------ |
+| BK01 | Publicar pet desaparecido com foto e localização            | HU01, RF02, RF03             | Alta       | Concluído    |
+| BK02 | Consultar anúncios com filtros e mapa                       | HU02, RF04, RF05             | Alta       | Concluído    |
+| BK03 | Exibir detalhes e contato protegido                         | HU02, HU08, RF06, RF14       | Alta       | Concluído    |
+| BK04 | Registrar avistamento vinculado ao anúncio                  | HU03, RF07                   | Alta       | Concluído    |
+| BK05 | Criar área Meus Pets com edição e exclusão                  | HU04, HU05, RF08, RF09, RF10 | Alta       | Concluído    |
+| BK06 | Publicar animal encontrado por terceiro                     | HU06, RF15                   | Alta       | Concluído    |
+| BK07 | Confirmar devolução e controlar expiração do achado         | HU07, RF11, RF16             | Alta       | Em validação |
+| BK08 | Disponibilizar dicas, informativos e contato                | HU09, RF12, RF13             | Média      | Concluído    |
+| BK09 | Realizar validação com tutores, colaboradores e ONGs        | Todas                        | Alta       | Planejado    |
+| BK10 | Analisar feedback e priorizar melhorias                     | Todas                        | Alta       | Planejado    |
+| BK11 | Revisar acessibilidade e experiência em dispositivos móveis | RNF01, RNF02, RNF09          | Alta       | Em validação |
+
+O backlog não substitui as evidências de aplicação. Os cartões BK09 e BK10 dependem da coleta e da análise das respostas da comunidade.
+
 ## 7. Casos de uso
 
-### 7.1 Diagrama geral
+### 7.1 Diagrama de contexto
+
+```mermaid
+flowchart LR
+    Visitante[Visitante] -->|consulta anúncios, mapa e informativos| PetConecta((PetConecta))
+    Tutor[Tutor autenticado] -->|publica e administra pet| PetConecta
+    Colaborador[Colaborador autenticado] -->|registra avistamento| PetConecta
+    Encontrador[Encontrador autenticado] -->|publica pet encontrado| PetConecta
+    ONG[ONG ou voluntário] -->|consulta e divulga informações| PetConecta
+    PetConecta -->|autentica usuários| Auth[Firebase Authentication]
+    PetConecta -->|salva pets e avistamentos| Firestore[Cloud Firestore]
+    PetConecta -->|armazena imagens| Storage[Firebase Storage]
+    PetConecta -->|exibe localização| Mapa[Leaflet e mapa]
+```
+
+O sistema centraliza os anúncios, avistamentos e informações de apoio. Os serviços Firebase e o mapa são recursos externos que sustentam o funcionamento da aplicação, enquanto os usuários representam os perfis envolvidos na finalidade extensionista.
+
+### 7.2 Fluxo geral do usuário
+
+```mermaid
+flowchart TD
+    A[Acessar o PetConecta] --> B{Precisa publicar ou colaborar?}
+    B -->|Não| C[Consultar lista, filtros, mapa e detalhes]
+    C --> D{Deseja ajudar?}
+    D -->|Sim| E[Confirmar contato ou entrar na conta]
+    D -->|Não| F[Consultar dicas e informativos]
+    B -->|Sim| G[Entrar ou criar conta]
+    G --> H{Tipo de participação}
+    H -->|Tutor| I[Publicar ou administrar pet]
+    H -->|Colaborador| J[Registrar avistamento]
+    H -->|Encontrador| K[Publicar pet achado]
+    I --> L[Validar dados e salvar]
+    J --> L
+    K --> L
+    L --> M[Anúncio ou avistamento disponível]
+    M --> N[Receber feedback e revisar melhorias]
+    N -. retorno ao backlog .-> G
+```
+
+### 7.3 Diagrama geral de casos de uso
 
 ```mermaid
 flowchart LR
@@ -170,7 +257,7 @@ flowchart LR
     UC12 -. inclui .-> UC13
 ```
 
-### 7.2 Especificação dos casos de uso
+### 7.4 Especificação dos casos de uso
 
 | ID   | Caso de uso                       | Pre-condicao                        | Fluxo principal                                                      | Excecoes                                        |
 | ---- | --------------------------------- | ----------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
@@ -188,7 +275,7 @@ flowchart LR
 | UC12 | Publicar pet achado               | Usuário autenticado                 | Sistema cria anúncio com status `achado`                             | Upload ou gravação pode falhar                  |
 | UC14 | Revelar contato                   | Visitante                           | Sistema solicita confirmação e libera os canais disponíveis          | Visitante cancela a confirmação                 |
 
-### 7.3 Fluxo alternativo de publicação
+### 7.5 Fluxo alternativo de publicação
 
 1. Usuario acessa `publicar.html`.
 2. Sistema verifica a sessao do Firebase Authentication.
@@ -200,7 +287,7 @@ flowchart LR
 
 Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao deve ser apresentado como publicado e o usuario deve receber uma mensagem clara.
 
-### 7.4 Especificacao formal dos casos criticos
+### 7.6 Especificacao formal dos casos criticos
 
 #### UC07 - Publicar pet
 
@@ -254,7 +341,7 @@ Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao
 - **Fluxo principal:** abrir card ou detalhe; selecionar **Revelar contato**; confirmar; abrir WhatsApp ou aplicativo/provedor de e-mail.
 - **Fluxo alternativo:** visitante cancela a confirmação e os dados permanecem ocultos.
 
-### 7.5 Diagramas de sequencia dos fluxos principais
+### 7.7 Diagramas de sequencia dos fluxos principais
 
 #### Publicacao de pet
 

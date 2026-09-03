@@ -212,10 +212,14 @@ Consulta pública dos pets encontrados por terceiros e dos anúncios já devolvi
 
 Fluxo de cadastro/login com diferenciação entre primeiro acesso e retorno de usuário autenticado.
 
+### Scripts legados
+
+Os arquivos `public/script/dados2.js`, `public/script/perdidos.js` e `public/script/cria_e_valida.js` preservam fluxos antigos baseados em `localStorage`. Eles não representam a arquitetura principal documentada; as páginas atuais de pets e autenticação utilizam os módulos Firebase diretamente. Esses scripts devem ser migrados ou removidos em uma futura limpeza do projeto.
+
 ## Documentação complementar
 
 - `docs/arquitetura.md`: visão técnica e arquitetura do projeto;
-- `docs/modelagem-site.md`: modelagem do fluxo do site e organização visual.
+- `docs/modelagem-site.md`: modelagem do fluxo do site, requisitos, casos de uso, riscos e organização visual.
 
 ## Recomendações para manutenção
 
