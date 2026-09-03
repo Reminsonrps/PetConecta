@@ -287,7 +287,7 @@ flowchart LR
 
 Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao deve ser apresentado como publicado e o usuario deve receber uma mensagem clara.
 
-### 7.6 Especificacao formal dos casos criticos
+### 7.6 Especificação formal dos casos críticos
 
 #### UC07 - Publicar pet
 
@@ -341,7 +341,7 @@ Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao
 - **Fluxo principal:** abrir card ou detalhe; selecionar **Revelar contato**; confirmar; abrir WhatsApp ou aplicativo/provedor de e-mail.
 - **Fluxo alternativo:** visitante cancela a confirmação e os dados permanecem ocultos.
 
-### 7.7 Diagramas de sequencia dos fluxos principais
+### 7.7 Diagramas de sequência dos fluxos principais
 
 #### Publicacao de pet
 
@@ -666,7 +666,7 @@ contatos/{contatoId}                 (estrutura prevista; não usada pelo fronte
 usuarios/{uid}                       (estrutura prevista)
 ```
 
-### 11.3 Dicionario de dados principal
+### 11.3 Dicionário de dados principal
 
 | Entidade/campo                   | Tipo      | Obrigatorio | Descricao                                   |
 | -------------------------------- | --------- | ----------: | ------------------------------------------- |
@@ -711,7 +711,7 @@ Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz 
 - consultas de lista devem ordenar por `data` e limitar a quantidade retornada;
 - indices adicionais devem ser criados apenas quando uma consulta real exigir.
 
-## 12. Regras de negocio e seguranca
+## 12. Regras de negócio e segurança
 
 - RN01: somente usuario autenticado pode criar pet.
 - RN02: o criador do pet e identificado pelo campo `usuarioCriador`.
@@ -741,7 +741,7 @@ O sistema trata nome, e-mail, telefone, WhatsApp e relatos de contato como dados
 
 No estado atual, os termos e a protecao de contato oferecem uma camada inicial, mas nao substituem uma politica de privacidade completa nem a separacao tecnica de campos publicos e privados.
 
-## 13. Interfaces e experiencia do usuario
+## 13. Interfaces e experiência do usuário
 
 | Tela                    | Funcao                           | Acesso                         |
 | ----------------------- | -------------------------------- | ------------------------------ |
@@ -813,7 +813,7 @@ MEUS PETS
 +----------------------------------------------------------+
 ```
 
-## 14.1 Criterios de aceitacao
+## 14.1 Critérios de aceitação
 
 Os criterios abaixo complementam os requisitos e podem ser usados na demonstracao:
 
@@ -872,7 +872,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | RF16      | UC12        | Listas e mapa           | `pets.expiresAt` + TTL     | T17      |
 | RF14      | UC03        | Detalhes e encontrados  | Fluxo de confirmacao       | T11      |
 
-## 16. Riscos e mitigacoes
+## 16. Riscos e mitigações
 
 | Risco                    | Impacto                            | Mitigacao                                  |
 | ------------------------ | ---------------------------------- | ------------------------------------------ |
@@ -884,7 +884,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | Campos inconsistentes    | Falha entre telas                  | Dicionario e plano de migracao             |
 | Falha de servico externo | Indisponibilidade parcial          | Estados de erro e mensagens claras         |
 
-## 17. Evolucao planejada
+## 17. Evolução planejada
 
 1. padronizar nomes de campos e adicionar `criadoEm` e `atualizadoEm`;
 2. separar dados publicos e privados de contato;
@@ -897,7 +897,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 9. criar indicadores de anuncios, avistamentos e reencontros;
 10. executar testes automatizados de regras e fluxos criticos.
 
-### 17.1 Glossario do dominio
+### 17.1 Glossário do domínio
 
 | Termo            | Definicao                                                    |
 | ---------------- | ------------------------------------------------------------ |
@@ -929,7 +929,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 
 Observacao: na entrega academica, os diagramas tecnicos foram mantidos em Mermaid para rastreabilidade e manutencao, e o diagrama da metodologia foi incorporado no documento final em formato compativel com o modelo da disciplina.
 
-## 18. Conclusao
+## 18. Conclusão
 
 A modelagem apresenta o PetConecta sob as perspectivas de negocio, requisitos, comportamento, dados, arquitetura, navegacao, seguranca, interface e validacao. Ela representa o estado atual do site sem confundir funcionalidades propostas com funcionalidades implementadas e oferece uma base para apresentacao academica, manutencao e evolucao do sistema.
 
