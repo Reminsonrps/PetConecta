@@ -9,8 +9,8 @@
 | Finalidade | Divulgação, localização e reencontro de animais            |
 | Contexto   | Projeto acadêmico de Análise e Desenvolvimento de Sistemas |
 | Documento  | Modelagem do site e do sistema                             |
-| Versão     | 1.0                                                        |
-| Data       | 2026-08-19                                                 |
+| Versão     | 1.1                                                        |
+| Data       | 2026-09-03                                                 |
 | Situação   | Modelagem baseada na implementação existente               |
 
 > **Nota de leitura:** este documento registra o sistema que existe hoje e identifica evoluções propostas. A arquitetura atualmente implantada é um frontend estático com serviços Firebase. O backend Node.js + Express é uma alternativa de evolução, não uma dependência do fluxo atual.
@@ -134,11 +134,11 @@ As personas representam situações de uso do projeto e não significam que todo
 | RF09 | Editar pet próprio                    | Alta       | Dono consegue atualizar dados permitidos                                             |
 | RF10 | Excluir pet próprio                   | Alta       | Dono consegue remover o anúncio autorizado                                           |
 | RF11 | Confirmar devolução ou reencontro     | Alta       | Criador altera o status permitido para `encontrado`                                  |
-| RF15 | Cadastrar pet encontrado por terceiro | Alta       | Anúncio é criado com status `achado`, prazo de 40 dias e aparece na consulta pública |
-| RF16 | Expirar anúncio achado                | Alta       | Anúncio vencido deixa de aparecer e é removido pelo TTL do Firestore                 |
 | RF12 | Exibir conteúdo informativo           | Média      | Visitante acessa dicas e informativos sem login                                      |
 | RF13 | Enviar mensagem de contato            | Média      | Formulário abre o canal de e-mail com uma mensagem válida                            |
 | RF14 | Proteger contato do anunciante        | Alta       | Cards e detalhes não mostram contato sem o fluxo de confirmação                      |
+| RF15 | Cadastrar pet encontrado por terceiro | Alta       | Anúncio é criado com status `achado`, prazo de 40 dias e aparece na consulta pública |
+| RF16 | Expirar anúncio achado                | Alta       | Anúncio vencido deixa de aparecer; a remoção física depende do TTL configurado       |
 
 ### 6.2 Requisitos não funcionais
 
@@ -698,14 +698,14 @@ A padronização futura deve preferir `localizacao`, `imagemUrl`, `usuarioCriado
 | ----------- | --------- | ----------------------- | -------------------------- | -------------------------- |
 | Pet         | R         | R                       | C, R, U, D                 | C, R, U, D                 |
 | Avistamento | R         | C                       | R, U, D conforme ownership | R, U, D conforme ownership |
-| Contato     | C         | C                       | C                          | C                          |
+| Contato     | -         | -                       | -                          | -                          |
 | Usuário     | -         | R próprio via Auth      | R próprio via Auth         | R próprio via Auth         |
 
 Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz representa a regra atual e deve ser revisada caso o sistema passe a separar dados publicos e privados.
 
 ### 11.5 Integridade e índices
 
-- todo avistamento deve apontar para um pet existente;
+- a aplicação deve validar que todo avistamento aponta para um pet existente;
 - `usuarioCriador` deve corresponder ao e-mail autenticado no cadastro;
 - `lat` e `lng` devem ser numeros dentro dos limites geograficos aceitos;
 - consultas de lista devem ordenar por `data` e limitar a quantidade retornada;
@@ -719,9 +719,9 @@ Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz 
 - RN04: o status inicial deve ser `desaparecido` ou `achado`, conforme o formulario usado.
 - RN05: somente o criador pode alterar o status; `achado` passa para `encontrado` apos confirmacao da devolucao.
 - RN11: anúncio `achado` recebe `expiresAt` 40 dias após a publicação e é ocultado após o vencimento.
-- RN12: o Firestore deve usar TTL em `expiresAt` para excluir fisicamente os anúncios vencidos.
+- RN12: o Firestore pode usar TTL em `expiresAt` para excluir fisicamente os anúncios vencidos, desde que a política esteja configurada no projeto.
 - RN06: avistamento deve informar o `petId` e os campos obrigatorios.
-- RN07: avistamentos podem ser lidos publicamente conforme regra atual, mas a aplicacao deve evitar exposicao desnecessaria de contatos.
+- RN07: a leitura pública dos avistamentos é uma limitação atual, pois pode expor o contato do colaborador; esse acesso deve ser restringido em evolução futura.
 - RN08: validacao no navegador melhora a experiencia, mas a regra do Firestore e a protecao efetiva contra escrita indevida.
 - RN09: imagens devem respeitar as regras de tipo e tamanho do Storage.
 - RN10: dados fornecidos por usuarios devem ser renderizados como texto seguro, evitando injecao de HTML.
@@ -813,7 +813,7 @@ MEUS PETS
 +----------------------------------------------------------+
 ```
 
-## 14.1 Critérios de aceitação
+## 14. Critérios de aceitação
 
 Os criterios abaixo complementam os requisitos e podem ser usados na demonstracao:
 
@@ -829,7 +829,7 @@ Os criterios abaixo complementam os requisitos e podem ser usados na demonstraca
 | RNF02     | Tela em viewport mobile       | navegar e abrir formularios   | conteudo permanece legivel e utilizavel     |
 | RNF04     | Listagem publica              | carregar cards                | contato nao e exibido diretamente           |
 
-## 14. Plano de testes e validacao
+## 15. Plano de testes e validação
 
 | ID  | Cenario                                  | Resultado esperado                                       |
 | --- | ---------------------------------------- | -------------------------------------------------------- |
@@ -844,6 +844,7 @@ Os criterios abaixo complementam os requisitos e podem ser usados na demonstraca
 | T15 | Pessoa autenticada publica pet achado    | Anuncio surge na lista e no mapa com distincao visual    |
 | T16 | Visitante tenta alterar status           | Nenhum botao de alteracao e disponibilizado              |
 | T17 | Achado ultrapassa 40 dias                | Anuncio deixa de aparecer e aguarda exclusao por TTL     |
+| T18 | Usuário autenticado abre Meus Pets       | Sistema exibe somente os anúncios do usuário             |
 | T09 | Colaborador registra avistamento valido  | Ocorrencia e criada no pet correto                       |
 | T10 | Avistamento sem autenticacao             | Operacao e bloqueada pela regra vigente                  |
 | T11 | Contato na listagem publica              | Contato nao aparece diretamente                          |
@@ -853,7 +854,7 @@ Os criterios abaixo complementam os requisitos e podem ser usados na demonstraca
 
 A validacao academica deve combinar testes funcionais, verificacao visual responsiva, inspecao das regras do Firebase e conferencia dos criterios de aceite.
 
-## 15. Matriz de rastreabilidade
+## 16. Matriz de rastreabilidade
 
 | Requisito | Caso de uso | Tela/componente         | Persistencia ou regra      | Teste    |
 | --------- | ----------- | ----------------------- | -------------------------- | -------- |
@@ -864,7 +865,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | RF05      | UC02        | Home/mapa               | `lat`, `lng`, Leaflet      | T01, T04 |
 | RF06      | UC03        | `detalhes.html`         | `pets/{petId}`             | T01      |
 | RF07      | UC06        | Detalhes                | `avistamentos`             | T09, T10 |
-| RF08      | UC08        | `cadastrados.html`      | Filtro por responsavel     | T06      |
+| RF08      | UC08        | `cadastrados.html`      | Filtro por responsavel     | T18      |
 | RF09      | UC09        | `editar.html`           | Regra `update`             | T07      |
 | RF10      | UC10        | `cadastrados.html`      | Regra `delete`             | T06      |
 | RF11      | UC11        | `animais_encontra.html` | Acao do criador e `status` | T08      |
@@ -872,7 +873,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | RF16      | UC12        | Listas e mapa           | `pets.expiresAt` + TTL     | T17      |
 | RF14      | UC03        | Detalhes e encontrados  | Fluxo de confirmacao       | T11      |
 
-## 16. Riscos e mitigações
+## 17. Riscos e mitigações
 
 | Risco                    | Impacto                            | Mitigacao                                  |
 | ------------------------ | ---------------------------------- | ------------------------------------------ |
@@ -884,7 +885,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | Campos inconsistentes    | Falha entre telas                  | Dicionario e plano de migracao             |
 | Falha de servico externo | Indisponibilidade parcial          | Estados de erro e mensagens claras         |
 
-## 17. Evolução planejada
+## 18. Evolução planejada
 
 1. padronizar nomes de campos e adicionar `criadoEm` e `atualizadoEm`;
 2. separar dados publicos e privados de contato;
@@ -897,7 +898,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 9. criar indicadores de anuncios, avistamentos e reencontros;
 10. executar testes automatizados de regras e fluxos criticos.
 
-### 17.1 Glossário do domínio
+### 18.1 Glossário do domínio
 
 | Termo            | Definicao                                                    |
 | ---------------- | ------------------------------------------------------------ |
@@ -912,7 +913,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | Firebase Storage | Servico usado para armazenar imagens                         |
 | Firestore        | Banco de dados usado para pets e avistamentos                |
 
-### 17.2 Referencias
+### 18.2 Referências
 
 - OBJECT MANAGEMENT GROUP. _Unified Modeling Language (UML), Version 2.5.1_. Disponivel em: <https://www.omg.org/spec/UML/2.5.1/>. Acesso em: 19 ago. 2026.
 - SOMMERVILLE, Ian. _Engenharia de Software_. Sao Paulo: Pearson, 2019.
@@ -920,7 +921,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 - FIREBASE. _Documentacao do Firebase_. Disponivel em: <https://firebase.google.com/docs>. Acesso em: 19 ago. 2026.
 - W3C. _Web Content Accessibility Guidelines (WCAG) 2.2_. Disponivel em: <https://www.w3.org/TR/WCAG22/>. Acesso em: 19 ago. 2026.
 
-### 17.3 Ferramentas utilizadas na modelagem e documentacao
+### 18.3 Ferramentas utilizadas na modelagem e documentação
 
 - Mermaid: modelagem textual de diagramas de caso de uso, processo, estados, arquitetura e sequencia.
 - Markdown: consolidacao dos artefatos tecnicos e rastreabilidade da modelagem.
@@ -929,7 +930,7 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 
 Observacao: na entrega academica, os diagramas tecnicos foram mantidos em Mermaid para rastreabilidade e manutencao, e o diagrama da metodologia foi incorporado no documento final em formato compativel com o modelo da disciplina.
 
-## 18. Conclusão
+## 19. Conclusão
 
 A modelagem apresenta o PetConecta sob as perspectivas de negocio, requisitos, comportamento, dados, arquitetura, navegacao, seguranca, interface e validacao. Ela representa o estado atual do site sem confundir funcionalidades propostas com funcionalidades implementadas e oferece uma base para apresentacao academica, manutencao e evolucao do sistema.
 

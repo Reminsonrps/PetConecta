@@ -114,8 +114,8 @@
      <!-- Script Modular Firebase -->
      <script type="module">
        import { auth, db } from "./script/firebase.js";
-       import { collection, query, where, getDocs, limit, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-       import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+      import { collection, query, where, getDocs, limit, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+      import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
        let meusPets = []; // Armazena a lista de pets em memória para filtragem rápida local
        let usuarioAtual = null; // Guarda o usuário ativo para recarregar os dados sem manter listeners contínuos

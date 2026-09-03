@@ -23,6 +23,12 @@ O PetConecta é uma aplicação web estática hospedada no Firebase Hosting, com
 - Firebase Storage: upload e armazenamento de imagens;
 - App Check: controle de abuso e proteção da API em produção.
 
+### Dependências do projeto
+
+As dependências Node.js mantidas no projeto são `express` 5.2.1 e `cors` 2.8.6 para o backend auxiliar, `firebase` 12.18.0 para integrações compatíveis com o frontend, `firebase-admin` 13.10.0 para o acesso administrativo auxiliar, `uuid` 14.0.2 e `sharp` 0.35.4. As páginas carregam os módulos Firebase pela CDN na mesma versão 12.18.0 do pacote principal.
+
+O backend Node.js não é necessário para a hospedagem e o fluxo principal do site, mas permanece como estrutura auxiliar e possível evolução arquitetural.
+
 ## 3. Padrão arquitetural atual
 
 A estrutura atual prioriza simplicidade operacional e baixo custo, mantendo o projeto com arquitetura leve:
