@@ -8,6 +8,8 @@
 | Tipo       | Aplicação web responsiva                                   |
 | Finalidade | Divulgação, localização e reencontro de animais            |
 | Contexto   | Projeto acadêmico de Análise e Desenvolvimento de Sistemas |
+| Aluno      | Reminson Pessoa Santos                                     |
+| RU         | 5287384                                                    |
 | Documento  | Modelagem do site e do sistema                             |
 | Versão     | 1.1                                                        |
 | Data       | 2026-09-03                                                 |
