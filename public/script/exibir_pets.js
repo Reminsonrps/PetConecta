@@ -5,11 +5,11 @@ import {
   deleteDoc,
   doc as firestoreDoc,
   updateDoc,
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 import {
   ref as storageRef,
   deleteObject,
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
 
 let listaPetsFirestore = [];
 let renderQueued = false;

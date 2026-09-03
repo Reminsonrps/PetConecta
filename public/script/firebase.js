@@ -2,11 +2,11 @@ import {
   initializeApp,
   getApps,
   getApp,
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
 import {
   initializeAppCheck,
   ReCaptchaV3Provider,
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app-check.js";
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app-check.js";
 import {
   getFirestore,
   collection,
@@ -14,13 +14,13 @@ import {
   where,
   orderBy,
   limit,
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 import {
   browserLocalPersistence,
   getAuth,
   setPersistence,
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
 
 // Configuração do projeto Firebase.
 // Este bloco centraliza a conexão do app e evita múltiplas inicializações em páginas distintas.
