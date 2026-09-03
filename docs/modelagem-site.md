@@ -597,10 +597,10 @@ flowchart TD
     PUBLICAR --> LOGIN[criar-conta.html]
     CADASTRADOS --> EDITAR[editar.html]
     DETALHES --> AVISTAMENTO[registro de avistamento]
-    HOME --> ADOCAO[adocao.html - pagina prevista]
+    HOME --> ADOCAO[Adoção em site externo da ONG parceira]
 ```
 
-`adocao.html` e uma pagina prevista na organizacao funcional, mas nao esta presente na estrutura atual; por isso, a navegacao deve ser implementada somente quando o fluxo de adocao for definido.
+`Adoção` é um redirecionamento externo para `https://www.anjosdajuda.org/adote`, página da ONG parceira. O PetConecta não possui um módulo próprio de adoção nem administra os anúncios exibidos nesse endereço.
 
 ## 11. Modelagem de dados
 
