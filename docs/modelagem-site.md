@@ -123,7 +123,7 @@ As personas representam situações de uso do projeto e não significam que todo
 
 ### 6.1 Requisitos funcionais
 
-| ID   | Requisito                             | Prioridade | Criterio de aceite                                                                   |
+| ID   | Requisito                             | Prioridade | Critério de aceite                                                                   |
 | ---- | ------------------------------------- | ---------- | ------------------------------------------------------------------------------------ |
 | RF01 | Cadastrar e autenticar usuário        | Alta       | Usuário válido consegue entrar e permanecer identificado                             |
 | RF02 | Publicar pet com dados obrigatórios   | Alta       | Registro é criado somente com autenticação e campos válidos                          |
@@ -261,17 +261,17 @@ flowchart LR
 
 ### 7.4 Especificação dos casos de uso
 
-| ID   | Caso de uso                       | Pre-condicao                        | Fluxo principal                                                      | Excecoes                                        |
+| ID   | Caso de uso                       | Pré-condicao                        | Fluxo principal                                                      | Exceções                                        |
 | ---- | --------------------------------- | ----------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
-| UC01 | Consultar anuncios                | Site acessivel                      | Sistema busca pets, aplica filtro e renderiza cards                  | Falha de rede mostra estado de erro             |
+| UC01 | Consultar anuncios                | Site acessível                      | Sistema busca pets, aplica filtro e renderiza cards                  | Falha de rede mostra estado de erro             |
 | UC02 | Visualizar mapa                   | Pet possuir coordenadas             | Sistema cria marcadores e associa detalhes                           | Coordenada invalida e ignorada                  |
-| UC03 | Consultar detalhes                | Pet existir                         | Usuario abre anuncio e consulta dados                                | ID inexistente retorna ausencia do registro     |
-| UC04 | Consumir informativos             | Nenhuma                             | Usuario navega por dicas e informativos                              | Pagina indisponivel mostra erro de carregamento |
+| UC03 | Consultar detalhes                | Pet existir                         | Usuário abre anuncio e consulta dados                                | ID inexistente retorna ausência do registro     |
+| UC04 | Consumir informativos             | Nenhuma                             | Usuario navega por dicas e informativos                              | Pagina indisponível mostra erro de carregamento |
 | UC05 | Enviar contato                    | Formulario aberto                   | Usuario preenche e envia mensagem valida                             | Campos invalidos impedem envio                  |
-| UC06 | Registrar avistamento             | Usuario autenticado e pet existente | Usuario informa local, descricao e contato; sistema grava subcolecao | Regra de seguranca rejeita dados invalidos      |
-| UC07 | Publicar pet                      | Usuario autenticado                 | Preenche formulario, envia imagem e salva pet                        | Upload ou gravacao pode falhar                  |
-| UC08 | Consultar Meus Pets               | Usuario autenticado                 | Sistema filtra anuncios pelo responsavel                             | Sessao expirada redireciona para login          |
-| UC09 | Editar pet proprio                | Usuario ser dono                    | Sistema valida alteracao e atualiza documento                        | Dono diferente recebe negacao                   |
+| UC06 | Registrar avistamento             | Usuario autenticado e pet existente | Usuario informa local, descricao e contato; sistema grava subcolecao | Regra de segurança rejeita dados inválidos      |
+| UC07 | Publicar pet                      | Usuario autenticado                 | Preenche formulario, envia imagem e salva pet                        | Upload ou gravação pode falhar                  |
+| UC08 | Consultar Meus Pets               | Usuario autenticado                 | Sistema filtra anuncios pelo responsavel                             | Sessão expirada redireciona para login          |
+| UC09 | Editar pet proprio                | Usuario ser dono                    | Sistema valida alteracao e atualiza documento                        | Dono diferente recebe negação                   |
 | UC10 | Excluir pet proprio               | Usuario ser dono                    | Sistema exclui pet e recursos associados conforme fluxo              | Operacao nao autorizada e bloqueada             |
 | UC11 | Confirmar devolução ou reencontro | Usuario ser dono                    | Sistema altera status do pet                                         | Status invalido e rejeitado                     |
 | UC12 | Publicar pet achado               | Usuário autenticado                 | Sistema cria anúncio com status `achado`                             | Upload ou gravação pode falhar                  |
