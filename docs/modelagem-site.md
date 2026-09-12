@@ -263,77 +263,77 @@ flowchart LR
 
 | ID   | Caso de uso                       | Pré-condicao                        | Fluxo principal                                                      | Exceções                                        |
 | ---- | --------------------------------- | ----------------------------------- | -------------------------------------------------------------------- | ----------------------------------------------- |
-| UC01 | Consultar anuncios                | Site acessível                      | Sistema busca pets, aplica filtro e renderiza cards                  | Falha de rede mostra estado de erro             |
-| UC02 | Visualizar mapa                   | Pet possuir coordenadas             | Sistema cria marcadores e associa detalhes                           | Coordenada invalida e ignorada                  |
-| UC03 | Consultar detalhes                | Pet existir                         | Usuário abre anuncio e consulta dados                                | ID inexistente retorna ausência do registro     |
-| UC04 | Consumir informativos             | Nenhuma                             | Usuario navega por dicas e informativos                              | Pagina indisponível mostra erro de carregamento |
-| UC05 | Enviar contato                    | Formulario aberto                   | Usuario preenche e envia mensagem valida                             | Campos invalidos impedem envio                  |
-| UC06 | Registrar avistamento             | Usuario autenticado e pet existente | Usuario informa local, descricao e contato; sistema grava subcolecao | Regra de segurança rejeita dados inválidos      |
-| UC07 | Publicar pet                      | Usuario autenticado                 | Preenche formulario, envia imagem e salva pet                        | Upload ou gravação pode falhar                  |
-| UC08 | Consultar Meus Pets               | Usuario autenticado                 | Sistema filtra anuncios pelo responsavel                             | Sessão expirada redireciona para login          |
-| UC09 | Editar pet proprio                | Usuario ser dono                    | Sistema valida alteracao e atualiza documento                        | Dono diferente recebe negação                   |
-| UC10 | Excluir pet proprio               | Usuario ser dono                    | Sistema exclui pet e recursos associados conforme fluxo              | Operacao nao autorizada e bloqueada             |
-| UC11 | Confirmar devolução ou reencontro | Usuario ser dono                    | Sistema altera status do pet                                         | Status invalido e rejeitado                     |
+| UC01 | Consultar anúncios                | Site acessível                      | Sistema busca pets, aplica filtro e renderiza cards                  | Falha de rede mostra estado de erro             |
+| UC02 | Visualizar mapa                   | Pet possuir coordenadas             | Sistema cria marcadores e associa detalhes                           | Coordenada inválida e ignorada                  |
+| UC03 | Consultar detalhes                | Pet existir                         | Usuário abre anúncio e consulta dados                                | ID inexistente retorna ausência do registro     |
+| UC04 | Consumir informativos             | Nenhuma                             | Usuário navega por dicas e informativos                              | Página indisponível mostra erro de carregamento |
+| UC05 | Enviar contato                    | Formulário aberto                   | Usuário preenche e envia mensagem válida                             | Campos inválidos impedem envio                  |
+| UC06 | Registrar avistamento             | Usuário autenticado e pet existente | Usuário informa local, descrição e contato; sistema grava subcoleção | Regra de segurança rejeita dados inválidos      |
+| UC07 | Publicar pet                      | Usuário autenticado                 | Preenche formulário, envia imagem e salva pet                        | Upload ou gravação pode falhar                  |
+| UC08 | Consultar Meus Pets               | Usuário autenticado                 | Sistema filtra anúncios pelo responsável                             | Sessão expirada redireciona para login          |
+| UC09 | Editar pet próprio                | Usuário ser dono                    | Sistema valida alteração e atualiza documento                        | Dono diferente recebe negação                   |
+| UC10 | Excluir pet próprio               | Usuário ser dono                    | Sistema exclui pet e recursos associados conforme fluxo              | Operação não autorizada e bloqueada             |
+| UC11 | Confirmar devolução ou reencontro | Usuário ser dono                    | Sistema altera status do pet                                         | Status inválido e rejeitado                     |
 | UC12 | Publicar pet achado               | Usuário autenticado                 | Sistema cria anúncio com status `achado`                             | Upload ou gravação pode falhar                  |
 | UC14 | Revelar contato                   | Visitante                           | Sistema solicita confirmação e libera os canais disponíveis          | Visitante cancela a confirmação                 |
 
 ### 7.5 Fluxo alternativo de publicação
 
-1. Usuario acessa `publicar.html`.
-2. Sistema verifica a sessao do Firebase Authentication.
-3. Usuario preenche nome, tipo, raca, porte, localizacao, descricao, contato e status.
+1. Usuário acessa `publicar.html`.
+2. Sistema verifica a sessão do Firebase Authentication.
+3. Usuário preenche nome, tipo, raça, porte, localização, descrição, contato e status.
 4. Sistema valida campos e coordenadas.
 5. Sistema envia imagem ao Firebase Storage.
-6. Sistema grava os metadados na colecao `pets`.
-7. Sistema informa sucesso e atualiza a navegacao.
+6. Sistema grava os metadados na coleção `pets`.
+7. Sistema informa sucesso e atualiza a navegação.
 
-Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao deve ser apresentado como publicado e o usuario deve receber uma mensagem clara.
+Alternativas: se a autenticação, validação, upload ou gravação falhar, o pet não deve ser apresentado como publicado e o usuário deve receber uma mensagem clara.
 
 ### 7.6 Especificação formal dos casos críticos
 
 #### UC07 - Publicar pet
 
 - **Ator principal:** tutor autenticado.
-- **Pre-condicoes:** sessao valida; formulario de publicacao acessivel.
-- **Pos-condicao de sucesso:** imagem armazenada e documento criado em `pets` com o responsavel identificado.
-- **Fluxo principal:** autenticar; preencher dados; selecionar local; validar campos; enviar imagem; gravar documento; confirmar publicacao.
-- **Fluxos alternativos:** imagem invalida; coordenada ausente; sessao expirada; falha de Storage; falha de Firestore.
+- **Pré-condições:** sessão válida; formulário de publicação acessível.
+- **Pós-condição de sucesso:** imagem armazenada e documento criado em `pets` com o responsável identificado.
+- **Fluxo principal:** autenticar; preencher dados; selecionar local; validar campos; enviar imagem; gravar documento; confirmar publicação.
+- **Fluxos alternativos:** imagem inválida; coordenada ausente; sessão expirada; falha de Storage; falha de Firestore.
 - **Regras relacionadas:** RN01, RN02, RN04, RN08 e RN09.
 
 #### UC06 - Registrar avistamento
 
 - **Ator principal:** colaborador autenticado.
-- **Pre-condicoes:** pet existente; usuario autenticado; pagina de detalhes aberta.
-- **Pos-condicao de sucesso:** novo documento criado em `pets/{petId}/avistamentos`.
-- **Fluxo principal:** abrir detalhes; preencher local, descricao e contato; validar dados; gravar ocorrencia; informar sucesso.
-- **Fluxos alternativos:** pet inexistente; campos invalidos; sessao expirada; regra do Firestore rejeita a escrita.
+- **Pré-condições:** pet existente; usuário autenticado; página de detalhes aberta.
+- **Pós-condição de sucesso:** novo documento criado em `pets/{petId}/avistamentos`.
+- **Fluxo principal:** abrir detalhes; preencher local, descrição e contato; validar dados; gravar ocorrência; informar sucesso.
+- **Fluxos alternativos:** pet inexistente; campos inválidos; sessão expirada; regra do Firestore rejeita a escrita.
 - **Regras relacionadas:** RN06, RN07 e RN08.
 
 #### UC09 - Editar pet proprio
 
 - **Ator principal:** tutor autenticado.
-- **Pre-condicoes:** pet existente; usuario e responsavel pelo documento.
-- **Pos-condicao de sucesso:** dados autorizados atualizados no mesmo documento.
+- **Pré-condições:** pet existente; usuário é responsável pelo documento.
+- **Pós-condição de sucesso:** dados autorizados atualizados no mesmo documento.
 - **Fluxo principal:** abrir Meus Pets; selecionar anuncio; alterar dados; validar; salvar; atualizar a tela.
-- **Fluxos alternativos:** outro usuario tenta editar; campo invalido; documento removido durante a edicao.
+- **Fluxos alternativos:** outro usuário tenta editar; campo inválido; documento removido durante a edição.
 - **Regras relacionadas:** RN02, RN03 e RN08.
 
 #### UC11 - Confirmar devolução ou reencontro
 
 - **Ator principal:** tutor autenticado.
-- **Pre-condicoes:** pet existente com status `desaparecido` ou `achado`; usuario e responsavel.
-- **Pos-condicao de sucesso:** status alterado para `encontrado`.
-- **Fluxo principal:** abrir anuncio proprio; selecionar a acao compativel com o status; confirmar; atualizar para `encontrado`; informar resultado.
-- **Fluxos alternativos:** usuario sem permissao; status invalido; falha de conexao.
+- **Pré-condições:** pet existente com status `desaparecido` ou `achado`; usuário é responsável.
+- **Pós-condição de sucesso:** status alterado para `encontrado`.
+- **Fluxo principal:** abrir anúncio próprio; selecionar a ação compatível com o status; confirmar; atualizar para `encontrado`; informar resultado.
+- **Fluxos alternativos:** usuário sem permissão; status inválido; falha de conexão.
 - **Regras relacionadas:** RN03, RN04 e RN05.
 
 #### UC12 - Publicar pet achado
 
 - **Ator principal:** pessoa autenticada que encontrou o animal.
-- **Pre-condicoes:** sessao valida; localizacao, imagem e dados obrigatorios disponiveis.
+- **Pré-condições:** sessão válida; localização, imagem e dados obrigatórios disponíveis.
 - **Pos-condicao de sucesso:** documento criado em `pets` com `status: "achado"` e visivel na consulta publica.
-- **Fluxo principal:** abrir `publicar_achado.html`; preencher dados; selecionar localizacao; enviar imagem; gravar anuncio.
-- **Fluxos alternativos:** autenticacao, validacao, upload ou gravacao podem falhar.
+- **Fluxo principal:** abrir `publicar_achado.html`; preencher dados; selecionar localização; enviar imagem; gravar anúncio.
+- **Fluxos alternativos:** autenticação, validação, upload ou gravação podem falhar.
 
 #### UC14 - Revelar contato
 
@@ -345,7 +345,7 @@ Alternativas: se a autenticacao, validacao, upload ou gravacao falhar, o pet nao
 
 ### 7.7 Diagramas de sequência dos fluxos principais
 
-#### Publicacao de pet
+#### Publicação de pet
 
 ```mermaid
 sequenceDiagram
@@ -355,11 +355,11 @@ sequenceDiagram
     participant Storage as Firebase Storage
     participant Firestore as Cloud Firestore
 
-    Tutor->>Tela: Preenche formulario
-    Tela->>Auth: Verifica sessao
-    Auth-->>Tela: Usuario autenticado
+    Tutor->>Tela: Preenche formulário
+    Tela->>Auth: Verifica sessão
+    Auth-->>Tela: Usuário autenticado
     Tela->>Storage: Envia imagem
-    Storage-->>Tela: Retorna referencia da imagem
+    Storage-->>Tela: Retorna referência da imagem
     Tela->>Firestore: Cria documento em pets
     Firestore-->>Tela: Confirma petId
     Tela-->>Tutor: Exibe sucesso
@@ -396,14 +396,14 @@ sequenceDiagram
 
     Colaborador->>Tela: Abre detalhes do pet
     Colaborador->>Tela: Preenche avistamento
-    Tela->>Auth: Verifica sessao
-    Auth-->>Tela: Usuario autenticado
+    Tela->>Auth: Verifica sessão
+    Auth-->>Tela: Usuário autenticado
     Tela->>Firestore: Cria subdocumento de avistamento
-    Firestore-->>Tela: Confirma gravacao
+    Firestore-->>Tela: Confirma gravação
     Tela-->>Colaborador: Exibe protocolo ou sucesso
 ```
 
-#### Edicao e marcacao como encontrado
+#### Edição e marcação como encontrado
 
 ```mermaid
 sequenceDiagram
@@ -412,10 +412,10 @@ sequenceDiagram
     participant Firestore as Cloud Firestore
     participant Regras as Regras de seguranca
 
-    Tutor->>Tela: Seleciona um pet proprio
+    Tutor->>Tela: Seleciona um pet próprio
     Tutor->>Tela: Edita dados ou status
     Tela->>Firestore: Solicita update
-    Firestore->>Regras: Verifica autenticacao e ownership
+    Firestore->>Regras: Verifica autenticação e ownership
     Regras-->>Firestore: Autoriza ou rejeita
     Firestore-->>Tela: Retorna resultado
     Tela-->>Tutor: Atualiza a interface
@@ -456,20 +456,20 @@ sequenceDiagram
 
 ```mermaid
 flowchart TD
-    A([Inicio]) --> B[Acessar lista ou mapa]
+    A([Início]) --> B[Acessar lista ou mapa]
     B --> C[Selecionar pet]
     C --> D{Pet existe?}
-    D -- Nao --> E[Informar indisponibilidade]
+    D -- Não --> E[Informar indisponibilidade]
     D -- Sim --> F[Visualizar detalhes]
-    F --> G{Usuario autenticado?}
-    G -- Nao --> H[Solicitar autenticacao]
+    F --> G{Usuário autenticado?}
+    G -- Não --> H[Solicitar autenticação]
     G -- Sim --> I[Preencher avistamento]
-    I --> J{Dados validos?}
-    J -- Nao --> K[Exibir erros]
+    I --> J{Dados válidos?}
+    J -- Não --> K[Exibir erros]
     K --> I
     J -- Sim --> L[Gravar avistamento]
-    L --> M{Gravacao concluida?}
-    M -- Nao --> N[Exibir falha]
+    L --> M{Gravação concluída?}
+    M -- Não --> N[Exibir falha]
     M -- Sim --> O[Confirmar envio]
     E --> P([Fim])
     H --> P
@@ -477,7 +477,7 @@ flowchart TD
     O --> P
 ```
 
-### 8.2 Estados de um anuncio
+### 8.2 Estados de um anúncio
 
 ```mermaid
 stateDiagram-v2
@@ -487,29 +487,29 @@ stateDiagram-v2
     Achado --> Achado: aguardar contato do tutor
     Achado --> Expirado: atingir expiresAt em 40 dias
     Desaparecido --> Encontrado: tutor confirma reencontro
-    Achado --> Encontrado: criador confirma devolucao
+    Achado --> Encontrado: criador confirma devolução
     Encontrado --> Desaparecido: criador reabre o caso
     Expirado --> [*]: TTL remove anúncio
-    Desaparecido --> [*]: excluir anuncio
-    Encontrado --> [*]: excluir anuncio
+    Desaparecido --> [*]: excluir anúncio
+    Encontrado --> [*]: excluir anúncio
 ```
 
-Estados permitidos na regra atual: `desaparecido`, `achado` e `encontrado`. O estado `adocao` aparece em documentos de evolucao, mas ainda nao deve ser tratado como permitido pelas regras atuais sem alteracao previa.
+Estados permitidos na regra atual: `desaparecido`, `achado` e `encontrado`. O estado `adocao` aparece em documentos de evolução, mas ainda não deve ser tratado como permitido pelas regras atuais sem alteração prévia.
 
 ## 9. Arquitetura do sistema
 
-### 9.1 Visao logica
+### 9.1 Visão lógica
 
 ```mermaid
 flowchart TB
-    subgraph Apresentacao[Camada de apresentacao]
-        HTML[Paginas HTML]
+    subgraph Apresentacao[Camada de apresentação]
+        HTML[Páginas HTML]
         CSS[CSS responsivo]
-        JS[Modulos JavaScript]
+        JS[Módulos JavaScript]
         MAP[Leaflet e OpenStreetMap]
     end
 
-    subgraph Servicos[Servicos gerenciados]
+    subgraph Servicos[Serviços gerenciados]
         AUTH[Firebase Authentication]
         DB[Cloud Firestore]
         STORAGE[Firebase Storage]
@@ -529,21 +529,21 @@ flowchart TB
 
 | Componente      | Responsabilidade                                                |
 | --------------- | --------------------------------------------------------------- |
-| Paginas HTML    | Estrutura das telas e formularios                               |
+| Páginas HTML    | Estrutura das telas e formulários                               |
 | CSS             | Layout, responsividade, estados visuais e acessibilidade visual |
-| `firebase.js`   | Inicializacao centralizada de app, Auth, Firestore e Storage    |
-| Scripts de tela | Validacao, listeners, filtros, renderizacao e eventos           |
-| Authentication  | Login, cadastro e identidade do usuario                         |
+| `firebase.js`   | Inicialização centralizada de app, Auth, Firestore e Storage    |
+| Scripts de tela | Validação, listeners, filtros, renderização e eventos           |
+| Authentication  | Login, cadastro e identidade do usuário                         |
 | Firestore       | Pets, avistamentos e dados persistentes                         |
-| Storage         | Imagens enviadas nos anuncios                                   |
-| Leaflet         | Mapa, marcadores e selecao de local                             |
-| Hosting         | Distribuicao dos arquivos estaticos                             |
+| Storage         | Imagens enviadas nos anúncios                                   |
+| Leaflet         | Mapa, marcadores e seleção de local                             |
+| Hosting         | Distribuição dos arquivos estáticos                             |
 
 ### 9.3 Implantacao
 
 ```mermaid
 flowchart LR
-    U[Navegador do usuario] --> H[Firebase Hosting]
+    U[Navegador do usuário] --> H[Firebase Hosting]
     U --> A[Firebase Authentication]
     U --> F[Cloud Firestore]
     U --> S[Firebase Storage]
@@ -551,18 +551,18 @@ flowchart LR
     S --> SR[Regras do Storage]
 ```
 
-O ambiente atual nao exige servidor de aplicacao para o fluxo principal. O diretorio `src/` contem arquivos auxiliares e uma proposta de servicos Node.js; sua adocao deve ser tratada como evolucao arquitetural.
+O ambiente atual não exige servidor de aplicação para o fluxo principal. O diretório `src/` contém arquivos auxiliares e uma proposta de serviços Node.js; sua adoção deve ser tratada como evolução arquitetural.
 
 ### 9.4 Modelo de componentes
 
 ```mermaid
 flowchart TB
-    View[Paginas HTML]
-    AuthModule[Modulo de autenticacao]
-    FirebaseModule[Modulo firebase.js]
+    View[Páginas HTML]
+    AuthModule[Módulo de autenticação]
+    FirebaseModule[Módulo firebase.js]
     PetModule[Modulo de pets e consultas]
-    FormModule[Modulos de formularios]
-    MapModule[Modulo de mapa]
+    FormModule[Módulos de formulários]
+    MapModule[Módulo de mapa]
     AuthService[Firebase Authentication]
     DataService[Cloud Firestore]
     FileService[Firebase Storage]
@@ -580,9 +580,9 @@ flowchart TB
     FirebaseModule --> FileService
 ```
 
-O modelo de componentes mostra responsabilidades logicas, sem afirmar que todos os modulos possuem uma classe formal. No frontend atual, parte dessas responsabilidades esta distribuida entre scripts de tela.
+O modelo de componentes mostra responsabilidades lógicas, sem afirmar que todos os módulos possuem uma classe formal. No frontend atual, parte dessas responsabilidades está distribuída entre scripts de tela.
 
-## 10. Mapa de navegacao
+## 10. Mapa de navegação
 
 ```mermaid
 flowchart TD
@@ -670,27 +670,27 @@ usuarios/{uid}                       (estrutura prevista)
 
 ### 11.3 Dicionário de dados principal
 
-| Entidade/campo                   | Tipo      | Obrigatorio | Descricao                                   |
+| Entidade/campo                   | Tipo      | Obrigatório | Descrição                                   |
 | -------------------------------- | --------- | ----------: | ------------------------------------------- |
 | `pets.id`                        | string    |         Sim | Identificador do documento                  |
-| `pets.nome`                      | string    |         Sim | Nome ou identificacao do animal             |
-| `pets.tipo`                      | string    |         Sim | Especie ou categoria do animal              |
-| `pets.raca`                      | string    |         Sim | Raca informada pelo tutor                   |
+| `pets.nome`                      | string    |         Sim | Nome ou identificação do animal             |
+| `pets.tipo`                      | string    |         Sim | Espécie ou categoria do animal              |
+| `pets.raca`                      | string    |         Sim | Raça informada pelo tutor                   |
 | `pets.porte`                     | string    |         Sim | Porte do animal                             |
 | `pets.status`                    | string    |         Sim | `desaparecido`, `achado` ou `encontrado`    |
 | `pets.expiresAt`                 | timestamp |         Não | Data de expiração dos anúncios `achado`     |
-| `pets.localiza`                  | string    |         Sim | Local textual do anuncio                    |
+| `pets.localiza`                  | string    |         Sim | Local textual do anúncio                    |
 | `pets.lat` / `pets.lng`          | number    |         Sim | Coordenadas para o mapa                     |
-| `pets.descricao`                 | string    |         Sim | Caracteristicas e informacoes adicionais    |
-| `pets.imagem`                    | string    |         Sim | URL ou referencia da imagem                 |
-| `pets.usuarioCriador`            | string    |         Sim | E-mail associado ao usuario autenticado     |
+| `pets.descricao`                 | string    |         Sim | Características e informações adicionais    |
+| `pets.imagem`                    | string    |         Sim | URL ou referência da imagem                 |
+| `pets.usuarioCriador`            | string    |         Sim | E-mail associado ao usuário autenticado     |
 | `pets.contato`                   | string    |         Sim | Meio de contato do tutor                    |
 | `pets.whatsapp`                  | string    |         Sim | Contato adicional do tutor                  |
 | `avistamentos.petId`             | string    |         Sim | Pet relacionado                             |
 | `avistamentos.localAvistado`     | string    |         Sim | Local do avistamento                        |
 | `avistamentos.descricao`         | string    |         Sim | Relato do colaborador                       |
 | `avistamentos.contatoReportador` | string    |         Sim | Meio de retorno do colaborador              |
-| `avistamentos.petOwnerEmail`     | string    |         Sim | Responsavel que pode consultar a ocorrencia |
+| `avistamentos.petOwnerEmail`     | string    |         Sim | Responsável que pode consultar a ocorrência |
 
 A padronização futura deve preferir `localizacao`, `imagemUrl`, `usuarioCriadorUid`, `criadoEm` e `atualizadoEm`. Essa mudança exige migração coordenada entre telas e regras.
 
@@ -715,50 +715,50 @@ Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz 
 
 ## 12. Regras de negócio e segurança
 
-- RN01: somente usuario autenticado pode criar pet.
-- RN02: o criador do pet e identificado pelo campo `usuarioCriador`.
+- RN01: somente usuário autenticado pode criar pet.
+- RN02: o criador do pet é identificado pelo campo `usuarioCriador`.
 - RN03: somente o criador pode atualizar ou excluir seu pet.
 - RN04: o status inicial deve ser `desaparecido` ou `achado`, conforme o formulario usado.
-- RN05: somente o criador pode alterar o status; `achado` passa para `encontrado` apos confirmacao da devolucao.
+- RN05: somente o criador pode alterar o status; `achado` passa para `encontrado` após confirmação da devolução.
 - RN11: anúncio `achado` recebe `expiresAt` 40 dias após a publicação e é ocultado após o vencimento.
 - RN12: o Firestore pode usar TTL em `expiresAt` para excluir fisicamente os anúncios vencidos, desde que a política esteja configurada no projeto.
-- RN06: avistamento deve informar o `petId` e os campos obrigatorios.
+- RN06: avistamento deve informar o `petId` e os campos obrigatórios.
 - RN07: a leitura pública dos avistamentos é uma limitação atual, pois pode expor o contato do colaborador; esse acesso deve ser restringido em evolução futura.
-- RN08: validacao no navegador melhora a experiencia, mas a regra do Firestore e a protecao efetiva contra escrita indevida.
+- RN08: validação no navegador melhora a experiência, mas a regra do Firestore é a proteção efetiva contra escrita indevida.
 - RN09: imagens devem respeitar as regras de tipo e tamanho do Storage.
-- RN10: dados fornecidos por usuarios devem ser renderizados como texto seguro, evitando injecao de HTML.
+- RN10: dados fornecidos por usuários devem ser renderizados como texto seguro, evitando injeção de HTML.
 
 ### 12.1 Privacidade e LGPD
 
 O sistema trata nome, e-mail, telefone, WhatsApp e relatos de contato como dados pessoais. Para uma evolucao alinhada a LGPD, devem ser observados:
 
-- informar ao usuario a finalidade da coleta antes do cadastro ou envio;
+- informar ao usuário a finalidade da coleta antes do cadastro ou envio;
 - coletar somente os dados necessarios para localizar o pet e retornar ao colaborador;
 - restringir o acesso aos contatos quando a funcionalidade permitir;
-- permitir solicitacao de correcao ou exclusao dos dados;
+- permitir solicitação de correção ou exclusão dos dados;
 - definir prazo de retencao para anuncios encerrados e avistamentos;
 - registrar aceite dos termos quando houver coleta de dados pessoais;
-- documentar o responsavel pelo tratamento e um canal de contato;
+- documentar o responsável pelo tratamento e um canal de contato;
 - evitar expor e-mail e WhatsApp em consultas publicas ou URLs.
 
-No estado atual, os termos e a protecao de contato oferecem uma camada inicial, mas nao substituem uma politica de privacidade completa nem a separacao tecnica de campos publicos e privados.
+No estado atual, os termos e a proteção de contato oferecem uma camada inicial, mas não substituem uma política de privacidade completa nem a separação técnica de campos públicos e privados.
 
 ## 13. Interfaces e experiência do usuário
 
-| Tela                    | Funcao                           | Acesso                         |
+| Tela                    | Função                           | Acesso                         |
 | ----------------------- | -------------------------------- | ------------------------------ |
-| `index.html`            | Home, lista, filtros e mapa      | Publico                        |
-| `criar-conta.html`      | Login e cadastro                 | Publico                        |
-| `publicar.html`         | Formulario de publicacao         | Autenticado                    |
+| `index.html`            | Home, lista, filtros e mapa      | Público                        |
+| `criar-conta.html`      | Login e cadastro                 | Público                        |
+| `publicar.html`         | Formulário de publicação         | Autenticado                    |
 | `detalhes.html`         | Detalhes e avistamento           | Publico/autenticado para envio |
 | `cadastrados.html`      | Meus Pets                        | Autenticado                    |
-| `editar.html`           | Edicao de anuncio                | Dono autenticado               |
-| `animais_encontra.html` | Consulta de achados e devolvidos | Publico                        |
+| `editar.html`           | Edição de anúncio                | Dono autenticado               |
+| `animais_encontra.html` | Consulta de achados e devolvidos | Público                        |
 | `publicar_achado.html`  | Cadastro de pet achado           | Autenticado                    |
-| `dicas.html`            | Cuidados com animais             | Publico                        |
-| `informativos.html`     | Conteudo informativo             | Publico                        |
-| `contato.html`          | Mensagem para o projeto          | Publico                        |
-| `termos.html`           | Termos de uso                    | Publico                        |
+| `dicas.html`            | Cuidados com animais             | Público                        |
+| `informativos.html`     | Conteúdo informativo             | Público                        |
+| `contato.html`          | Mensagem para o projeto          | Público                        |
+| `termos.html`           | Termos de uso                    | Público                        |
 
 Diretrizes de interface:
 
