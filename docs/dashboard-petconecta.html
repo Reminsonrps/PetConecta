@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard – Entrevista de Impacto Comunitário | PetConecta</title>
+    <title>Dashboard – Avaliação Comunitária | PetConecta</title>
     <meta
       name="description"
-      content="Dashboard interativo com os resultados da Entrevista de Impacto Comunitário do projeto PetConecta."
+      content="Dashboard interativo com os resultados agregados e anonimizados da avaliação comunitária do projeto PetConecta."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -498,12 +498,12 @@
     <div class="container">
       <header class="fade-in">
         <div class="header-badge">
-          &#x1F43E; Entrevista de Impacto Comunitário
+          &#x1F43E; Avaliação Comunitária do Protótipo
         </div>
         <h1>Dashboard PetConecta</h1>
         <p>
-          Análise das respostas coletadas na pesquisa de impacto junto à
-          comunidade — avaliações, percepções e sugestões dos entrevistados.
+          Análise agregada das respostas da comunidade — avaliações, percepções
+          e sugestões sobre o protótipo PetConecta.
         </p>
         <div class="header-divider"></div>
       </header>
@@ -536,9 +536,9 @@
         </div>
         <div class="stat-card amber">
           <span class="stat-icon">&#x1F436;</span>
-          <div class="stat-value">71%</div>
-          <div class="stat-label">Exp. com pets perdidos</div>
-          <div class="stat-sub">Vivenciaram ou conhecem alguém</div>
+          <div class="stat-value">79%</div>
+          <div class="stat-label">Experiência com pets</div>
+          <div class="stat-sub">11 de 14 vivenciaram ou conhecem alguém</div>
         </div>
         <div class="stat-card rose">
           <span class="stat-icon">&#x1F5FA;&#xFE0F;</span>
@@ -570,28 +570,12 @@
       <section class="section fade-in">
         <div class="section-header">
           <div class="section-dot dot-teal"></div>
-          <h2>Localidades dos Entrevistados</h2>
+          <h2>Área geral dos respondentes</h2>
         </div>
         <div class="locations-grid">
           <div class="location-badge">
-            <div class="location-count">6</div>
-            <div class="location-name">Porto Seguro</div>
-          </div>
-          <div class="location-badge">
-            <div class="location-count">4</div>
-            <div class="location-name">Coroa Vermelha</div>
-          </div>
-          <div class="location-badge">
-            <div class="location-count">2</div>
-            <div class="location-name">Santa Cruz Cabrália</div>
-          </div>
-          <div class="location-badge">
-            <div class="location-count">1</div>
-            <div class="location-name">Mirante</div>
-          </div>
-          <div class="location-badge">
-            <div class="location-count">1</div>
-            <div class="location-name">Carajas / Outros</div>
+            <div class="location-count">14</div>
+            <div class="location-name">Porto Seguro e região</div>
           </div>
         </div>
       </section>
@@ -626,7 +610,7 @@
         </div>
         <div class="charts-grid-3">
           <div class="chart-card">
-            <h3>Conseguiu resolver a situação?</h3>
+            <h3>Como a situação foi resolvida?</h3>
             <div class="chart-wrapper short">
               <canvas id="chartResolved"></canvas>
             </div>
@@ -678,14 +662,14 @@
                 <div class="rating-meta">
                   <span class="rating-name">&#x1F3A8; Visual e design</span
                   ><span class="rating-score" style="color: #8b5cf6"
-                    >4,9 / 5</span
+                    >5,0 / 5</span
                   >
                 </div>
                 <div class="bar-track">
                   <div
                     class="bar-fill"
                     style="
-                      width: 97%;
+                      width: 100%;
                       background: linear-gradient(90deg, #8b5cf6, #a78bfa);
                     "
                   ></div>
@@ -750,14 +734,14 @@
                   <span class="rating-name"
                     >&#x2764;&#xFE0F; Contribuição ao bem-estar animal</span
                   ><span class="rating-score" style="color: #f43f5e"
-                    >4,9 / 5</span
+                    >5,0 / 5</span
                   >
                 </div>
                 <div class="bar-track">
                   <div
                     class="bar-fill"
                     style="
-                      width: 97%;
+                      width: 100%;
                       background: linear-gradient(90deg, #f43f5e, #fb7185);
                     "
                   ></div>
@@ -768,14 +752,14 @@
                   <span class="rating-name"
                     >&#x1F3D9;&#xFE0F; Segurança/organização cidade</span
                   ><span class="rating-score" style="color: #3b82f6"
-                    >4,9 / 5</span
+                    >5,0 / 5</span
                   >
                 </div>
                 <div class="bar-track">
                   <div
                     class="bar-fill"
                     style="
-                      width: 97%;
+                      width: 100%;
                       background: linear-gradient(90deg, #3b82f6, #818cf8);
                     "
                   ></div>
@@ -786,14 +770,14 @@
                   <span class="rating-name"
                     >&#x1F3C6; Avaliação geral do projeto</span
                   ><span class="rating-score" style="color: #f59e0b"
-                    >4,9 / 5</span
+                    >5,0 / 5</span
                   >
                 </div>
                 <div class="bar-track">
                   <div
                     class="bar-fill"
                     style="
-                      width: 97%;
+                      width: 100%;
                       background: linear-gradient(90deg, #f59e0b, #10b981);
                     "
                   ></div>
@@ -827,8 +811,8 @@
                 M
               </div>
               <div>
-                <div class="author-name">Matheus Phillipi</div>
-                <div class="author-role">Tutor de pet · Porto Seguro</div>
+                <div class="author-name">Respondente 01</div>
+                <div class="author-role">Tutor(a) de pet</div>
               </div>
             </div>
           </div>
@@ -844,8 +828,8 @@
                 M
               </div>
               <div>
-                <div class="author-name">Micael Silva Ribeiro</div>
-                <div class="author-role">Outro · Coroa Vermelha</div>
+                <div class="author-name">Respondente 02</div>
+                <div class="author-role">Outro perfil</div>
               </div>
             </div>
           </div>
@@ -862,8 +846,8 @@
                 P
               </div>
               <div>
-                <div class="author-name">Paulo Ventura</div>
-                <div class="author-role">Outro · Porto Seguro</div>
+                <div class="author-name">Respondente 03</div>
+                <div class="author-role">Outro perfil</div>
               </div>
             </div>
           </div>
@@ -880,8 +864,8 @@
                 G
               </div>
               <div>
-                <div class="author-name">Guilherme Kauã</div>
-                <div class="author-role">Tutor de pet · Camboló</div>
+                <div class="author-name">Respondente 04</div>
+                <div class="author-role">Tutor(a) de pet</div>
               </div>
             </div>
           </div>
@@ -898,8 +882,8 @@
                 G
               </div>
               <div>
-                <div class="author-name">Guilherme Santini Marrara</div>
-                <div class="author-role">Médico Veterinário · Porto Seguro</div>
+                <div class="author-name">Respondente 05</div>
+                <div class="author-role">Profissional veterinário</div>
               </div>
             </div>
           </div>
@@ -916,8 +900,8 @@
                 N
               </div>
               <div>
-                <div class="author-name">Nárrima Lima</div>
-                <div class="author-role">Membro de ONG · Coroa Vermelha</div>
+                <div class="author-name">Respondente 06</div>
+                <div class="author-role">Membro de ONG</div>
               </div>
             </div>
           </div>
@@ -936,14 +920,14 @@
               Implementação do cadastro pet como documento de identidade — dados
               do pet como vacinação, endereço e tutor.
             </p>
-            <p class="suggestion-author">— Matheus Phillipi · Tutor de pet</p>
+            <p class="suggestion-author">— Respondente 01 · Tutor(a) de pet</p>
           </div>
           <div class="suggestion-item">
             <p class="suggestion-text">
               Sugestão de divulgação no Instagram e Facebook por meio de tráfego
               pago para atrair usuários.
             </p>
-            <p class="suggestion-author">— Matheus Phillipi · Tutor de pet</p>
+            <p class="suggestion-author">— Respondente 01 · Tutor(a) de pet</p>
           </div>
           <div class="suggestion-item">
             <p class="suggestion-text">
@@ -951,7 +935,7 @@
               alcance.
             </p>
             <p class="suggestion-author">
-              — Guilherme Santini Marrara · Médico Veterinário
+              — Respondente 05 · Profissional veterinário
             </p>
           </div>
           <div class="suggestion-item">
@@ -959,7 +943,7 @@
               Fechar mais parcerias com as principais ONGs da região.
             </p>
             <p class="suggestion-author">
-              — Guilherme Santini Marrara · Médico Veterinário
+              — Respondente 05 · Profissional veterinário
             </p>
           </div>
           <div class="suggestion-item">
@@ -967,27 +951,21 @@
               Acrescentar um telefone para denunciar maus-tratos, caso seja
               possível e exista na região.
             </p>
-            <p class="suggestion-author">
-              — Nárrima Maria Campos Lima · Membro de ONG
-            </p>
+            <p class="suggestion-author">— Respondente 06 · Membro de ONG</p>
           </div>
           <div class="suggestion-item">
             <p class="suggestion-text">
               Campanha de castração dos animais. Acho importante.
             </p>
-            <p class="suggestion-author">
-              — Edinei Costa Santos · Tutor de pet
-            </p>
+            <p class="suggestion-author">— Respondente 07 · Tutor(a) de pet</p>
           </div>
         </div>
       </section>
 
       <footer class="fade-in">
         <p>
-          Dashboard gerado a partir da planilha
-          <strong
-            >Entrevista de Impacto Comunitário – PetConecta (respostas)</strong
-          >
+          Dashboard baseado em respostas agregadas e anonimizadas da avaliação
+          comunitária do PetConecta.
         </p>
         <p style="margin-top: 6px">
           Projeto Extensionista II · <strong>UNINTER</strong> · 2026
@@ -1021,7 +999,7 @@
           ],
           datasets: [
             {
-              data: [3, 3, 6, 2],
+              data: [3, 3, 7, 1],
               backgroundColor: [
                 "rgba(59,130,246,0.82)",
                 "rgba(20,184,166,0.82)",
@@ -1059,7 +1037,7 @@
           ],
           datasets: [
             {
-              data: [9, 3, 1, 1],
+              data: [10, 2, 1, 1],
               backgroundColor: [
                 "rgba(16,185,129,0.82)",
                 "rgba(99,102,241,0.82)",
@@ -1151,7 +1129,7 @@
           datasets: [
             {
               label: "Nº de citações",
-              data: [7, 6, 5, 4, 2, 2, 1],
+              data: [5, 6, 4, 3, 2, 2, 1],
               backgroundColor: [
                 "rgba(59,130,246,0.72)",
                 "rgba(20,184,166,0.72)",
@@ -1193,10 +1171,15 @@
       new Chart(document.getElementById("chartResolved"), {
         type: "doughnut",
         data: {
-          labels: ["Sim, totalmente", "Parcialmente", "Não se aplica"],
+          labels: [
+            "Sim, totalmente",
+            "Parcialmente",
+            "Não se aplica",
+            "Sem resposta",
+          ],
           datasets: [
             {
-              data: [7, 3, 4],
+              data: [8, 3, 2, 1],
               backgroundColor: [
                 "rgba(16,185,129,0.82)",
                 "rgba(245,158,11,0.82)",
@@ -1305,7 +1288,7 @@
           datasets: [
             {
               label: "Média das notas",
-              data: [4.9, 4.9, 4.7, 4.7, 5.0, 4.9, 4.9, 4.9],
+              data: [4.9, 5.0, 4.7, 4.7, 5.0, 5.0, 5.0, 5.0],
               backgroundColor: "rgba(59,130,246,0.15)",
               borderColor: "#3b82f6",
               pointBackgroundColor: "#3b82f6",
