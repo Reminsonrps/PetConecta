@@ -114,12 +114,14 @@
      <!-- Script Modular Firebase -->
      <script type="module">
        import { auth, db } from "./script/firebase.js";
-      import { collection, query, where, getDocs, limit, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+      import { collection, query, where, getDocs, limit, doc, deleteDoc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
       import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
        let meusPets = []; // Armazena a lista de pets em memória para filtragem rápida local
        let usuarioAtual = null; // Guarda o usuário ativo para recarregar os dados sem manter listeners contínuos
        const cacheAvistamentos = new Map(); // Evita reabrir a mesma subcoleção várias vezes na mesma sessão
+      const listenersAvistamentos = new Map();
+      const avistamentosConhecidos = new Set();
 
        // 🔐 Verificação de autenticação e carregamento de dados em tempo real
        onAuthStateChanged(auth, (user) => {
@@ -181,6 +183,7 @@
              id: doc.id,
              ...doc.data(),
            }));
+           acompanharNovosAvistamentos();
            filtrarERenderizarPets();
          } catch (error) {
            console.error("Erro ao carregar pets do usuário:", error);
@@ -189,6 +192,65 @@
              container.innerHTML = "<p style='text-align:center; width:100%;'>Não foi possível carregar seus pets no momento.</p>";
            }
          }
+       }
+
+       function exibirNotificacaoAvistamento(pet, avistamento) {
+         const notificacao = document.createElement("div");
+         notificacao.className = "notificacao-avistamento";
+         notificacao.setAttribute("role", "status");
+
+         const titulo = document.createElement("strong");
+         titulo.textContent = `Novo avistamento de ${pet.nome || "seu pet"}`;
+
+         const mensagem = document.createElement("p");
+         mensagem.textContent = `${avistamento.localAvistado || "Local não informado"}. ${avistamento.descricao || "Sem detalhes adicionais."}`;
+
+         const fechar = document.createElement("button");
+         fechar.type = "button";
+         fechar.className = "fechar-notificacao";
+         fechar.setAttribute("aria-label", "Fechar notificação");
+         fechar.textContent = "×";
+         fechar.addEventListener("click", () => notificacao.remove());
+
+         notificacao.append(titulo, mensagem, fechar);
+         document.body.appendChild(notificacao);
+
+         window.setTimeout(() => notificacao.remove(), 10000);
+       }
+
+       function acompanharNovosAvistamentos() {
+         const idsAtuais = new Set(meusPets.map((pet) => pet.id));
+
+         listenersAvistamentos.forEach((unsubscribe, petId) => {
+           if (!idsAtuais.has(petId)) {
+             unsubscribe();
+             listenersAvistamentos.delete(petId);
+           }
+         });
+
+         meusPets.forEach((pet) => {
+           if (listenersAvistamentos.has(pet.id)) return;
+
+           const consulta = query(collection(db, "pets", pet.id, "avistamentos"));
+           const unsubscribe = onSnapshot(consulta, (snapshot) => {
+             snapshot.docChanges().forEach((mudanca) => {
+               const avistamento = { id: mudanca.doc.id, ...mudanca.doc.data() };
+               const chave = `${pet.id}/${avistamento.id}`;
+
+               if (mudanca.type === "added" && avistamentosConhecidos.has(chave)) {
+                 exibirNotificacaoAvistamento(pet, avistamento);
+               }
+
+               if (mudanca.type === "added") {
+                 avistamentosConhecidos.add(chave);
+               }
+             });
+           }, (error) => {
+             console.error(`Erro ao acompanhar avistamentos do pet ${pet.id}:`, error);
+           });
+
+           listenersAvistamentos.set(pet.id, unsubscribe);
+         });
        }
 
        async function carregarAvistamentosPet(petId, boxAvistamentos) {

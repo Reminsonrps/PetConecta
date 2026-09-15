@@ -36,7 +36,7 @@ O projeto é composto por:
 - regras de segurança em `firestore.rules` e `storage.rules`;
 - banco de dados Firestore para registros de pets e avistamentos;
 - autenticação e autorização via Firebase Authentication;
-- upload de imagens em Firebase Storage;
+- upload de imagens no Firebase Storage após aprovação pelo Cloud Vision SafeSearch;
 - mapas interativos com Leaflet.
 
 ## Estrutura de pastas
@@ -74,7 +74,7 @@ Principais pontos do estado atual:
 
 ### 1. Cadastro e publicação de pets
 
-A página de publicação coleta dados do pet, valida campos obrigatórios e salva a imagem no Firebase Storage e os metadados no Firestore.
+A página de publicação coleta dados do pet, valida campos obrigatórios, envia a imagem ao backend para análise do Cloud Vision SafeSearch e salva no Firebase Storage somente imagens aprovadas. Se a moderação estiver temporariamente indisponível, o pet pode ser cadastrado sem imagem com `imagemPendente: true`; uma classificação imprópria bloqueia o cadastro até o usuário escolher outra imagem.
 
 `publicar_achado.html` usa o mesmo modelo de dados, mas cria o anúncio com status `achado`. Esse status significa que uma terceira pessoa encontrou o animal e ainda aguarda a confirmação do tutor. O usuário que criou esse anúncio pode acionar **Devolvido ao Tutor**, alterando o status para `encontrado`.
 
@@ -151,9 +151,19 @@ firebase deploy
 
 1. o usuário acessa a página de publicação;
 2. preenche nome, tipo, status, localização, dados de contato e imagem;
-3. a imagem é enviada ao Storage;
-4. os metadados do pet são persistidos no Firestore;
-5. a página de listagem ou detalhes lê o registro e renderiza a informação na interface.
+3. a imagem é enviada ao endpoint autenticado `/api/imagens/moderar-upload`;
+4. o backend analisa o conteúdo com SafeSearch;
+5. somente uma imagem aprovada é gravada no Storage;
+6. os metadados do pet são persistidos no Firestore;
+7. a página de listagem ou detalhes lê o registro e renderiza a informação na interface.
+
+### Moderação de imagens e execução do backend
+
+Ative a Cloud Vision API no projeto Google Cloud e configure o faturamento. O SafeSearch possui as primeiras 1.000 análises mensais sem custo; depois, a cobrança segue a tabela oficial da Cloud Vision. O backend usa a credencial privada do Firebase Admin, nunca uma chave no frontend.
+
+Para executar localmente, mantenha `src/routers/serviceAccountKey.json` fora do Git, ou defina `GOOGLE_APPLICATION_CREDENTIALS` apontando para uma credencial segura. O bucket pode ser ajustado com `FIREBASE_STORAGE_BUCKET`.
+
+O frontend usa a mesma origem por padrão. Quando o site estiver no Firebase Hosting e o backend Express estiver em outro endereço, defina `window.PET_CONECTA_API_URL` antes do módulo `upload-imagem.js` com a URL pública do backend. O Hosting estático não executa automaticamente o Express nem encaminha `/api` sem uma configuração de Cloud Run, Cloud Functions ou proxy equivalente.
 
 ## Estrutura principal dos documentos do Firestore
 

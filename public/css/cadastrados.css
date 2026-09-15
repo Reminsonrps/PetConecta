@@ -219,6 +219,54 @@ footer {
   border: 1px solid #ccc;
 }
 
+.notificacao-avistamento {
+  position: fixed;
+  top: 88px;
+  right: 20px;
+  z-index: 1100;
+  width: min(360px, calc(100vw - 40px));
+  padding: 16px 42px 16px 18px;
+  color: #4b210d;
+  background: #fff8ef;
+  border: 2px solid #ff914d;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(75, 33, 13, 0.2);
+  animation: entrada-notificacao 0.25s ease-out;
+}
+
+.notificacao-avistamento strong {
+  display: block;
+  color: #d85f13;
+}
+
+.notificacao-avistamento p {
+  margin: 8px 0 0;
+  line-height: 1.4;
+}
+
+.fechar-notificacao {
+  position: absolute;
+  top: 7px;
+  right: 10px;
+  border: 0;
+  background: transparent;
+  color: #7a3c1c;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+@keyframes entrada-notificacao {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Cards */
 .container-cards {
   display: flex;

@@ -21,10 +21,12 @@
   },
   "homepage": "https://github.com/Reminsonrps/PetConecta#readme",
   "dependencies": {
+    "@google-cloud/vision": "^6.1.0",
     "cors": "^2.8.6",
     "express": "^5.2.1",
     "firebase": "^12.18.0",
     "firebase-admin": "^13.10.0",
+    "multer": "^2.4.0",
     "uuid": "^14.0.2"
   },
   "devDependencies": {
