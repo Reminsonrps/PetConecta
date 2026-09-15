@@ -1,0 +1,1342 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard – Entrevista de Impacto Comunitário | PetConecta</title>
+    <meta
+      name="description"
+      content="Dashboard interativo com os resultados da Entrevista de Impacto Comunitário do projeto PetConecta."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+      :root {
+        --bg-dark: #0a0f1e;
+        --bg-card: #111827;
+        --bg-card2: #1a2236;
+        --accent-blue: #3b82f6;
+        --accent-teal: #14b8a6;
+        --accent-purple: #8b5cf6;
+        --accent-amber: #f59e0b;
+        --accent-rose: #f43f5e;
+        --accent-green: #10b981;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --text-muted: #64748b;
+        --border: rgba(255, 255, 255, 0.07);
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 80% 50% at 20% 10%,
+            rgba(59, 130, 246, 0.08) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 80% 80%,
+            rgba(20, 184, 166, 0.07) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 50% 60% at 50% 50%,
+            rgba(139, 92, 246, 0.05) 0%,
+            transparent 70%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 1;
+      }
+      header {
+        padding: 48px 0 32px;
+        text-align: center;
+      }
+      .header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(59, 130, 246, 0.12);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        border-radius: 100px;
+        padding: 6px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--accent-blue);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      header h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        line-height: 1.1;
+        background: linear-gradient(
+          135deg,
+          #f1f5f9 0%,
+          #94d2f4 40%,
+          #14b8a6 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 12px;
+      }
+      header p {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto 32px;
+        line-height: 1.6;
+      }
+      .header-divider {
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--accent-blue),
+          var(--accent-teal)
+        );
+        border-radius: 10px;
+        margin: 0 auto;
+      }
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin: 48px 0 32px;
+      }
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .stat-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      }
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        border-radius: 16px 16px 0 0;
+      }
+      .stat-card.blue::before {
+        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+      }
+      .stat-card.teal::before {
+        background: linear-gradient(90deg, #14b8a6, #2dd4bf);
+      }
+      .stat-card.purple::before {
+        background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+      }
+      .stat-card.amber::before {
+        background: linear-gradient(90deg, #f59e0b, #fbbf24);
+      }
+      .stat-card.green::before {
+        background: linear-gradient(90deg, #10b981, #34d399);
+      }
+      .stat-card.rose::before {
+        background: linear-gradient(90deg, #f43f5e, #fb7185);
+      }
+      .stat-icon {
+        font-size: 24px;
+        margin-bottom: 12px;
+        display: block;
+      }
+      .stat-value {
+        font-size: 2.4rem;
+        font-weight: 800;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .stat-card.blue .stat-value {
+        color: #3b82f6;
+      }
+      .stat-card.teal .stat-value {
+        color: #14b8a6;
+      }
+      .stat-card.purple .stat-value {
+        color: #8b5cf6;
+      }
+      .stat-card.amber .stat-value {
+        color: #f59e0b;
+      }
+      .stat-card.green .stat-value {
+        color: #10b981;
+      }
+      .stat-card.rose .stat-value {
+        color: #f43f5e;
+      }
+      .stat-label {
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .stat-sub {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .section-header h2 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+      .section-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .dot-blue {
+        background: #3b82f6;
+        box-shadow: 0 0 8px #3b82f6;
+      }
+      .dot-teal {
+        background: #14b8a6;
+        box-shadow: 0 0 8px #14b8a6;
+      }
+      .dot-purple {
+        background: #8b5cf6;
+        box-shadow: 0 0 8px #8b5cf6;
+      }
+      .dot-amber {
+        background: #f59e0b;
+        box-shadow: 0 0 8px #f59e0b;
+      }
+      .dot-green {
+        background: #10b981;
+        box-shadow: 0 0 8px #10b981;
+      }
+      .section {
+        margin-bottom: 56px;
+      }
+      .charts-grid-2 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+        gap: 20px;
+      }
+      .charts-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+      }
+      .chart-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 28px;
+        transition: transform 0.3s ease;
+      }
+      .chart-card:hover {
+        transform: translateY(-2px);
+      }
+      .chart-card h3 {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 20px;
+      }
+      .chart-wrapper {
+        position: relative;
+        height: 240px;
+      }
+      .chart-wrapper.tall {
+        height: 300px;
+      }
+      .chart-wrapper.short {
+        height: 180px;
+      }
+      .ratings-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+      }
+      .rating-row {
+        margin-bottom: 18px;
+      }
+      .rating-row:last-child {
+        margin-bottom: 0;
+      }
+      .rating-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+      .rating-name {
+        font-size: 0.82rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+      }
+      .rating-score {
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+      .bar-track {
+        height: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 100px;
+        overflow: hidden;
+      }
+      .bar-fill {
+        height: 100%;
+        border-radius: 100px;
+      }
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 16px;
+      }
+      .testimonial-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 22px;
+        position: relative;
+        transition:
+          transform 0.3s ease,
+          border-color 0.3s ease;
+      }
+      .testimonial-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(59, 130, 246, 0.3);
+      }
+      .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: 14px;
+        right: 20px;
+        font-size: 4rem;
+        color: rgba(59, 130, 246, 0.15);
+        font-family: Georgia, serif;
+        line-height: 1;
+      }
+      .testimonial-text {
+        font-size: 0.88rem;
+        line-height: 1.65;
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+        font-style: italic;
+      }
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .author-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 700;
+        flex-shrink: 0;
+      }
+      .author-name {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      .author-role {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+      .suggestions-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .suggestion-item {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-left: 3px solid #14b8a6;
+        border-radius: 12px;
+        padding: 16px 20px;
+        transition: background 0.2s;
+      }
+      .suggestion-item:hover {
+        background: var(--bg-card2);
+      }
+      .suggestion-text {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
+      .suggestion-author {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+        margin-top: 6px;
+        font-weight: 500;
+      }
+      .locations-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+      }
+      .location-badge {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+        text-align: center;
+        transition:
+          border-color 0.2s,
+          transform 0.2s;
+      }
+      .location-badge:hover {
+        border-color: rgba(20, 184, 166, 0.4);
+        transform: translateY(-2px);
+      }
+      .location-name {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      .location-count {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: #14b8a6;
+      }
+      footer {
+        text-align: center;
+        padding: 40px 0 48px;
+        border-top: 1px solid var(--border);
+        margin-top: 40px;
+      }
+      footer p {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+      }
+      footer strong {
+        color: var(--text-secondary);
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fade-in {
+        animation: fadeInUp 0.6s ease both;
+      }
+      .delay-1 {
+        animation-delay: 0.1s;
+      }
+      .delay-2 {
+        animation-delay: 0.2s;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-dark);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header class="fade-in">
+        <div class="header-badge">
+          &#x1F43E; Entrevista de Impacto Comunitário
+        </div>
+        <h1>Dashboard PetConecta</h1>
+        <p>
+          Análise das respostas coletadas na pesquisa de impacto junto à
+          comunidade — avaliações, percepções e sugestões dos entrevistados.
+        </p>
+        <div class="header-divider"></div>
+      </header>
+
+      <!-- KPIs -->
+      <section class="summary-grid fade-in delay-1">
+        <div class="stat-card blue">
+          <span class="stat-icon">&#x1F465;</span>
+          <div class="stat-value">14</div>
+          <div class="stat-label">Entrevistados</div>
+          <div class="stat-sub">Respostas válidas coletadas</div>
+        </div>
+        <div class="stat-card teal">
+          <span class="stat-icon">&#x2B50;</span>
+          <div class="stat-value">4,9</div>
+          <div class="stat-label">Média geral</div>
+          <div class="stat-sub">Avaliação da plataforma (1–5)</div>
+        </div>
+        <div class="stat-card green">
+          <span class="stat-icon">&#x2705;</span>
+          <div class="stat-value">100%</div>
+          <div class="stat-label">Acesso ao site</div>
+          <div class="stat-sub">Todos acessaram sem problemas</div>
+        </div>
+        <div class="stat-card purple">
+          <span class="stat-icon">&#x1F4E3;</span>
+          <div class="stat-value">100%</div>
+          <div class="stat-label">Recomendariam</div>
+          <div class="stat-sub">"Sim, com certeza"</div>
+        </div>
+        <div class="stat-card amber">
+          <span class="stat-icon">&#x1F436;</span>
+          <div class="stat-value">71%</div>
+          <div class="stat-label">Exp. com pets perdidos</div>
+          <div class="stat-sub">Vivenciaram ou conhecem alguém</div>
+        </div>
+        <div class="stat-card rose">
+          <span class="stat-icon">&#x1F5FA;&#xFE0F;</span>
+          <div class="stat-value">5+</div>
+          <div class="stat-label">Localidades</div>
+          <div class="stat-sub">Porto Seguro e região</div>
+        </div>
+      </section>
+
+      <!-- Perfil -->
+      <section class="section fade-in delay-2">
+        <div class="section-header">
+          <div class="section-dot dot-blue"></div>
+          <h2>Perfil dos Entrevistados</h2>
+        </div>
+        <div class="charts-grid-2">
+          <div class="chart-card">
+            <h3>Faixa Etária</h3>
+            <div class="chart-wrapper"><canvas id="chartAge"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <h3>Perfil / Categoria</h3>
+            <div class="chart-wrapper"><canvas id="chartProfile"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Localidades -->
+      <section class="section fade-in">
+        <div class="section-header">
+          <div class="section-dot dot-teal"></div>
+          <h2>Localidades dos Entrevistados</h2>
+        </div>
+        <div class="locations-grid">
+          <div class="location-badge">
+            <div class="location-count">6</div>
+            <div class="location-name">Porto Seguro</div>
+          </div>
+          <div class="location-badge">
+            <div class="location-count">4</div>
+            <div class="location-name">Coroa Vermelha</div>
+          </div>
+          <div class="location-badge">
+            <div class="location-count">2</div>
+            <div class="location-name">Santa Cruz Cabrália</div>
+          </div>
+          <div class="location-badge">
+            <div class="location-count">1</div>
+            <div class="location-name">Mirante</div>
+          </div>
+          <div class="location-badge">
+            <div class="location-count">1</div>
+            <div class="location-name">Carajas / Outros</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experiência com pets -->
+      <section class="section fade-in">
+        <div class="section-header">
+          <div class="section-dot dot-purple"></div>
+          <h2>Experiência com Pets Perdidos / Encontrados</h2>
+        </div>
+        <div class="charts-grid-2">
+          <div class="chart-card">
+            <h3>Já vivenciou essa situação?</h3>
+            <div class="chart-wrapper">
+              <canvas id="chartExperience"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Como tentou resolver? (múltiplas respostas)</h3>
+            <div class="chart-wrapper tall">
+              <canvas id="chartMethods"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Acesso e Resolução -->
+      <section class="section fade-in">
+        <div class="section-header">
+          <div class="section-dot dot-amber"></div>
+          <h2>Acesso e Resolução</h2>
+        </div>
+        <div class="charts-grid-3">
+          <div class="chart-card">
+            <h3>Conseguiu resolver a situação?</h3>
+            <div class="chart-wrapper short">
+              <canvas id="chartResolved"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Acesso ao site do PetConecta</h3>
+            <div class="chart-wrapper short">
+              <canvas id="chartAccess"></canvas>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Usaria o PetConecta se perdesse seu pet?</h3>
+            <div class="chart-wrapper short">
+              <canvas id="chartWouldUse"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Avaliações -->
+      <section class="section fade-in">
+        <div class="section-header">
+          <div class="section-dot dot-green"></div>
+          <h2>Avaliações da Plataforma (escala 1–5)</h2>
+        </div>
+        <div class="ratings-grid">
+          <div class="chart-card">
+            <h3>Notas por critério</h3>
+            <div style="padding-top: 8px">
+              <div class="rating-row">
+                <div class="rating-meta">
+                  <span class="rating-name"
+                    >&#x1F9ED; Facilidade de navegação</span
+                  ><span class="rating-score" style="color: #3b82f6"
+                    >4,9 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 97%;
+                      background: linear-gradient(90deg, #3b82f6, #60a5fa);
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div class="rating-row">
+                <div class="rating-meta">
+                  <span class="rating-name">&#x1F3A8; Visual e design</span
+                  ><span class="rating-score" style="color: #8b5cf6"
+                    >4,9 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 97%;
+                      background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div class="rating-row">
+                <div class="rating-meta">
+                  <span class="rating-name"
+                    >&#x1F4CB; Clareza das informações</span
+                  ><span class="rating-score" style="color: #14b8a6"
+                    >4,7 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 94%;
+                      background: linear-gradient(90deg, #14b8a6, #2dd4bf);
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div class="rating-row">
+                <div class="rating-meta">
+                  <span class="rating-name"
+                    >&#x1F5FA;&#xFE0F; Mapa de localização</span
+                  ><span class="rating-score" style="color: #f59e0b"
+                    >4,7 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 94%;
+                      background: linear-gradient(90deg, #f59e0b, #fbbf24);
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div class="rating-row">
+                <div class="rating-meta">
+                  <span class="rating-name"
+                    >&#x1F4A1; Uso futuro (probabilidade)</span
+                  ><span class="rating-score" style="color: #10b981"
+                    >5,0 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 100%;
+                      background: linear-gradient(90deg, #10b981, #34d399);
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div class="rating-row">
+                <div class="rating-meta">
+                  <span class="rating-name"
+                    >&#x2764;&#xFE0F; Contribuição ao bem-estar animal</span
+                  ><span class="rating-score" style="color: #f43f5e"
+                    >4,9 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 97%;
+                      background: linear-gradient(90deg, #f43f5e, #fb7185);
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div class="rating-row">
+                <div class="rating-meta">
+                  <span class="rating-name"
+                    >&#x1F3D9;&#xFE0F; Segurança/organização cidade</span
+                  ><span class="rating-score" style="color: #3b82f6"
+                    >4,9 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 97%;
+                      background: linear-gradient(90deg, #3b82f6, #818cf8);
+                    "
+                  ></div>
+                </div>
+              </div>
+              <div class="rating-row" style="margin-bottom: 0">
+                <div class="rating-meta">
+                  <span class="rating-name"
+                    >&#x1F3C6; Avaliação geral do projeto</span
+                  ><span class="rating-score" style="color: #f59e0b"
+                    >4,9 / 5</span
+                  >
+                </div>
+                <div class="bar-track">
+                  <div
+                    class="bar-fill"
+                    style="
+                      width: 97%;
+                      background: linear-gradient(90deg, #f59e0b, #10b981);
+                    "
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chart-card">
+            <h3>Radar de qualidade</h3>
+            <div class="chart-wrapper"><canvas id="chartRadar"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Depoimentos -->
+      <section class="section fade-in">
+        <div class="section-header">
+          <div class="section-dot dot-teal"></div>
+          <h2>O que os usuários mais gostaram &#x1F49A;</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              Mapa de localização dos pets e cadastro de achados e perdidos.
+            </p>
+            <div class="testimonial-author">
+              <div
+                class="author-avatar"
+                style="background: rgba(59, 130, 246, 0.15); color: #3b82f6"
+              >
+                M
+              </div>
+              <div>
+                <div class="author-name">Matheus Phillipi</div>
+                <div class="author-role">Tutor de pet · Porto Seguro</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              Site muito intuitivo e prático, direto!
+            </p>
+            <div class="testimonial-author">
+              <div
+                class="author-avatar"
+                style="background: rgba(139, 92, 246, 0.15); color: #8b5cf6"
+              >
+                M
+              </div>
+              <div>
+                <div class="author-name">Micael Silva Ribeiro</div>
+                <div class="author-role">Outro · Coroa Vermelha</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              Simplesmente incrível, somente informações importantes, muito útil
+              do início ao fim.
+            </p>
+            <div class="testimonial-author">
+              <div
+                class="author-avatar"
+                style="background: rgba(245, 158, 11, 0.15); color: #f59e0b"
+              >
+                P
+              </div>
+              <div>
+                <div class="author-name">Paulo Ventura</div>
+                <div class="author-role">Outro · Porto Seguro</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              A facilitou bastante encontrar pets perdidos. O site é muito fácil
+              e prático.
+            </p>
+            <div class="testimonial-author">
+              <div
+                class="author-avatar"
+                style="background: rgba(244, 63, 94, 0.15); color: #f43f5e"
+              >
+                G
+              </div>
+              <div>
+                <div class="author-name">Guilherme Kauã</div>
+                <div class="author-role">Tutor de pet · Camboló</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              Utilidade pública. A agilidade e facilidade de páginas assim pode
+              ser a diferença para salvar uma vida.
+            </p>
+            <div class="testimonial-author">
+              <div
+                class="author-avatar"
+                style="background: rgba(16, 185, 129, 0.15); color: #10b981"
+              >
+                G
+              </div>
+              <div>
+                <div class="author-name">Guilherme Santini Marrara</div>
+                <div class="author-role">Médico Veterinário · Porto Seguro</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-text">
+              Gostei da ideia, do design. Um meio muito prático para poder achar
+              o animal se for perdido.
+            </p>
+            <div class="testimonial-author">
+              <div
+                class="author-avatar"
+                style="background: rgba(20, 184, 166, 0.15); color: #14b8a6"
+              >
+                N
+              </div>
+              <div>
+                <div class="author-name">Nárrima Lima</div>
+                <div class="author-role">Membro de ONG · Coroa Vermelha</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sugestões -->
+      <section class="section fade-in">
+        <div class="section-header">
+          <div class="section-dot dot-purple"></div>
+          <h2>Sugestões e Melhorias Indicadas &#x1F4A1;</h2>
+        </div>
+        <div class="suggestions-list">
+          <div class="suggestion-item">
+            <p class="suggestion-text">
+              Implementação do cadastro pet como documento de identidade — dados
+              do pet como vacinação, endereço e tutor.
+            </p>
+            <p class="suggestion-author">— Matheus Phillipi · Tutor de pet</p>
+          </div>
+          <div class="suggestion-item">
+            <p class="suggestion-text">
+              Sugestão de divulgação no Instagram e Facebook por meio de tráfego
+              pago para atrair usuários.
+            </p>
+            <p class="suggestion-author">— Matheus Phillipi · Tutor de pet</p>
+          </div>
+          <div class="suggestion-item">
+            <p class="suggestion-text">
+              Páginas nas principais plataformas de redes sociais para maior
+              alcance.
+            </p>
+            <p class="suggestion-author">
+              — Guilherme Santini Marrara · Médico Veterinário
+            </p>
+          </div>
+          <div class="suggestion-item">
+            <p class="suggestion-text">
+              Fechar mais parcerias com as principais ONGs da região.
+            </p>
+            <p class="suggestion-author">
+              — Guilherme Santini Marrara · Médico Veterinário
+            </p>
+          </div>
+          <div class="suggestion-item">
+            <p class="suggestion-text">
+              Acrescentar um telefone para denunciar maus-tratos, caso seja
+              possível e exista na região.
+            </p>
+            <p class="suggestion-author">
+              — Nárrima Maria Campos Lima · Membro de ONG
+            </p>
+          </div>
+          <div class="suggestion-item">
+            <p class="suggestion-text">
+              Campanha de castração dos animais. Acho importante.
+            </p>
+            <p class="suggestion-author">
+              — Edinei Costa Santos · Tutor de pet
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="fade-in">
+        <p>
+          Dashboard gerado a partir da planilha
+          <strong
+            >Entrevista de Impacto Comunitário – PetConecta (respostas)</strong
+          >
+        </p>
+        <p style="margin-top: 6px">
+          Projeto Extensionista II · <strong>UNINTER</strong> · 2026
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      Chart.defaults.color = "#94a3b8";
+      Chart.defaults.borderColor = "rgba(255,255,255,0.06)";
+      Chart.defaults.font.family = "'Inter', sans-serif";
+
+      const tip = {
+        backgroundColor: "rgba(17,24,39,0.95)",
+        borderColor: "rgba(255,255,255,0.1)",
+        borderWidth: 1,
+        titleColor: "#f1f5f9",
+        bodyColor: "#94a3b8",
+        padding: 12,
+        cornerRadius: 10,
+      };
+
+      new Chart(document.getElementById("chartAge"), {
+        type: "doughnut",
+        data: {
+          labels: [
+            "18 a 24 anos",
+            "25 a 35 anos",
+            "36 a 50 anos",
+            "Mais de 50 anos",
+          ],
+          datasets: [
+            {
+              data: [3, 3, 6, 2],
+              backgroundColor: [
+                "rgba(59,130,246,0.82)",
+                "rgba(20,184,166,0.82)",
+                "rgba(139,92,246,0.82)",
+                "rgba(245,158,11,0.82)",
+              ],
+              borderColor: ["#3b82f6", "#14b8a6", "#8b5cf6", "#f59e0b"],
+              borderWidth: 2,
+              hoverOffset: 8,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "62%",
+          plugins: {
+            legend: {
+              position: "right",
+              labels: { padding: 16, boxWidth: 12, boxHeight: 12 },
+            },
+            tooltip: tip,
+          },
+        },
+      });
+
+      new Chart(document.getElementById("chartProfile"), {
+        type: "doughnut",
+        data: {
+          labels: [
+            "Tutor(a) de pet",
+            "Outro",
+            "Membro de ONG",
+            "Profissional veterinário",
+          ],
+          datasets: [
+            {
+              data: [9, 3, 1, 1],
+              backgroundColor: [
+                "rgba(16,185,129,0.82)",
+                "rgba(99,102,241,0.82)",
+                "rgba(244,63,94,0.82)",
+                "rgba(245,158,11,0.82)",
+              ],
+              borderColor: ["#10b981", "#6366f1", "#f43f5e", "#f59e0b"],
+              borderWidth: 2,
+              hoverOffset: 8,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "62%",
+          plugins: {
+            legend: {
+              position: "right",
+              labels: { padding: 16, boxWidth: 12, boxHeight: 12 },
+            },
+            tooltip: tip,
+          },
+        },
+      });
+
+      new Chart(document.getElementById("chartExperience"), {
+        type: "pie",
+        data: {
+          labels: [
+            "Já encontrei um pet perdido",
+            "Nunca passei por isso",
+            "As duas situações",
+            "Conheço alguém",
+            "Já perdi um pet",
+          ],
+          datasets: [
+            {
+              data: [4, 3, 3, 2, 2],
+              backgroundColor: [
+                "rgba(59,130,246,0.82)",
+                "rgba(20,184,166,0.82)",
+                "rgba(139,92,246,0.82)",
+                "rgba(245,158,11,0.82)",
+                "rgba(244,63,94,0.82)",
+              ],
+              borderColor: [
+                "#3b82f6",
+                "#14b8a6",
+                "#8b5cf6",
+                "#f59e0b",
+                "#f43f5e",
+              ],
+              borderWidth: 2,
+              hoverOffset: 8,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                padding: 12,
+                boxWidth: 10,
+                boxHeight: 10,
+                font: { size: 10 },
+              },
+            },
+            tooltip: tip,
+          },
+        },
+      });
+
+      new Chart(document.getElementById("chartMethods"), {
+        type: "bar",
+        data: {
+          labels: [
+            "Facebook / Instagram",
+            "WhatsApp da vizinhança",
+            "Cartazes físicos",
+            "Contato com ONGs",
+            "Não sabia o que fazer",
+            "Outro",
+            "Abrigo / canil",
+          ],
+          datasets: [
+            {
+              label: "Nº de citações",
+              data: [7, 6, 5, 4, 2, 2, 1],
+              backgroundColor: [
+                "rgba(59,130,246,0.72)",
+                "rgba(20,184,166,0.72)",
+                "rgba(139,92,246,0.72)",
+                "rgba(245,158,11,0.72)",
+                "rgba(244,63,94,0.72)",
+                "rgba(99,102,241,0.72)",
+                "rgba(16,185,129,0.72)",
+              ],
+              borderColor: [
+                "#3b82f6",
+                "#14b8a6",
+                "#8b5cf6",
+                "#f59e0b",
+                "#f43f5e",
+                "#6366f1",
+                "#10b981",
+              ],
+              borderWidth: 1.5,
+              borderRadius: 8,
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: tip },
+          scales: {
+            x: {
+              grid: { color: "rgba(255,255,255,0.05)" },
+              ticks: { stepSize: 1 },
+            },
+            y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+          },
+        },
+      });
+
+      new Chart(document.getElementById("chartResolved"), {
+        type: "doughnut",
+        data: {
+          labels: ["Sim, totalmente", "Parcialmente", "Não se aplica"],
+          datasets: [
+            {
+              data: [7, 3, 4],
+              backgroundColor: [
+                "rgba(16,185,129,0.82)",
+                "rgba(245,158,11,0.82)",
+                "rgba(100,116,139,0.82)",
+              ],
+              borderColor: ["#10b981", "#f59e0b", "#64748b"],
+              borderWidth: 2,
+              hoverOffset: 6,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "58%",
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                padding: 10,
+                boxWidth: 10,
+                boxHeight: 10,
+                font: { size: 10 },
+              },
+            },
+            tooltip: tip,
+          },
+        },
+      });
+
+      new Chart(document.getElementById("chartAccess"), {
+        type: "doughnut",
+        data: {
+          labels: ["Sim, sem problemas"],
+          datasets: [
+            {
+              data: [14],
+              backgroundColor: ["rgba(59,130,246,0.85)"],
+              borderColor: ["#3b82f6"],
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "70%",
+          plugins: {
+            legend: { display: false },
+            tooltip: tip,
+            title: {
+              display: true,
+              text: "100% sem problemas",
+              color: "#10b981",
+              font: { size: 14, weight: "700" },
+              padding: { top: 40 },
+            },
+          },
+        },
+      });
+
+      new Chart(document.getElementById("chartWouldUse"), {
+        type: "doughnut",
+        data: {
+          labels: ["Com certeza (nota 5)"],
+          datasets: [
+            {
+              data: [14],
+              backgroundColor: ["rgba(20,184,166,0.85)"],
+              borderColor: ["#14b8a6"],
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: "65%",
+          plugins: {
+            legend: { display: false },
+            tooltip: tip,
+            title: {
+              display: true,
+              text: "100% usariam",
+              color: "#14b8a6",
+              font: { size: 14, weight: "700" },
+              padding: { top: 40 },
+            },
+          },
+        },
+      });
+
+      new Chart(document.getElementById("chartRadar"), {
+        type: "radar",
+        data: {
+          labels: [
+            "Navegação",
+            "Design",
+            "Clareza",
+            "Mapa",
+            "Uso futuro",
+            "Bem-estar",
+            "Segurança",
+            "Geral",
+          ],
+          datasets: [
+            {
+              label: "Média das notas",
+              data: [4.9, 4.9, 4.7, 4.7, 5.0, 4.9, 4.9, 4.9],
+              backgroundColor: "rgba(59,130,246,0.15)",
+              borderColor: "#3b82f6",
+              pointBackgroundColor: "#3b82f6",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#3b82f6",
+              borderWidth: 2,
+              pointRadius: 5,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              min: 4,
+              max: 5,
+              ticks: {
+                stepSize: 0.25,
+                backdropColor: "transparent",
+                font: { size: 10 },
+              },
+              grid: { color: "rgba(255,255,255,0.08)" },
+              angleLines: { color: "rgba(255,255,255,0.08)" },
+              pointLabels: { font: { size: 10 }, color: "#94a3b8" },
+            },
+          },
+          plugins: { legend: { display: false }, tooltip: tip },
+        },
+      });
+    </script>
+  </body>
+</html>
