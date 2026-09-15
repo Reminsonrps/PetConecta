@@ -105,7 +105,11 @@ Esse padrão reduz o risco de coleta automatizada, spam e exposição indevida, 
 1. o usuário acessa a página de detalhes ou a ocorrência relacionada;
 2. registra um avistamento com descrição e contato;
 3. esses dados são persistidos e ficam acessíveis à área do tutor;
-4. o processo é validado via regras de segurança e autenticação.
+4. o processo é validado via regras de segurança e autenticação;
+5. enquanto o tutor estiver na página `cadastrados.html`, a aplicação acompanha em tempo real as subcoleções de avistamentos dos seus pets;
+6. quando um novo avistamento é detectado, a aplicação exibe um popup com o nome do pet, local e descrição do relato.
+
+O carregamento inicial dos avistamentos é marcado como já conhecido para evitar notificações duplicadas. O popup é uma notificação interna da página, com fechamento manual e remoção automática após alguns segundos; ele não representa uma notificação push do navegador.
 
 ## 10. Estrutura de dados
 

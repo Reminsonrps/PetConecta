@@ -68,6 +68,7 @@ Desenvolver e modelar uma aplicação web que facilite a divulgação e a locali
 - consulta de detalhes;
 - registro de avistamento;
 - área Meus Pets;
+- popup em tempo real para novos avistamentos dos pets do tutor;
 - edição, exclusão e marcação como encontrado;
 - páginas de dicas, informativos, contato e termos;
 - persistência no Firestore e imagens no Storage.
@@ -77,7 +78,7 @@ Desenvolver e modelar uma aplicação web que facilite a divulgação e a locali
 - aplicativo mobile nativo;
 - moderação automática por inteligência artificial;
 - chat em tempo real entre usuários;
-- notificações push;
+- notificações push do navegador ou fora da página;
 - pagamento ou doação dentro do site;
 - painel administrativo completo;
 - integração oficial com abrigos, prefeituras ou serviços veterinários;
@@ -141,6 +142,7 @@ As personas representam situações de uso do projeto e não significam que todo
 | RF14 | Proteger contato do anunciante        | Alta       | Cards e detalhes não mostram contato sem o fluxo de confirmação                      |
 | RF15 | Cadastrar pet encontrado por terceiro | Alta       | Anúncio é criado com status `achado`, prazo de 40 dias e aparece na consulta pública |
 | RF16 | Expirar anúncio achado                | Alta       | Anúncio vencido deixa de aparecer; a remoção física depende do TTL configurado       |
+| RF17 | Notificar novo avistamento            | Alta       | Tutor recebe popup em Meus Pets quando um novo avistamento é registrado              |
 
 ### 6.2 Requisitos não funcionais
 
@@ -159,17 +161,18 @@ As personas representam situações de uso do projeto e não significam que todo
 
 ### 6.3 Histórias de usuário
 
-| ID   | História de usuário                                                                                                          | Critério de aceite                                                          | Prioridade |
-| ---- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ---------- |
-| HU01 | Como tutora, quero cadastrar meu pet desaparecido com foto, localização e descrição para aumentar as chances de localizá-lo. | O anúncio é criado com os dados obrigatórios e aparece na consulta pública. | Alta       |
-| HU02 | Como visitante, quero consultar anúncios em lista e mapa para identificar ocorrências próximas ou relevantes.                | A lista e o mapa exibem os anúncios disponíveis com filtros e localização.  | Alta       |
-| HU03 | Como colaborador, quero registrar um avistamento relacionado a um pet para informar o tutor sobre uma possível localização.  | O relato é salvo vinculado ao `petId` correto.                              | Alta       |
-| HU04 | Como tutora, quero acessar a área Meus Pets para acompanhar e administrar meus anúncios.                                     | O usuário autenticado visualiza somente os anúncios associados à sua conta. | Alta       |
-| HU05 | Como tutora, quero editar ou excluir meu anúncio para manter as informações atualizadas.                                     | Somente o responsável consegue executar a alteração autorizada.             | Alta       |
-| HU06 | Como encontradora, quero publicar um animal encontrado para que o tutor possa reconhecê-lo e entrar em contato.              | O anúncio é criado com status `achado`, localização e imagem.               | Alta       |
-| HU07 | Como criadora de um anúncio de animal encontrado, quero confirmar a devolução para indicar que o caso foi resolvido.         | O status passa de `achado` para `encontrado` após a confirmação autorizada. | Média      |
-| HU08 | Como visitante, quero ter acesso protegido aos dados de contato para poder ajudar sem expor informações desnecessariamente.  | O contato permanece oculto até a confirmação prevista no fluxo.             | Alta       |
-| HU09 | Como pessoa interessada em cuidados animais, quero consultar dicas e informativos para ampliar meu conhecimento.             | As páginas informativas ficam acessíveis sem login.                         | Média      |
+| ID   | História de usuário                                                                                                          | Critério de aceite                                                                      | Prioridade |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------- |
+| HU01 | Como tutora, quero cadastrar meu pet desaparecido com foto, localização e descrição para aumentar as chances de localizá-lo. | O anúncio é criado com os dados obrigatórios e aparece na consulta pública.             | Alta       |
+| HU02 | Como visitante, quero consultar anúncios em lista e mapa para identificar ocorrências próximas ou relevantes.                | A lista e o mapa exibem os anúncios disponíveis com filtros e localização.              | Alta       |
+| HU03 | Como colaborador, quero registrar um avistamento relacionado a um pet para informar o tutor sobre uma possível localização.  | O relato é salvo vinculado ao `petId` correto.                                          | Alta       |
+| HU04 | Como tutora, quero acessar a área Meus Pets para acompanhar e administrar meus anúncios.                                     | O usuário autenticado visualiza somente os anúncios associados à sua conta.             | Alta       |
+| HU05 | Como tutora, quero editar ou excluir meu anúncio para manter as informações atualizadas.                                     | Somente o responsável consegue executar a alteração autorizada.                         | Alta       |
+| HU06 | Como encontradora, quero publicar um animal encontrado para que o tutor possa reconhecê-lo e entrar em contato.              | O anúncio é criado com status `achado`, localização e imagem.                           | Alta       |
+| HU07 | Como criadora de um anúncio de animal encontrado, quero confirmar a devolução para indicar que o caso foi resolvido.         | O status passa de `achado` para `encontrado` após a confirmação autorizada.             | Média      |
+| HU08 | Como visitante, quero ter acesso protegido aos dados de contato para poder ajudar sem expor informações desnecessariamente.  | O contato permanece oculto até a confirmação prevista no fluxo.                         | Alta       |
+| HU09 | Como pessoa interessada em cuidados animais, quero consultar dicas e informativos para ampliar meu conhecimento.             | As páginas informativas ficam acessíveis sem login.                                     | Média      |
+| HU10 | Como tutora, quero ser avisada quando alguém registrar um avistamento do meu pet para consultar rapidamente as informações.  | Um popup aparece em Meus Pets para cada novo avistamento enquanto a página está aberta. | Alta       |
 
 As histórias de usuário complementam os requisitos e casos de uso. Elas descrevem o valor esperado por cada perfil sem afirmar que a plataforma já produziu reencontros ou impacto comunitário comprovado.
 
