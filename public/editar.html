@@ -226,9 +226,10 @@
       } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
       import {
         ref as storageRef,
+        uploadBytes,
+        getDownloadURL,
         deleteObject,
       } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
-      import { enviarImagemParaModeracao } from "./script/upload-imagem.js";
       import {
         onAuthStateChanged,
         signOut,
@@ -647,26 +648,15 @@
                 return;
               }
 
-              try {
-                linkImagemFinal = await enviarImagemParaModeracao(novaImagem);
-                petAtualizado.imagemPendente = false;
-              } catch (error) {
-                if (error.code === "IMAGE_REJECTED") {
-                  alert(error.message);
-                  return;
-                }
-                if (error.code === "AUTH_REQUIRED") {
-                  alert(
-                    "Sua sessão expirou. Entre novamente para salvar as alterações.",
-                  );
-                  return;
-                }
-                linkImagemFinal = imagemAnterior;
-                petAtualizado.imagemPendente = !imagemAnterior;
-                alert(
-                  "A alteração da imagem foi adiada porque a moderação está temporariamente indisponível. Os demais dados poderão ser salvos.",
-                );
-              }
+              const nomeArquivo = `${Date.now()}_${novaImagem.name}`;
+              const storageReference = storageRef(
+                storage,
+                `pets/${nomeArquivo}`,
+              );
+              const snapshot = await uploadBytes(storageReference, novaImagem, {
+                customMetadata: { uploadedBy: usuarioLogado.email },
+              });
+              linkImagemFinal = await getDownloadURL(snapshot.ref);
             }
 
             petAtualizado.imagem = linkImagemFinal;

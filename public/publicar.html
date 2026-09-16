@@ -254,7 +254,7 @@
     </footer>
 
     <script type="module">
-      import { auth, db } from "./script/firebase.js";
+      import { auth, db, storage } from "./script/firebase.js";
       import {
         collection,
         addDoc,
@@ -263,7 +263,11 @@
         onAuthStateChanged,
         signOut,
       } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-      import { enviarImagemParaModeracao } from "./script/upload-imagem.js";
+      import {
+        ref,
+        uploadBytes,
+        getDownloadURL,
+      } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
 
       let usuarioLogado = null;
 
@@ -611,25 +615,14 @@
 
           try {
             if (imagemInput) {
-              try {
-                pet.imagem = await enviarImagemParaModeracao(imagemInput);
-                pet.imagemPendente = false;
-              } catch (error) {
-                if (error.code === "IMAGE_REJECTED") {
-                  alert(error.message);
-                  return;
-                }
-                if (error.code === "AUTH_REQUIRED") {
-                  alert("Sua sessão expirou. Entre novamente para cadastrar o pet.");
-                  return;
-                }
-                pet.imagem = "";
-                pet.imagemPendente = true;
-                alert("O pet será cadastrado sem imagem porque a moderação está temporariamente indisponível.");
-              }
+              const nomeArquivo = `${Date.now()}_${imagemInput.name}`;
+              const storageRef = ref(storage, `pets/${nomeArquivo}`);
+              const snapshot = await uploadBytes(storageRef, imagemInput, {
+                customMetadata: { uploadedBy: usuarioLogado.email },
+              });
+              pet.imagem = await getDownloadURL(snapshot.ref);
             } else {
               pet.imagem = "";
-              pet.imagemPendente = false;
             }
 
             await salvarPet(pet);
