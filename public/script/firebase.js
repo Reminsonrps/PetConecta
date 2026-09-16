@@ -27,7 +27,7 @@ import { getStorage } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-
 // Se a organização do projeto mudar, revisar primeiro este arquivo para manter a mesma base de dados,
 // autenticação e storage em todas as telas sem duplicar instâncias.
 const firebaseConfig = {
-  apiKey: "REDACTED_FIREBASE_API_KEY",
+  apiKey: "AIzaSyBpbc3GPkPHzN78cgXQsZWJ8ayzdiIdUYY",
   authDomain: "petconecta-db068.firebaseapp.com",
   projectId: "petconecta-db068",
   storageBucket: "petconecta-db068.firebasestorage.app",
