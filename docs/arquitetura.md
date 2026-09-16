@@ -118,7 +118,7 @@ O carregamento inicial dos avistamentos é marcado como já conhecido para evita
 Campos comumente usados:
 
 - nome
-- descricao
+- descrição
 - status
 - imagem
 - localiza ou localizacao
@@ -142,7 +142,7 @@ A estrutura varia conforme o fluxo, mas normalmente contém:
 - petId
 - petNome
 - localAvistado
-- descricao
+- descrição
 - contatoReportador
 - reportadoPor
 - dataRegistro

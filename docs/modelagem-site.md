@@ -193,8 +193,11 @@ O backlog organiza as histórias e atividades que percorrem as colunas **Backlog
 | BK09 | Realizar validação com tutores, colaboradores e ONGs        | Todas                        | Alta       | Planejado    |
 | BK10 | Analisar feedback e priorizar melhorias                     | Todas                        | Alta       | Planejado    |
 | BK11 | Revisar acessibilidade e experiência em dispositivos móveis | RNF01, RNF02, RNF09          | Alta       | Em validação |
+| BK12 | Moderar imagens antes do upload                             | RF03, RNF03                  | Alta       | Concluído    |
+| BK13 | Notificar novos avistamentos na área Meus Pets              | RF07, RF17                   | Alta       | Concluído    |
+| BK14 | Consolidar dashboard e evidências comunitárias              | Todas                        | Média      | Em validação |
 
-O backlog não substitui as evidências de aplicação. Os cartões BK09 e BK10 dependem da coleta e da análise das respostas da comunidade.
+O backlog não substitui as evidências de aplicação. Os cartões BK09, BK10 e BK14 dependem da conclusão da coleta, da análise das respostas e da organização das evidências comunitárias. Os cartões BK12 e BK13 registram evoluções confirmadas no histórico do projeto: moderação de imagens e alertas de novos avistamentos.
 
 ## 7. Casos de uso
 
@@ -312,12 +315,12 @@ Alternativas: se a autenticação, validação, upload ou gravação falhar, o p
 - **Fluxos alternativos:** pet inexistente; campos inválidos; sessão expirada; regra do Firestore rejeita a escrita.
 - **Regras relacionadas:** RN06, RN07 e RN08.
 
-#### UC09 - Editar pet proprio
+#### UC09 - Editar pet próprio
 
 - **Ator principal:** tutor autenticado.
 - **Pré-condições:** pet existente; usuário é responsável pelo documento.
 - **Pós-condição de sucesso:** dados autorizados atualizados no mesmo documento.
-- **Fluxo principal:** abrir Meus Pets; selecionar anuncio; alterar dados; validar; salvar; atualizar a tela.
+- **Fluxo principal:** abrir Meus Pets; selecionar anúncio; alterar dados; validar; salvar; atualizar a tela.
 - **Fluxos alternativos:** outro usuário tenta editar; campo inválido; documento removido durante a edição.
 - **Regras relacionadas:** RN02, RN03 e RN08.
 
@@ -334,7 +337,7 @@ Alternativas: se a autenticação, validação, upload ou gravação falhar, o p
 
 - **Ator principal:** pessoa autenticada que encontrou o animal.
 - **Pré-condições:** sessão válida; localização, imagem e dados obrigatórios disponíveis.
-- **Pos-condicao de sucesso:** documento criado em `pets` com `status: "achado"` e visivel na consulta publica.
+- **Pós-condição de sucesso:** documento criado em `pets` com `status: "achado"` e visível na consulta pública.
 - **Fluxo principal:** abrir `publicar_achado.html`; preencher dados; selecionar localização; enviar imagem; gravar anúncio.
 - **Fluxos alternativos:** autenticação, validação, upload ou gravação podem falhar.
 
@@ -542,7 +545,7 @@ flowchart TB
 | Leaflet         | Mapa, marcadores e seleção de local                             |
 | Hosting         | Distribuição dos arquivos estáticos                             |
 
-### 9.3 Implantacao
+### 9.3 Implantação
 
 ```mermaid
 flowchart LR
@@ -706,13 +709,13 @@ A padronização futura deve preferir `localizacao`, `imagemUrl`, `usuarioCriado
 | Contato     | -         | -                       | -                          | -                          |
 | Usuário     | -         | R próprio via Auth      | R próprio via Auth         | R próprio via Auth         |
 
-Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz representa a regra atual e deve ser revisada caso o sistema passe a separar dados publicos e privados.
+Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz representa a regra atual e deve ser revisada caso o sistema passe a separar dados públicos e privados.
 
 ### 11.5 Integridade e índices
 
 - a aplicação deve validar que todo avistamento aponta para um pet existente;
 - `usuarioCriador` deve corresponder ao e-mail autenticado no cadastro;
-- `lat` e `lng` devem ser numeros dentro dos limites geograficos aceitos;
+- `lat` e `lng` devem ser números dentro dos limites geográficos aceitos;
 - consultas de lista devem ordenar por `data` e limitar a quantidade retornada;
 - indices adicionais devem ser criados apenas quando uma consulta real exigir.
 
@@ -721,7 +724,7 @@ Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz 
 - RN01: somente usuário autenticado pode criar pet.
 - RN02: o criador do pet é identificado pelo campo `usuarioCriador`.
 - RN03: somente o criador pode atualizar ou excluir seu pet.
-- RN04: o status inicial deve ser `desaparecido` ou `achado`, conforme o formulario usado.
+- RN04: o status inicial deve ser `desaparecido` ou `achado`, conforme o formulário usado.
 - RN05: somente o criador pode alterar o status; `achado` passa para `encontrado` após confirmação da devolução.
 - RN11: anúncio `achado` recebe `expiresAt` 40 dias após a publicação e é ocultado após o vencimento.
 - RN12: o Firestore pode usar TTL em `expiresAt` para excluir fisicamente os anúncios vencidos, desde que a política esteja configurada no projeto.
@@ -733,16 +736,16 @@ Legenda: **C** criar, **R** consultar, **U** atualizar, **D** excluir. A matriz 
 
 ### 12.1 Privacidade e LGPD
 
-O sistema trata nome, e-mail, telefone, WhatsApp e relatos de contato como dados pessoais. Para uma evolucao alinhada a LGPD, devem ser observados:
+O sistema trata nome, e-mail, telefone, WhatsApp e relatos de contato como dados pessoais. Para uma evolução alinhada à LGPD, devem ser observados:
 
 - informar ao usuário a finalidade da coleta antes do cadastro ou envio;
-- coletar somente os dados necessarios para localizar o pet e retornar ao colaborador;
+- coletar somente os dados necessários para localizar o pet e retornar ao colaborador;
 - restringir o acesso aos contatos quando a funcionalidade permitir;
 - permitir solicitação de correção ou exclusão dos dados;
-- definir prazo de retencao para anuncios encerrados e avistamentos;
+- definir prazo de retenção para anúncios encerrados e avistamentos;
 - registrar aceite dos termos quando houver coleta de dados pessoais;
 - documentar o responsável pelo tratamento e um canal de contato;
-- evitar expor e-mail e WhatsApp em consultas publicas ou URLs.
+- evitar expor e-mail e WhatsApp em consultas públicas ou URLs.
 
 No estado atual, os termos e a proteção de contato oferecem uma camada inicial, mas não substituem uma política de privacidade completa nem a separação técnica de campos públicos e privados.
 
@@ -753,7 +756,7 @@ No estado atual, os termos e a proteção de contato oferecem uma camada inicial
 | `index.html`            | Home, lista, filtros e mapa      | Público                        |
 | `criar-conta.html`      | Login e cadastro                 | Público                        |
 | `publicar.html`         | Formulário de publicação         | Autenticado                    |
-| `detalhes.html`         | Detalhes e avistamento           | Publico/autenticado para envio |
+| `detalhes.html`         | Detalhes e avistamento           | Público/autenticado para envio |
 | `cadastrados.html`      | Meus Pets                        | Autenticado                    |
 | `editar.html`           | Edição de anúncio                | Dono autenticado               |
 | `animais_encontra.html` | Consulta de achados e devolvidos | Público                        |
@@ -766,15 +769,15 @@ No estado atual, os termos e a proteção de contato oferecem uma camada inicial
 Diretrizes de interface:
 
 - apresentar estados de carregamento, vazio, sucesso e erro;
-- manter formularios com rotulos, mensagens de validacao e foco visivel;
+- manter formulários com rótulos, mensagens de validação e foco visível;
 - usar texto alternativo em imagens relevantes;
-- garantir navegacao por teclado e contraste adequado;
+- garantir navegação por teclado e contraste adequado;
 - manter cards e marcadores consistentes entre lista, mapa e detalhes;
-- nao revelar contato privado antes da confirmacao prevista no fluxo.
+- não revelar contato privado antes da confirmação prevista no fluxo.
 
 ### 13.1 Wireframes funcionais
 
-Os wireframes abaixo representam a organizacao das telas, nao o estilo visual final.
+Os wireframes abaixo representam a organização das telas, não o estilo visual final.
 
 ```text
 HOME / INDEX
@@ -792,8 +795,8 @@ PUBLICAR PET
 +----------------------------------------------------------+
 | Titulo: Publicar pet                                    |
 | Foto | Nome | Tipo | Raca | Porte | Status              |
-| Localizacao e selecao no mapa                           |
-| Descricao | Contato | WhatsApp                         |
+| Localização e seleção no mapa                           |
+| Descrição | Contato | WhatsApp                         |
 |                         [Cancelar] [Publicar]           |
 +----------------------------------------------------------+
 ```
@@ -801,10 +804,10 @@ PUBLICAR PET
 ```text
 DETALHES DO PET
 +----------------------------------------------------------+
-| Foto e identificacao | Status | Localizacao            |
-| Descricao e caracteristicas                           |
+| Foto e identificação | Status | Localização            |
+| Descrição e características                           |
 | Contato protegido [Revelar contato]                    |
-| Formulario de avistamento                             |
+| Formulário de avistamento                             |
 |                         [Enviar avistamento]           |
 +----------------------------------------------------------+
 ```
@@ -812,7 +815,7 @@ DETALHES DO PET
 ```text
 MEUS PETS
 +----------------------------------------------------------+
-| Usuario | Sair                                           |
+| Usuário | Sair                                           |
 | Pet 1: status | [Editar] [Devolvido ao Tutor] [Excluir] |
 | Pet 2: status | [Editar] [Devolvido ao Tutor] [Excluir] |
 +----------------------------------------------------------+
@@ -820,44 +823,44 @@ MEUS PETS
 
 ## 14. Critérios de aceitação
 
-Os criterios abaixo complementam os requisitos e podem ser usados na demonstracao:
+Os critérios abaixo complementam os requisitos e podem ser usados na demonstracao:
 
 | Requisito | Dado                          | Quando                        | Entao                                       |
 | --------- | ----------------------------- | ----------------------------- | ------------------------------------------- |
-| RF01      | Usuario sem sessao            | informar credenciais validas  | sistema autentica e identifica o usuario    |
-| RF02      | Usuario autenticado           | preencher campos obrigatorios | sistema cria o pet e confirma a publicacao  |
-| RF05      | Pet com coordenadas validas   | abrir a home                  | sistema apresenta marcador correspondente   |
-| RF07      | Pet existente e sessao valida | enviar avistamento completo   | sistema grava a ocorrencia vinculada ao pet |
-| RF09      | Pet do usuario atual          | salvar alteracao valida       | sistema atualiza o documento                |
-| RF10      | Pet de outro usuario          | tentar excluir                | regra rejeita a operacao                    |
-| RF11      | Pet achado do usuario         | confirmar devolucao           | sistema altera o status para encontrado     |
-| RNF02     | Tela em viewport mobile       | navegar e abrir formularios   | conteudo permanece legivel e utilizavel     |
-| RNF04     | Listagem publica              | carregar cards                | contato nao e exibido diretamente           |
+| RF01      | Usuário sem sessão            | informar credenciais válidas  | sistema autentica e identifica o usuário    |
+| RF02      | Usuário autenticado           | preencher campos obrigatórios | sistema cria o pet e confirma a publicação  |
+| RF05      | Pet com coordenadas válidas   | abrir a home                  | sistema apresenta marcador correspondente   |
+| RF07      | Pet existente e sessão válida | enviar avistamento completo   | sistema grava a ocorrência vinculada ao pet |
+| RF09      | Pet do usuário atual          | salvar alteração válida       | sistema atualiza o documento                |
+| RF10      | Pet de outro usuário          | tentar excluir                | regra rejeita a operação                    |
+| RF11      | Pet achado do usuário         | confirmar devolução           | sistema altera o status para encontrado     |
+| RNF02     | Tela em viewport mobile       | navegar e abrir formulários   | conteúdo permanece legível e utilizável     |
+| RNF04     | Listagem pública              | carregar cards                | contato não é exibido diretamente           |
 
 ## 15. Plano de testes e validação
 
 | ID  | Cenario                                  | Resultado esperado                                       |
 | --- | ---------------------------------------- | -------------------------------------------------------- |
 | T01 | Visitante abre a home                    | Lista e mapa carregam ou exibem estado vazio/erro        |
-| T02 | Usuario tenta publicar sem login         | Acesso e bloqueado ou redirecionado                      |
-| T03 | Publicacao com campo obrigatorio vazio   | Formulario informa o campo e nao grava                   |
-| T04 | Publicacao com coordenada invalida       | Operacao e rejeitada                                     |
-| T05 | Publicacao valida com imagem             | Imagem sobe e pet aparece na lista                       |
-| T06 | Usuario tenta editar pet de outro        | Firestore rejeita a operacao                             |
-| T07 | Tutor edita o proprio pet                | Alteracoes aparecem nos detalhes                         |
-| T08 | Criador confirma devolucao ou reencontro | Status muda para `encontrado`                            |
-| T15 | Pessoa autenticada publica pet achado    | Anuncio surge na lista e no mapa com distincao visual    |
-| T16 | Visitante tenta alterar status           | Nenhum botao de alteracao e disponibilizado              |
-| T17 | Achado ultrapassa 40 dias                | Anuncio deixa de aparecer e aguarda exclusao por TTL     |
+| T02 | Usuário tenta publicar sem login         | Acesso é bloqueado ou redirecionado                      |
+| T03 | Publicação com campo obrigatório vazio   | Formulário informa o campo e não grava                   |
+| T04 | Publicação com coordenada inválida       | Operação é rejeitada                                     |
+| T05 | Publicação válida com imagem             | Imagem sobe e pet aparece na lista                       |
+| T06 | Usuário tenta editar pet de outro        | Firestore rejeita a operação                             |
+| T07 | Tutor edita o próprio pet                | Alterações aparecem nos detalhes                         |
+| T08 | Criador confirma devolução ou reencontro | Status muda para `encontrado`                            |
+| T15 | Pessoa autenticada publica pet achado    | Anúncio surge na lista e no mapa com distinção visual    |
+| T16 | Visitante tenta alterar status           | Nenhum botao de alteração e disponibilizado              |
+| T17 | Achado ultrapassa 40 dias                | Anúncio deixa de aparecer e aguarda exclusão por TTL     |
 | T18 | Usuário autenticado abre Meus Pets       | Sistema exibe somente os anúncios do usuário             |
 | T09 | Colaborador registra avistamento valido  | Ocorrencia e criada no pet correto                       |
-| T10 | Avistamento sem autenticacao             | Operacao e bloqueada pela regra vigente                  |
-| T11 | Contato na listagem publica              | Contato nao aparece diretamente                          |
-| T12 | Navegacao em celular                     | Conteudo nao sobrepoe e controles permanecem utilizaveis |
+| T10 | Avistamento sem autenticação             | Operação é bloqueada pela regra vigente                  |
+| T11 | Contato na listagem pública              | Contato não aparece diretamente                          |
+| T12 | Navegação em celular                     | Conteúdo não sobrepõe e controles permanecem utilizáveis |
 | T13 | Dado com caracteres especiais            | Texto aparece sem executar HTML                          |
 | T14 | Imagem inexistente ou pesada             | Sistema trata erro e preserva o layout                   |
 
-A validacao academica deve combinar testes funcionais, verificacao visual responsiva, inspecao das regras do Firebase e conferencia dos criterios de aceite.
+A validação acadêmica deve combinar testes funcionais, verificacao visual responsiva, inspecao das regras do Firebase e conferencia dos critérios de aceite.
 
 ## 16. Matriz de rastreabilidade
 
@@ -870,21 +873,21 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | RF05      | UC02        | Home/mapa               | `lat`, `lng`, Leaflet      | T01, T04 |
 | RF06      | UC03        | `detalhes.html`         | `pets/{petId}`             | T01      |
 | RF07      | UC06        | Detalhes                | `avistamentos`             | T09, T10 |
-| RF08      | UC08        | `cadastrados.html`      | Filtro por responsavel     | T18      |
+| RF08      | UC08        | `cadastrados.html`      | Filtro por responsável     | T18      |
 | RF09      | UC09        | `editar.html`           | Regra `update`             | T07      |
 | RF10      | UC10        | `cadastrados.html`      | Regra `delete`             | T06      |
 | RF11      | UC11        | `animais_encontra.html` | Acao do criador e `status` | T08      |
 | RF15      | UC12        | `publicar_achado.html`  | `pets.status = achado`     | T15      |
 | RF16      | UC12        | Listas e mapa           | `pets.expiresAt` + TTL     | T17      |
-| RF14      | UC03        | Detalhes e encontrados  | Fluxo de confirmacao       | T11      |
+| RF14      | UC03        | Detalhes e encontrados  | Fluxo de confirmação       | T11      |
 
 ## 17. Riscos e mitigações
 
 | Risco                    | Impacto                            | Mitigacao                                  |
 | ------------------------ | ---------------------------------- | ------------------------------------------ |
-| Exposicao de contato     | Spam e perda de privacidade        | Ocultar na lista e exigir confirmacao      |
-| Escrita indevida         | Alteracao de anuncios de terceiros | Authentication e regras do Firestore       |
-| XSS por dados de usuario | Comprometimento da sessao          | Renderizacao segura com texto e elementos  |
+| Exposicao de contato     | Spam e perda de privacidade        | Ocultar na lista e exigir confirmação      |
+| Escrita indevida         | Alteracao de anúncios de terceiros | Authentication e regras do Firestore       |
+| XSS por dados de usuário | Comprometimento da sessão          | Renderização segura com texto e elementos  |
 | Muitas leituras          | Custo e lentidao                   | `limit`, ordenacao e listeners controlados |
 | Imagens pesadas          | Carregamento lento                 | Validar tamanho, proporcao e lazy loading  |
 | Campos inconsistentes    | Falha entre telas                  | Dicionario e plano de migracao             |
@@ -893,14 +896,14 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 ## 18. Evolução planejada
 
 1. padronizar nomes de campos e adicionar `criadoEm` e `atualizadoEm`;
-2. separar dados publicos e privados de contato;
+2. separar dados públicos e privados de contato;
 3. implementar filtro por distancia usando coordenadas;
-4. criar pagina de adocao com regras proprias;
+4. criar página de adoção com regras proprias;
 5. adicionar perfil administrativo e moderacao;
 6. configurar App Check em producao;
 7. incluir notificacoes de novos avistamentos;
-8. avaliar a API Node.js + Express quando a regra de negocio exigir backend proprio;
-9. criar indicadores de anuncios, avistamentos e reencontros;
+8. avaliar a API Node.js + Express quando a regra de negócio exigir backend próprio;
+9. criar indicadores de anúncios, avistamentos e reencontros;
 10. executar testes automatizados de regras e fluxos criticos.
 
 ### 18.1 Glossário do domínio
@@ -908,14 +911,14 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 | Termo            | Definicao                                                    |
 | ---------------- | ------------------------------------------------------------ |
 | Pet              | Animal cadastrado na plataforma                              |
-| Tutor            | Usuario responsavel por um anuncio                           |
+| Tutor            | Usuário responsável por um anúncio                           |
 | Colaborador      | Pessoa que informa um avistamento ou contribui com a busca   |
 | Avistamento      | Relato de que um animal foi visto em determinado local       |
-| Anuncio          | Documento publico com dados de um pet                        |
-| Desaparecido     | Status de um pet cuja localizacao esta sendo procurada       |
+| Anúncio          | Documento público com dados de um pet                        |
+| Desaparecido     | Status de um pet cuja localização está sendo procurada       |
 | Encontrado       | Status de um pet cujo reencontro foi informado pelo tutor    |
-| Ownership        | Regra que vincula uma operacao ao responsavel pelo documento |
-| Firebase Storage | Servico usado para armazenar imagens                         |
+| Ownership        | Regra que vincula uma operação ao responsável pelo documento |
+| Firebase Storage | Serviço usado para armazenar imagens                         |
 | Firestore        | Banco de dados usado para pets e avistamentos                |
 
 ### 18.2 Referências
@@ -928,18 +931,18 @@ A validacao academica deve combinar testes funcionais, verificacao visual respon
 
 ### 18.3 Ferramentas utilizadas na modelagem e documentação
 
-- Mermaid: modelagem textual de diagramas de caso de uso, processo, estados, arquitetura e sequencia.
+- Mermaid: modelagem textual de diagramas de caso de uso, processo, estados, arquitetura e sequência.
 - Markdown: consolidacao dos artefatos tecnicos e rastreabilidade da modelagem.
-- Visual Studio Code: edicao dos diagramas, documentos e revisao de consistencia.
+- Visual Studio Code: edição dos diagramas, documentos e revisão de consistencia.
 - Python (`python-docx` e `Pillow`): geracao de diagrama em imagem e incorporacao no arquivo DOCX exigido na entrega.
 
-Observacao: na entrega academica, os diagramas tecnicos foram mantidos em Mermaid para rastreabilidade e manutencao, e o diagrama da metodologia foi incorporado no documento final em formato compativel com o modelo da disciplina.
+Observacao: na entrega acadêmica, os diagramas tecnicos foram mantidos em Mermaid para rastreabilidade e manutenção, e o diagrama da metodologia foi incorporado no documento final em formato compativel com o modelo da disciplina.
 
 ## 19. Conclusão
 
-A modelagem apresenta o PetConecta sob as perspectivas de negocio, requisitos, comportamento, dados, arquitetura, navegacao, seguranca, interface e validacao. Ela representa o estado atual do site sem confundir funcionalidades propostas com funcionalidades implementadas e oferece uma base para apresentacao academica, manutencao e evolucao do sistema.
+A modelagem apresenta o PetConecta sob as perspectivas de negócio, requisitos, comportamento, dados, arquitetura, navegação, segurança, interface e validação. Ela representa o estado atual do site sem confundir funcionalidades propostas com funcionalidades implementadas e oferece uma base para apresentação acadêmica, manutenção e evolução do sistema.
 
-Os documentos complementares sao:
+Os documentos complementares são:
 
 - [arquitetura.md](arquitetura.md): decisoes tecnicas e operacionais;
-- [README.md](../README.md): visao geral e instrucoes de execucao.
+- [README.md](../README.md): visão geral e instruções de execução.
