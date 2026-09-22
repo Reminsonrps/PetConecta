@@ -1,4 +1,4 @@
-# Diagrama da Metodologia do Projeto (Kanban e validação via Google Forms)
+# Diagrama da Metodologia do Projeto (fluxo atualizado)
 
 ```mermaid
 flowchart LR
@@ -27,7 +27,7 @@ flowchart LR
       end
 
       subgraph CON["Concluído"]
-            K["Protótipo<br>Deploy<br>Refinamento e evidências<br>Coleta de feedback<br>Análise das respostas<br>Testes<br>Publicação"]
+            K["Síntese das entregas concluídas:<br>protótipo, deploy, testes,<br>publicação, feedback, análise e refinamento"]
             L["Organização dos arquivos de evidências e<br>preenchimento do relatório<br>8 dias"]
       end
 
@@ -50,4 +50,4 @@ flowchart LR
 
 ## Versão textual curta (para colar no DOCX)
 
-Backlog: levantamento do setor de aplicação -> Planejado: levantamento e análise de requisitos -> Em andamento: versão navegável e implementação -> Em validação: testes, publicação, feedback e análise -> Concluído: refinamento e evidências finais (107 dias).
+Início do projeto -> Backlog: levantamento do setor de aplicação -> Planejado: levantamento e análise de requisitos -> Em andamento: protótipo navegável, implementação e deploy no Firebase -> Em validação: testes, publicação da versão final, feedback e análise -> Concluído: síntese das entregas, organização das evidências e preenchimento do relatório (108 dias planejados) -> Fim do projeto.

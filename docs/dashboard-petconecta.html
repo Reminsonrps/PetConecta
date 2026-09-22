@@ -426,6 +426,42 @@
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
         gap: 10px;
       }
+      .participants-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 10px;
+      }
+      .participant-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+      }
+      .participant-id {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(20, 184, 166, 0.14);
+        color: var(--accent-teal);
+        font-size: 0.75rem;
+        font-weight: 800;
+        flex-shrink: 0;
+      }
+      .participant-label {
+        color: var(--text-primary);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+      .participant-note {
+        color: var(--text-muted);
+        font-size: 0.7rem;
+        margin-top: 3px;
+      }
       .location-badge {
         background: var(--bg-card);
         border: 1px solid var(--border);
@@ -562,6 +598,114 @@
           <div class="chart-card">
             <h3>Perfil / Categoria</h3>
             <div class="chart-wrapper"><canvas id="chartProfile"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Participantes identificados de forma anonimizada -->
+      <section class="section fade-in">
+        <div class="section-header">
+          <div class="section-dot dot-teal"></div>
+          <h2>Participantes da pesquisa</h2>
+        </div>
+        <div class="participants-grid">
+          <div class="participant-card">
+            <div class="participant-id">P01</div>
+            <div>
+              <div class="participant-label">Participante 01</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P02</div>
+            <div>
+              <div class="participant-label">Participante 02</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P03</div>
+            <div>
+              <div class="participant-label">Participante 03</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P04</div>
+            <div>
+              <div class="participant-label">Participante 04</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P05</div>
+            <div>
+              <div class="participant-label">Participante 05</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P06</div>
+            <div>
+              <div class="participant-label">Participante 06</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P07</div>
+            <div>
+              <div class="participant-label">Participante 07</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P08</div>
+            <div>
+              <div class="participant-label">Participante 08</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P09</div>
+            <div>
+              <div class="participant-label">Participante 09</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P10</div>
+            <div>
+              <div class="participant-label">Participante 10</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P11</div>
+            <div>
+              <div class="participant-label">Participante 11</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P12</div>
+            <div>
+              <div class="participant-label">Participante 12</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P13</div>
+            <div>
+              <div class="participant-label">Participante 13</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
+          </div>
+          <div class="participant-card">
+            <div class="participant-id">P14</div>
+            <div>
+              <div class="participant-label">Participante 14</div>
+              <div class="participant-note">Identificação anonimizada</div>
+            </div>
           </div>
         </div>
       </section>
@@ -811,7 +955,7 @@
                 M
               </div>
               <div>
-                <div class="author-name">Respondente 01</div>
+                <div class="author-name">Participante 01</div>
                 <div class="author-role">Tutor(a) de pet</div>
               </div>
             </div>
@@ -828,7 +972,7 @@
                 M
               </div>
               <div>
-                <div class="author-name">Respondente 02</div>
+                <div class="author-name">Participante 02</div>
                 <div class="author-role">Outro perfil</div>
               </div>
             </div>
@@ -846,7 +990,7 @@
                 P
               </div>
               <div>
-                <div class="author-name">Respondente 03</div>
+                <div class="author-name">Participante 03</div>
                 <div class="author-role">Outro perfil</div>
               </div>
             </div>
@@ -864,7 +1008,7 @@
                 G
               </div>
               <div>
-                <div class="author-name">Respondente 04</div>
+                <div class="author-name">Participante 04</div>
                 <div class="author-role">Tutor(a) de pet</div>
               </div>
             </div>
@@ -882,7 +1026,7 @@
                 G
               </div>
               <div>
-                <div class="author-name">Respondente 05</div>
+                <div class="author-name">Participante 05</div>
                 <div class="author-role">Profissional veterinário</div>
               </div>
             </div>
@@ -900,7 +1044,7 @@
                 N
               </div>
               <div>
-                <div class="author-name">Respondente 06</div>
+                <div class="author-name">Participante 06</div>
                 <div class="author-role">Membro de ONG</div>
               </div>
             </div>
@@ -920,14 +1064,14 @@
               Implementação do cadastro pet como documento de identidade — dados
               do pet como vacinação, endereço e tutor.
             </p>
-            <p class="suggestion-author">— Respondente 01 · Tutor(a) de pet</p>
+            <p class="suggestion-author">— Participante 01 · Tutor(a) de pet</p>
           </div>
           <div class="suggestion-item">
             <p class="suggestion-text">
               Sugestão de divulgação no Instagram e Facebook por meio de tráfego
               pago para atrair usuários.
             </p>
-            <p class="suggestion-author">— Respondente 01 · Tutor(a) de pet</p>
+            <p class="suggestion-author">— Participante 01 · Tutor(a) de pet</p>
           </div>
           <div class="suggestion-item">
             <p class="suggestion-text">
@@ -935,7 +1079,7 @@
               alcance.
             </p>
             <p class="suggestion-author">
-              — Respondente 05 · Profissional veterinário
+              — Participante 05 · Profissional veterinário
             </p>
           </div>
           <div class="suggestion-item">
@@ -943,7 +1087,7 @@
               Fechar mais parcerias com as principais ONGs da região.
             </p>
             <p class="suggestion-author">
-              — Respondente 05 · Profissional veterinário
+              — Participante 05 · Profissional veterinário
             </p>
           </div>
           <div class="suggestion-item">
@@ -951,13 +1095,13 @@
               Acrescentar um telefone para denunciar maus-tratos, caso seja
               possível e exista na região.
             </p>
-            <p class="suggestion-author">— Respondente 06 · Membro de ONG</p>
+            <p class="suggestion-author">— Participante 06 · Membro de ONG</p>
           </div>
           <div class="suggestion-item">
             <p class="suggestion-text">
               Campanha de castração dos animais. Acho importante.
             </p>
-            <p class="suggestion-author">— Respondente 07 · Tutor(a) de pet</p>
+            <p class="suggestion-author">— Participante 07 · Tutor(a) de pet</p>
           </div>
         </div>
       </section>

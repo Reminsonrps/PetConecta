@@ -56,7 +56,12 @@
       <form id="form-container">
         <div>
           <label for="nome">Nome do pet (se souber):</label>
-          <input type="text" id="nome" name="nome" placeholder="Ex: Desconhecido" />
+          <input
+            type="text"
+            id="nome"
+            name="nome"
+            placeholder="Ex: Desconhecido"
+          />
         </div>
 
         <div>
@@ -160,7 +165,9 @@
         </div>
 
         <div>
-          <label for="descricao">Descrição (onde ele está agora, como foi encontrado, etc.):</label>
+          <label for="descricao"
+            >Descrição (onde ele está agora, como foi encontrado, etc.):</label
+          >
           <textarea id="descricao" name="descricao"></textarea>
         </div>
 
@@ -215,7 +222,9 @@
           </label>
         </div>
 
-        <button type="submit" style="margin-top: 15px">Cadastrar Pet Encontrado</button>
+        <button type="submit" style="margin-top: 15px">
+          Cadastrar Pet Encontrado
+        </button>
       </form>
     </div>
 
@@ -224,12 +233,7 @@
         <h3>🐶 PetConecta</h3>
         <p>Conectando pets incríveis a lares amorosos 💕</p>
         <div class="social-links">
-          <a
-            href="javascript:void(0)" <!-- Placeholder for Instagram link -->
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram"
-          >
+          <a href="javascript:void(0)" aria-label="Instagram">
             <img src="assets/img/icon-instagram.svg" alt="Instagram" />
           </a>
           <a
@@ -243,7 +247,12 @@
         </div>
         <nav class="footer-nav">
           <a href="index.html">Página Inicial</a>
-          <a href="https://www.anjosdajuda.org/adote" target="_blank" rel="noopener noreferrer">Adoção</a>
+          <a
+            href="https://www.anjosdajuda.org/adote"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Adoção</a
+          >
           <a href="dicas.html">Cuidados</a>
           <a href="contato.html">Contato</a>
         </nav>
@@ -364,12 +373,14 @@
       }).addTo(map);
 
       const orangeIcon = new L.Icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconUrl:
+          "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
+        shadowUrl:
+          "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
-        shadowSize: [41, 41]
+        shadowSize: [41, 41],
       });
 
       let marker;
@@ -407,7 +418,7 @@
                 if (marker) {
                   marker.setLatLng(latlng);
                 } else {
-                  marker = L.marker(latlng, {icon: orangeIcon}).addTo(map);
+                  marker = L.marker(latlng, { icon: orangeIcon }).addTo(map);
                 }
                 map.setView(latlng, 15);
 
@@ -435,7 +446,7 @@
         if (marker) {
           marker.setLatLng(e.latlng);
         } else {
-          marker = L.marker(e.latlng, {icon: orangeIcon}).addTo(map);
+          marker = L.marker(e.latlng, { icon: orangeIcon }).addTo(map);
         }
 
         document.getElementById("lat").value = lat;
@@ -577,7 +588,8 @@
           }
 
           const pet = {
-            nome: document.getElementById("nome").value.trim() || "Desconhecido",
+            nome:
+              document.getElementById("nome").value.trim() || "Desconhecido",
             localiza: document.getElementById("localizacao").value.trim(),
             localizacao: document.getElementById("localizacao").value.trim(),
             raca:

@@ -588,6 +588,23 @@ flowchart TB
 
 O modelo de componentes mostra responsabilidades lógicas, sem afirmar que todos os módulos possuem uma classe formal. No frontend atual, parte dessas responsabilidades está distribuída entre scripts de tela.
 
+### 9.5 Relação com a fundamentação técnica
+
+A arquitetura foi descrita a partir da separação de responsabilidades, dos
+componentes, das interfaces entre serviços e dos fluxos de implantação. Essa
+organização dialoga com a literatura de arquitetura de sistemas de Zenker et
+al. (2019), sem caracterizar a solução atual como uma arquitetura de
+microsserviços: o sistema utiliza serviços gerenciados do Firebase e um
+frontend estático.
+
+Os requisitos, atores, casos de uso, diagramas de sequência, estados, modelo
+de dados e rastreabilidade foram organizados com base nos princípios de análise
+e design orientados a objetos discutidos por Wazlawick (2014) e Rangel e
+Carvalho Junior (2021). Como a implementação é feita em JavaScript, os
+diagramas representam responsabilidades e contratos do sistema; eles não
+afirmam a existência de classes Java ou de uma implementação formal em OCL ou
+IFML.
+
 ## 10. Mapa de navegação
 
 ```mermaid
@@ -923,6 +940,14 @@ A validação acadêmica deve combinar testes funcionais, verificacao visual res
 
 ### 18.2 Referências
 
+- RANGEL, Pablo; CARVALHO JUNIOR, José Gomes de. _Sistemas orientados a objetos: teoria e prática com UML e Java_. Rio de Janeiro: Brasport, 2021. ISBN 9786588431412.
+- SANTOS, Selma Cristina dos; CARVALHO, Márcia Alves Faleiro de. _Normas e técnicas para elaboração e apresentação de trabalhos acadêmicos_. 1. ed. São Paulo: Vozes, 2015. ISBN 9788532650061.
+- PEROVANO, Dalton Gean. _Manual de metodologia da pesquisa científica_. Curitiba: Intersaberes, 2016.
+- MARQUES, Biblioteca Universitária Mario O. _Guia Unijuí de formatação de trabalhos acadêmico-científicos_. 3. ed. Ijuí: Editora Unijuí, 2023. ISBN 9788541903820.
+- LISBOA, Flávio. _Arquitetura de software distribuído: boas práticas para um mundo de microsserviços_. São Paulo, SP: Casa do Código, 2021. ISBN 9786586110876.
+- BRASILEIRO, Ada Magaly M. _Como produzir textos acadêmicos e científicos_. São Paulo: Editora Contexto, 2021. ISBN 9786555414400.
+- ZENKER, Aline M.; SANTOS, Jailson Costa dos; COUTO, Júlia M. C.; et al. _Arquitetura de sistemas_. Porto Alegre: SAGAH, 2019. ISBN 9788595029767.
+- WAZLAWICK, Raul S. _Análise e Design Orientados a Objetos para Sistemas de Informação: Modelagem com UML, OCL e IFML_. 3. ed. Rio de Janeiro: GEN LTC, 2014. ISBN 9788595153653.
 - OBJECT MANAGEMENT GROUP. _Unified Modeling Language (UML), Version 2.5.1_. Disponivel em: <https://www.omg.org/spec/UML/2.5.1/>. Acesso em: 19 ago. 2026.
 - SOMMERVILLE, Ian. _Engenharia de Software_. Sao Paulo: Pearson, 2019.
 - BRASIL. _Lei Geral de Protecao de Dados Pessoais - Lei n. 13.709/2018_. Disponivel em: <https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm>. Acesso em: 19 ago. 2026.

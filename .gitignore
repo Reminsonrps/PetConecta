@@ -9,6 +9,7 @@ docs/**
 !docs/riscos-e-mitigacoes.md
 !docs/modelagem-site.md
 !docs/diagrama-metodologia-extensionista.md
+!docs/Diagrama atualizado.png
 *.log
 *.xlsx
 *.xls
