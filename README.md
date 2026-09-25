@@ -17,6 +17,7 @@ A versão atual do projeto foi reforçada para produção com:
 - proteção de dados sensíveis de contato, ocultando e-mail e WhatsApp na listagem pública;
 - fluxo de cadastro de pets encontrados por terceiros, com status intermediário e confirmação de devolução pelo cadastrador;
 - fluxo de autenticação com distinção entre primeiro cadastro e retorno de usuário já cadastrado.
+- coleta de visitas com Google Analytics 4 em todas as páginas públicas.
 
 ## Objetivo do projeto
 
@@ -111,6 +112,7 @@ Depois do login, o usuário acessa a área de gerenciamento e consulta os pets q
 - Firebase Storage
 - Leaflet
 - App Check (preparado para reCAPTCHA v3)
+- Google Analytics 4
 
 ## Como executar localmente
 
@@ -133,6 +135,15 @@ firebase emulators:start
 ```bash
 firebase deploy
 ```
+
+## Google Analytics
+
+As páginas públicas carregam o Google Analytics 4 pelo script compartilhado
+`public/script/google-analytics.js`, usando o ID de medição `G-QC6FRVH8TN`.
+
+Depois do deploy, as visitas podem ser conferidas em **Relatórios > Tempo real**
+no Google Analytics. O carregamento do script é assíncrono e não bloqueia a
+renderização das páginas.
 
 ## Regras de negócio e segurança
 
