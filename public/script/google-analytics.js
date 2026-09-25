@@ -1,3 +1,4 @@
+// Inicializa o Google Analytics 4 para registrar as visitas do site.
 (function () {
   const measurementId = "G-QC6FRVH8TN";
 

@@ -25,7 +25,9 @@
     />
 
     <link rel="stylesheet" href="css/buttons-global.css" />
+    <!-- Google Analytics 4 -->
     <script src="script/google-analytics.js" defer></script>
+    <script src="script/menu-mobile-links.js" defer></script>
 
     <script>
       // Garante que a index sempre abra no topo, mesmo após refresh ou hash anterior.
@@ -633,7 +635,12 @@
               >parcerias@petconecta.com.br</a
             >
           </li>
-          <li>Telefone: <a href="https://wa.me/5573999505214" target="_blank">(73) 999505-214</a></li>
+          <li>
+            Telefone:
+            <a href="https://wa.me/5573999505214" target="_blank"
+              >(73) 999505-214</a
+            >
+          </li>
           <li>
             Instagram:
             <a
@@ -681,9 +688,11 @@
           © 2026 PetConecta. Todos os direitos reservados.
         </p>
         <p class="footer-phone">
-         Telefone: <a href="https://wa.me/557399505214" target="_blank">(73) 999505-214</a>
+          Telefone:
+          <a href="https://wa.me/557399505214" target="_blank"
+            >(73) 999505-214</a
+          >
         </p>
-
       </div>
     </footer>
 
@@ -1185,8 +1194,8 @@
           menu.innerHTML = `
             ${linksBase}
             <li><a href="cadastrados.html">Meus Pets</a></li>
-            <li><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.55);color:#fff;font-weight:700;border-radius:20px;padding:5px 14px;font-size:0.9rem;">👤 ${nomeExibicao}</span></li>
-            <li><a href="#" id="btn-logout" style="color: #ffccd5; font-weight: bold; text-decoration: none;">Sair</a></li>
+            <li><span class="menu-user">${nomeExibicao}</span></li>
+            <li><a href="#" id="btn-logout" class="menu-logout">Sair</a></li>
           `;
 
           // Atribui o clique do logout de forma reativa
@@ -1204,7 +1213,7 @@
           // Usuário deslogado: adiciona o botão verde "Entrar / Cadastrar"
           menu.innerHTML = `
             ${linksBase}
-            <li><a href="criar-conta.html" style="color: #4CAF50; font-weight: bold; text-decoration: none;">Entrar / Cadastrar</a></li>
+            <li><a href="criar-conta.html" class="menu-login">Entrar / Cadastrar</a></li>
           `;
         }
       });

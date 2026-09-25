@@ -18,7 +18,9 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="css/buttons-global.css" />
+    <!-- Google Analytics 4 -->
     <script src="script/google-analytics.js" defer></script>
+    <script src="script/menu-mobile-links.js" defer></script>
   </head>
   <body data-guide-page="publicar">
     <!-- Cabeçalho -->
@@ -292,8 +294,8 @@
           menu.innerHTML = `
             ${linksBase}
             <li><a href="cadastrados.html">Meus Pets</a></li>
-            <li><span style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.55);color:#fff;font-weight:700;border-radius:20px;padding:5px 14px;font-size:0.9rem;">👤 ${nomeExibicao}</span></li>
-            <li><a href="#" id="btn-logout" style="color: #ff3333; font-weight: bold; text-decoration: none;">Sair</a></li>
+            <li><span class="menu-user">${nomeExibicao}</span></li>
+            <li><a href="#" id="btn-logout" class="menu-logout">Sair</a></li>
           `;
 
           const btnLogout = document.getElementById("btn-logout");

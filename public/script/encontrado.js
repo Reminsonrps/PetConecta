@@ -55,7 +55,7 @@ onAuthStateChanged(auth, (user) => {
   if (user) {
     const nomeExibicao = user.displayName || user.email.split("@")[0];
     menu.appendChild(createLinkItem("cadastrados.html", "Meus Pets"));
-    menu.appendChild(createTextItem(`Olá, ${nomeExibicao}!`, "menu-user-item"));
+    menu.appendChild(createTextItem(nomeExibicao, "menu-user-item"));
 
     const itemLogout = document.createElement("li");
     const btnLogout = document.createElement("a");
@@ -71,7 +71,9 @@ onAuthStateChanged(auth, (user) => {
     itemLogout.appendChild(btnLogout);
     menu.appendChild(itemLogout);
   } else {
-    menu.appendChild(createLinkItem("criar-conta.html", "Entrar / Cadastrar"));
+    const loginItem = createLinkItem("criar-conta.html", "Entrar / Cadastrar");
+    loginItem.querySelector("a")?.classList.add("menu-login");
+    menu.appendChild(loginItem);
   }
 
   // Atualiza os cards quando a sessão termina de carregar para exibir as ações do criador.
